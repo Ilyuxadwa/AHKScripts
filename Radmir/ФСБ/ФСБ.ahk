@@ -23,12 +23,12 @@ Numpad0::Goto ВводId
 Alt & Numpad0::Goto ОчиститьId
 RCtrl & Numpad0::Goto ВводНика
 Numpad1::Goto Приветствие
-Alt & Numpad1::Goto Нашивка
-RCtrl & Numpad1::Goto УдостоверениеФСБ
+Alt & Numpad1::Goto УдостоверениеФСБ
+RCtrl & Numpad1::Goto Нашивка
 Numpad2::Goto ПросьбаОстановится
 Alt & Numpad2::Goto РаботаФСБ
 RCtrl & Numpad2::Goto ПросьбаДокументов
-Numpad3::Goto НачатьПоногю
+Numpad3::Goto НачатьПогоню
 Alt & Numpad3::Goto Арест
 RCtrl & Numpad3::Goto ОтменаАреста
 Numpad4::Goto СнятьАксессуары
@@ -46,9 +46,9 @@ RCtrl & Numpad7::Goto ВыломатьДверь
 Numpad8::Goto ЗачитатьПрава
 Alt & Numpad8::Goto ВызватьАдвоката
 RCtrl & Numpad8::Goto ПосадитьЗаРешетку
-Numpad9::Goto Выговор
-Alt & Numpad9::Goto Увролить
-RCtrl & Numpad9::Goto ОтследитьМестоположение
+Numpad9::Goto ОтследитьМестоположение
+Alt & Numpad9::Goto Выговор
+RCtrl & Numpad9::Goto Уволить
 Alt & X::Goto ПолицейскийПланшет
 RCtrl & X::Goto СписокРозыска
 Alt & RCtrl::Goto ПереключитьАхк
@@ -79,13 +79,16 @@ Goto Арест
 Goto ОтменаАреста
 
 :?*:снять-акс::
-Goto ОтменаАреста
+Goto СнятьАксессуары
 
 :?*:/wanted::
 Goto СписокРозыска
 
 :?*:/doc::
 Goto УдостоверениеФСБ
+
+:?*:/pg::
+Goto НачатьПогоню
 
 :?*:/ejectout::
 Goto ВыкинутьИзАвто
@@ -137,7 +140,7 @@ SendMessage, 0x50,, 0x4190419,, A
 Sendinput,{Enter}
 Sleep 500
 SendInput, {F6}{!}Введите id игрока для дальнейшего взаимодействия:{Space}
-Input, playerId, V I M, {RCtrl}
+Input, playerId, V I M, {RShift}
 SendInput, {BS 150}{F6}
 Return
 
@@ -152,7 +155,7 @@ Sendinput,{Enter}
 Sleep 500
 SendMessage, 0x50,, 0x4190419,, A
 SendInput, {F6}{!}Введите ваше маскировочное имя:{Space}
-Input, fakeName, V I M, {RCtrl}
+Input, fakeName, V I M, {RShift}
 SendInput, {BS 150}{F6}
 Return
 
@@ -234,7 +237,7 @@ Sleep 1000
 SendInput, {F6} Если Вы убежите или попробуете это сделать я сочту это за 8.4 УК.{Enter}
 return
 
-НачатьПоногю:
+НачатьПогоню:
 SendMessage, 0x50,, 0x4190419,, A
 Sendinput,{Enter}
 Sleep 500
@@ -244,7 +247,13 @@ Sendinput, {F6}/me достал рацию{Enter}
 sleep 700
 Sendinput, {F6}/todo Зажав кнопку*Прием, это %alias%, преследую преступника.{Enter}
 sleep 500
-SendInput, {F6}/pg{space}
+if (playerId = "-1") {
+    SendInput, {F6}/pg{Space}
+    Input, tempId, V I M, {Enter}
+} else {
+    Sleep 800
+    SendInput, {F6}/pg %playerId%{Enter}
+}
 Return
 
 Арест:
@@ -364,7 +373,8 @@ if (playerId = "-1") {
     SendInput, {F6}/search %playerId%{Enter}
 }
 SendInput, {F6}{!}Найдено ли что-то? (да/нет):{Space}
-Input, found, V I M, {Enter}
+Input, found, V I M, {RShift}
+SendInput, {BS 150}{Enter}
 if (found = "Да" or found = "да") {
     SendInput, {F6}Так так так... Что тут у нас?{Enter}
     sleep 800
@@ -633,7 +643,7 @@ SendInput, {F6}/me открыл двери{Enter}
 Sleep 1000
 SendInput, {F6}/do Двери открыты.{Enter}
 Sleep 1000
-SendInput, {F6}/me из здания вышли сотрудники{Enter}
+SendInput, {F6}/do Из здания вышли сотрудники.{Enter}
 Sleep 1000
 SendInput, {F6}/me передал преступника коллегам{Enter}
 Sleep 1000
@@ -696,7 +706,7 @@ if (playerId = "-1") {
 }
 Return
 
-Увролить:
+Уволить:
 SendMessage, 0x50,, 0x4190419,, A
 Sendinput,{Enter}
 Sleep 500
@@ -901,17 +911,17 @@ else if (organization=3){
 Return
 
 
-!n::
+Alt & n::
 SendMessage, 0x50,, 0x4190419,, A
 Sendinput,{F6}/n Откат.{Enter}
 Return
 
-!f::
+Alt & f::
 SendMessage, 0x50,, 0x4190419,, A
 Sendinput,{F6}/c 60{Enter}
 Return
 
-^f::
+Rctrl & f::
 SendMessage, 0x50,, 0x4190419,, A
 Sendinput,{F6}/c 60{Enter}
 Sleep 2500
