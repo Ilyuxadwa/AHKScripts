@@ -21,37 +21,37 @@ fakeName := ""
 
 Numpad0::Goto ВводId
 Alt & Numpad0::Goto ОчиститьId
-RCtrl & Numpad0::Goto ВводНика
+Ctrl & Numpad0::Goto ВводНика
 Numpad1::Goto Приветствие
 Alt & Numpad1::Goto УдостоверениеФСБ
-RCtrl & Numpad1::Goto Нашивка
+Ctrl & Numpad1::Goto Нашивка
 Numpad2::Goto ПросьбаОстановится
 Alt & Numpad2::Goto РаботаФСБ
-RCtrl & Numpad2::Goto ПросьбаДокументов
+Ctrl & Numpad2::Goto ПросьбаДокументов
 Numpad3::Goto НачатьПогоню
 Alt & Numpad3::Goto Арест
-RCtrl & Numpad3::Goto ОтменаАреста
+Ctrl & Numpad3::Goto ОтменаАреста
 Numpad4::Goto СнятьАксессуары
 Alt & Numpad4::Goto Обыск
-RCtrl & Numpad4::Goto ОбыскДокументов
+Ctrl & Numpad4::Goto ОбыскДокументов
 Numpad5::Goto Фоторобот
 Alt & Numpad5::Goto ЧеловекДокументы
-RCtrl & Numpad5::Goto ЧеловекОтпечатки
+Ctrl & Numpad5::Goto ЧеловекОтпечатки
 Numpad6::Goto Розыск
 Alt & Numpad6::Goto Штраф
-RCtrl & Numpad6::Goto СнятьРозыск
+Ctrl & Numpad6::Goto СнятьРозыск
 Numpad7::Goto ВыкинутьИзАвто
 Alt & Numpad7::Goto ПосадитьВАвто
-RCtrl & Numpad7::Goto ВыломатьДверь
+Ctrl & Numpad7::Goto ВыломатьДверь
 Numpad8::Goto ЗачитатьПрава
 Alt & Numpad8::Goto ВызватьАдвоката
-RCtrl & Numpad8::Goto ПосадитьЗаРешетку
+Ctrl & Numpad8::Goto ПосадитьЗаРешетку
 Numpad9::Goto ОтследитьМестоположение
 Alt & Numpad9::Goto Выговор
-RCtrl & Numpad9::Goto Уволить
+Ctrl & Numpad9::Goto Уволить
 Alt & X::Goto ПолицейскийПланшет
-RCtrl & X::Goto СписокРозыска
-Alt & RCtrl::Goto ПереключитьАхк
+Ctrl & X::Goto СписокРозыска
+Alt & Ctrl::Goto ПереключитьАхк
 
 :?*:id=::
 :?*:ид-ввод::
@@ -763,7 +763,7 @@ SendInput, {F6}/me включил КПК{Enter}
 Sleep 1000
 SendInput, {F6}/do КПК включен.{Enter}
 sleep 1000
-SendInput, {F6}/me Открыл список разыскиваемых{Enter}
+SendInput, {F6}/me открыл список разыскиваемых{Enter}
 Sleep 1000
 SendInput, {F6}/do Смотрит в него.{Enter}
 sleep 1000
@@ -818,10 +818,6 @@ if (playerId = "-1") {
     Sleep 800
     SendInput, {F6}/doc %playerId%{Enter}
 }
-Sleep 100
-SendInput, {Down}
-Sleep 100
-SendInput, {Enter}
 Sleep 500
 SendInput, {F6}Цель прибытия на охраняемую территорию?{Enter}
 Return
@@ -843,10 +839,6 @@ if (playerId = "-1") {
     Sleep 800
     SendInput, {F6}/doc %playerId%{Enter}
 }
-Sleep 100
-SendInput, {Down}
-Sleep 100
-SendInput, {Enter}
 Sleep 400
 SendInput, {F6}/me убрал удостоверение в корман{enter}
 Sleep 150
@@ -880,10 +872,6 @@ if (playerId = "-1") {
     Sleep 800
     SendInput, {F6}/doc %playerId%{Enter}
 }
-Sleep 100
-SendInput, {Down}
-Sleep 100
-SendInput, {Enter}
 Sleep 900
 SendInput, {F6}/do В удостоверение личности написано: Инспектор{Enter}
 Sleep 900
@@ -921,7 +909,7 @@ SendMessage, 0x50,, 0x4190419,, A
 Sendinput,{F6}/c 60{Enter}
 Return
 
-Rctrl & f::
+Ctrl & f::
 SendMessage, 0x50,, 0x4190419,, A
 Sendinput,{F6}/c 60{Enter}
 Sleep 2500
@@ -1010,76 +998,76 @@ f9 & Numpad0::
     ShowInfo("Что делает Numpad0:"
         , "| N0: Ввод id игрока для дальнейших действий"
         , "| N0 + Alt: Очистить последнее введенное id (если хотите вводить вручную)"
-        , "| N0 + RCtrl: Ввести ник маскировки (для использования ахк других орг.)")
+        , "| N0 + Ctrl: Ввести ник маскировки (для использования ахк других орг.)")
 return
 
 f9 & Numpad1::
     ShowInfo("Что делает Numpad1:"
         , "| N1: Представится и показать нашивку ФСБ"
         , "| N1 + Alt: Показать удостоверение ФСБ"
-        , "| N1 + RCtrl: Показать только нашивку")
+        , "| N1 + Ctrl: Показать только нашивку")
 return
 
 f9 & Numpad2::
     ShowInfo("Что делает Numpad2:"
         , "| N2: Попросить остановится гражданина"
         , "| N2 + Alt: Оповестить о работе ФСБ"
-        , "| N2 + RCtrl: Попросить документы у гражданина")
+        , "| N2 + Ctrl: Попросить документы у гражданина")
 return
 
 f9 & Numpad3::
     ShowInfo("Что делает Numpad3:"
         , "| N3: Начать погоню за нарушителем"
         , "| N3 + Alt: Надеть наручники + сопровождение"
-        , "| N3 + RCtrl: снять наручники + сопровождение")
+        , "| N3 + Ctrl: снять наручники + сопровождение")
 return
 
 f9 & Numpad4::
     ShowInfo("Что делает Numpad4:"
         , "| N4: Снять маску и другие аксессуары"
         , "| N4 + Alt: Обыскать человека на котиков (в случае находки - введите «найдено» в чат)"
-        , "| N4 + RCtrl: Найти документы в карманах человека")
+        , "| N4 + Ctrl: Найти документы в карманах человека")
 return
 
 f9 & Numpad5::
     ShowInfo("Что делает Numpad5:"
         , "| N5: Опознать человека по лицу"
         , "| N5 + Alt: Опознать человека по документам"
-        , "| N5 + RCtrl: Опознать человека по отпечаткам пальцев")
+        , "| N5 + Ctrl: Опознать человека по отпечаткам пальцев")
 return
 
 f9 & Numpad6::
     ShowInfo("Что делает Numpad6:"
         , "| N6: Выдать розыск"
         , "| N6 + Alt: Выписать штраф"
-        , "| N6 + RCtrl: Снять розыск")
+        , "| N6 + Ctrl: Снять розыск")
 return
 
 f9 & Numpad7::
     ShowInfo("Что делает Numpad7:"
         , "| N7: Выкинуть из автомобиля"
         , "| N7 + Alt: Посадить в автомобиль"
-        , "| N7 + RCtrl: Выломать дверь в дом")
+        , "| N7 + Ctrl: Выломать дверь в дом")
 return
 
 f9 & Numpad8::
     ShowInfo("Что делает Numpad8:"
         , "| N8: Зачитать права"
         , "| N8 + Alt: Вызвать адвоката"
-        , "| N8 + RCtrl: Посадить человека за решетку")
+        , "| N8 + Ctrl: Посадить человека за решетку")
 return
 
 f9 & Numpad9::
     ShowInfo("Что делает Numpad9:"
         , "| N9: Отследить местоположение"
         , "| N9 + Alt: Выдать выговор"
-        , "| N9 + RCtrl: Уволить человека")
+        , "| N9 + Ctrl: Уволить человека")
 return
 
 f9 & x::
     ShowInfo("Что делает X:"
         , "| X + Alt: Открыть полицейский планшет"
-        , "| X + RCtrl: Просмотреть список нарушителей в розыске")
+        , "| X + Ctrl: Просмотреть список нарушителей в розыске")
 return
 
 f10 up::
