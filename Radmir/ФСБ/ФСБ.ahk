@@ -15,8 +15,6 @@ organization := 0
 playerId := "-1"
 fakeName := ""
 
-
-
 ; Назначение клавиш и команд
 
 Numpad0::Goto ВводId
@@ -33,7 +31,7 @@ Alt & Numpad3::Goto Арест
 Ctrl & Numpad3::Goto ОтменаАреста
 Numpad4::Goto СнятьАксессуары
 Alt & Numpad4::Goto Обыск
-Ctrl & Numpad4::Goto ОбыскДокументов
+Ctrl & Numpad4::Goto ОбыскДоков
 Numpad5::Goto Фоторобот
 Alt & Numpad5::Goto ЧеловекДокументы
 Ctrl & Numpad5::Goto ЧеловекОтпечатки
@@ -101,7 +99,7 @@ Goto ВыкинутьИзАвто
 Goto ПосадитьВАвто
 
 :?*:/checkdocs::
-Goto ОбыскДокументов
+Goto ОбыскДоков
 
 :?*:/search::
 Goto Обыск
@@ -129,14 +127,17 @@ Goto ДопросМиранда
 :?*:допрос-начало::
 Goto ДопросНачало
 
-:?*:допрос-начало::
-Goto ДопросНачало
-
 :?*:допрос-прод::
-Goto ДопросНачало
+Goto ДопросПродолжение
 
 :?*:допрос-конец::
-Goto ДопросНачало
+Goto ДопросКонец
+
+:?*:запрещенка::
+Goto НайденаЗапрещенка
+
+:?*:взять-доки::
+Goto ВзятьДокументы
 
 Alt & 1::
 if (organization=1) {
@@ -394,42 +395,63 @@ if (playerId = "-1") {
     Sleep 800
     SendInput, {F6}/search %playerId%{Enter}
 }
-SendInput, {F6}{!}Найдено ли что-то? (да/нет):{Space}
-Input, found, V I M, {RShift}
-SendInput, {BS 150}{Enter}
-if (found = "Да" or found = "да") {
-    SendInput, {F6}Так так так... Что тут у нас?{Enter}
-    sleep 800
-    SendInput, {F6}/me нашупал подозрительный предмет{Enter}
-    sleep 800
-    SendInput, {F6}/me достал его из карманов подозреваемого{Enter}
-    sleep 800
-    SendInput, {F6}/do ZIP пакет в руках.{Enter}
-    sleep 800
-    SendInput, {F6}/me аккуратно убрал предмет в пакет{Enter}
-    sleep 800
-    SendInput, {F6}/me запечатал пакет и убрал в рюкзак{Enter}
-    sleep 800
-    SendInput, {F6}/do ZIP пакет в рюкзаке.{Enter}
-}
 Return
 
-ОбыскДокументов:
+НайденаЗапрещенка:
 SendMessage, 0x50, 0x4190419,, A
 Sendinput,{Enter}
 Sleep 500
-SendInput, {F6}Так, дружочек-пирожочек, где тут твои документы{Enter}
+SendInput, {F6}Так так так... Что тут у нас?{Enter}
 sleep 800
-SendInput, {F6}/me начал общупывать карманы в поисках докуметов{Enter}
+SendInput, {F6}/me нашупал подозрительный предмет{Enter}
 sleep 800
-SendInput, {F6}/do Процесс...{Enter}
+SendInput, {F6}/me достал его из карманов подозреваемого{Enter}
 sleep 800
+SendInput, {F6}/do ZIP пакет в руках.{Enter}
+sleep 800
+SendInput, {F6}/me аккуратно убрал предмет в пакет{Enter}
+sleep 800
+SendInput, {F6}/me запечатал пакет и убрал в рюкзак{Enter}
+sleep 800
+SendInput, {F6}/do ZIP пакет в рюкзаке.{Enter}
+Return
+
+ВзятьДокументы:
+SendMessage, 0x50, 0x4190419,, A
+Sendinput,{Enter}
+Sleep 500
+SendInput, {F6}/me внимательно изучил документы человека глазами{Enter}
+sleep 800
+SendInput, {F6}/me достал КПК из кармана и включил его.{Enter}
+sleep 800
+SendInput, {F6}/do КПК в руках.{Enter}
+sleep 800
+SendInput, {F6}/me записал Имя Человека в КПК{Enter}
+sleep 800
+SendInput, {F6}/me убрал КПК в карман{Enter}
+sleep 800
+SendInput, {F6}/do КПК в кармане.{Enter}
+Return
+
+ОбыскДоков:
+SendMessage, 0x50,, 0x4190419,, A
+Sendinput,{Enter}
+Sleep 500
+Sendinput, {F6}Такс... Где тут твои документы?{Enter}
+Sleep 700
+Sendinput, {F6}/me начал ощупывать карманы человека {Enter}
+Sleep 900
+Sendinput, {F6}/do Процесс...{Enter}
+Sleep 900
 SendInput, {F6}/do Папка с документами найдена.{Enter}
 sleep 800
-SendInput, {F6}/me вытащил документы из карманов человека{Enter}
+SendInput, {F6}/me вытащил папку из кармана{Enter}
 sleep 800
-SendInput, {F6}/me открыл папку и начал изучать документы{Enter}
-sleep 200
+SendInput, {F6}/do Папка в руках.{Enter}
+sleep 800
+SendInput, {F6}/me начал изучать документы и заполнять информацию в КПК{Enter}
+sleep 800
+SendInput, {F6}/do Информация получена.{Enter}
 if (playerId = "-1") {
     SendInput, {F6}/checkdocs{Space}
     Input, tempId, V I M, {Enter}
