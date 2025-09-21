@@ -7,139 +7,210 @@ rank := "Звание"
 alias := "Позывной"
 
 
+; Настройка скрипта (True - Включено, False - Выключено)
+
+full_rp := true ; Отыгровки даже там, где не нужны (Иначе будут только обязательные отыгровки)
+hotkeys := true ; Горячие клавиши (Если отключено, можно только командами)
+commands := true ; Команды (Если отключены, можно только горячими клавишами)
+
+
 
 ; Остальные переменные для работы скрипта
 
 infoState := false
 organization := 0
-playerId := "-1"
+playerId := "null"
 fakeName := ""
+fakeRank := ""
+SavedInfo(playerId, fakeName)
 
 ; Назначение клавиш и команд
 
+#If hotkeys
 Numpad0::Goto ВводId
-Alt & Numpad0::Goto ОчиститьId
+LAlt & Numpad0::Goto ОчиститьId
 Ctrl & Numpad0::Goto ВводНика
+RAlt & Numpad0::Goto ОчиститьНик
 Numpad1::Goto Приветствие
-Alt & Numpad1::Goto УдостоверениеФСБ
+LAlt & Numpad1::Goto УдостоверениеФСБ
 Ctrl & Numpad1::Goto Нашивка
 Numpad2::Goto ПросьбаОстановится
-Alt & Numpad2::Goto РаботаФСБ
+LAlt & Numpad2::Goto РаботаФСБ
 Ctrl & Numpad2::Goto ПросьбаДокументов
-Numpad3::Goto НачатьПогоню
-Alt & Numpad3::Goto Арест
-Ctrl & Numpad3::Goto ОтменаАреста
+RAlt & Numpad2::Goto ВзятьДокументы
+Numpad3::Goto ОтследитьМестоположение
+LAlt & Numpad3::Goto НачатьПогоню
+Ctrl & Numpad3::Goto Арест
+RAlt & Numpad3::Goto ОтменаАреста
 Numpad4::Goto СнятьАксессуары
-Alt & Numpad4::Goto Обыск
-Ctrl & Numpad4::Goto ОбыскДоков
+LAlt & Numpad4::Goto Обыск
+Ctrl & Numpad4::Goto НайденаЗапрещенка
+RAlt & Numpad4::Goto ОбыскДоков
 Numpad5::Goto Фоторобот
-Alt & Numpad5::Goto ЧеловекДокументы
+LAlt & Numpad5::Goto ЧеловекДокументы
 Ctrl & Numpad5::Goto ЧеловекОтпечатки
+RAlt & Numpad5::Goto ЧеловекНЗ
 Numpad6::Goto Розыск
-Alt & Numpad6::Goto Штраф
+LAlt & Numpad6::Goto Штраф
 Ctrl & Numpad6::Goto СнятьРозыск
 Numpad7::Goto ВыкинутьИзАвто
-Alt & Numpad7::Goto ПосадитьВАвто
+LAlt & Numpad7::Goto ПосадитьВАвто
 Ctrl & Numpad7::Goto ВыломатьДверь
+RAlt & Numpad7::Goto СписокРозыска
 Numpad8::Goto ЗачитатьПрава
-Alt & Numpad8::Goto ВызватьАдвоката
+LAlt & Numpad8::Goto ВызватьАдвоката
 Ctrl & Numpad8::Goto ПосадитьЗаРешетку
-Numpad9::Goto ОтследитьМестоположение
-Alt & Numpad9::Goto Выговор
-Ctrl & Numpad9::Goto Уволить
-Alt & X::Goto ПолицейскийПланшет
-Ctrl & X::Goto СписокРозыска
-Alt & Ctrl::Goto ПереключитьАхк
+RAlt & Numpad8::Goto ПолицейскийПланшет
+Numpad9::Goto ПоставитьБарикаду
+LAlt & Numpad9::Goto УбратьБарикаду
+Ctrl & Numpad9::Goto Выговор
+RAlt & Numpad9::Goto Уволить
+Ctrl & LAlt::Goto ПереключитьАхк
 Ctrl & 1::Goto ДопросМиранда
 Ctrl & 2::Goto ДопросНачало
 Ctrl & 3::Goto ДопросПродолжение
 Ctrl & 4::Goto ДопросКонец
+#If
 
-:?*:id=::
-:?*:ид-ввод::
-Goto ВводId
+#If commands
+::/ticket::
+::.ешслуе::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto Штраф
 
-:?*:id0::
-:?*:id-::
-:?*:ид-::
-Goto ОчиститьId
+::/su::
+::.ыг::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto Розыск
 
-:?*:/ticket::
-:?*:штраф-::
-Goto Штраф
+::/cuff::
+::.сгаа::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto Арест
 
-:?*:розыск-::
-:?*:/su::
-Goto Розыск
+::/stop::
+::.ыещз::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ПросьбаОстановится
 
-:?*:/cuff::
-:?*:наручники-::
-Goto Арест
+::/uncuff::
+::.гтсгаа::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ОтменаАреста
 
-:?*:/uncuff::
-:?*:снять наручники-::
-Goto ОтменаАреста
+::снять-акс::
+::/acc_off::
+::.фсс_щаа::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto СнятьАксессуары
 
-:?*:снять-акс::
-Goto СнятьАксессуары
+::/wanted::
+::.цфтеув::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto СписокРозыска
 
-:?*:/wanted::
-Goto СписокРозыска
+::/doc::
+::.вщс::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto УдостоверениеФСБ
 
-:?*:/doc::
-Goto УдостоверениеФСБ
+::/pg::
+::.зп::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto НачатьПогоню
 
-:?*:/pg::
-Goto НачатьПогоню
+::/ejectout::
+::.уоусещге::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ВыкинутьИзАвто
 
-:?*:/ejectout::
-Goto ВыкинутьИзАвто
+::/putpl::
+::.згезд::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ПосадитьВАвто
 
-:?*:/putpl::
-Goto ПосадитьВАвто
+::/checkdocs::
+::.сруслвщсы::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ОбыскДоков
 
-:?*:/checkdocs::
-Goto ОбыскДоков
+::/takedoc::
+::.ефлувщс::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ВзятьДокументы
 
-:?*:/search::
-Goto Обыск
+::/search::
+::.ыуфкср::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto Обыск
 
-:?*:/setmark::
-Goto ОтследитьМестоположение
+::/setmark::
+::.ыуеьфкл::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ОтследитьМестоположение
 
-:?*:/police_tablet::
-Goto ПолицейскийПланшет
+::/police_tablet::
+::.зщдшсу_ефидуе::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ПолицейскийПланшет
 
-:?*:миранда::
-Goto ЗачитатьПрава
+::миранда::
+::/miranda::
+::.ьшкфтвф::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ЗачитатьПрава
 
-:?*:адвокатааа::
-Goto ВызватьАдвоката
+::адвокатааа::
+::/advokat::
+::.фвмщлфе::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ВызватьАдвоката
 
-:?*:фейк-ник::
-:?*:fakename::
-:?*:fakenick::
-Goto ВводНика
+::допрос-миранда::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ДопросМиранда
 
-:?*:допрос-мир::
-Goto ДопросМиранда
+::допрос-начало::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ДопросНачало
 
-:?*:допрос-начало::
-Goto ДопросНачало
+::допрос-прод::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ДопросПродолжение
 
-:?*:допрос-прод::
-Goto ДопросПродолжение
+::допрос-конец::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto ДопросКонец
 
-:?*:допрос-конец::
-Goto ДопросКонец
+::запрещенка::
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    Goto НайденаЗапрещенка
+#If
 
-:?*:запрещенка::
-Goto НайденаЗапрещенка
-
-:?*:взять-доки::
-Goto ВзятьДокументы
-
-Alt & 1::
+!1::
 if (organization=1) {
     Goto ПриветствиеМО
 }
@@ -150,7 +221,7 @@ else if (organization=3) {
     Goto ПриветствиеФСИН
 }
 else {
-    OrgInfo("Вы не выбрали организацию!", "Red")
+    StateInfo("Вы не выбрали организацию!", "Red")
 }
 Return
 
@@ -160,32 +231,44 @@ Return
 
 ВводId:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
+SendInput, {Enter}
 Sleep 500
 SendInput, {F6}{!}Введите id игрока для дальнейшего взаимодействия:{Space}
-Input, playerId, V I M, {RShift}
-SendInput, {BS 150}{F6}
+Input, playerId, V I M, {Enter}
+SendInput, {end}+{home}{del}{esc}
+Gui, 3:Destroy
+SavedInfo(playerId, fakeName)
 Return
 
 ОчиститьId:
-Sendinput,{Enter}
-Sleep 500
-playerId := "-1"
+playerId := "null"
+Gui, 3:Destroy
+SavedInfo(playerId, fakeName)
 Return
 
 ВводНика:
-Sendinput,{Enter}
+SendInput, {Enter}
 Sleep 500
 SendMessage, 0x50,, 0x4190419,, A
 SendInput, {F6}{!}Введите ваше маскировочное имя:{Space}
-Input, fakeName, V I M, {RShift}
-SendInput, {BS 150}{F6}
+Input, fakeName, V I M, {Enter}
+SendInput, {end}+{home}{del}{esc}
+SendInput, {F6}{!}Введите ваше маскировочное звание:{Space}
+Input, fakeRank, V I M, {Enter}
+SendInput, {end}+{home}{del}{esc}
+Gui, 3:Destroy
+SavedInfo(playerId, fakeName)
+Return
+
+ОчиститьНик:
+fakeName := ""
+fakeRank := ""
+Gui, 3:Destroy
+SavedInfo(playerId, fakeName)
 Return
 
 Приветствие:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}Здравия желаю, вас беспокоит сотрудник Федеральной Службы Безопасности.{Enter}
 Sleep 500
 SendInput, {F6}/do На бронижелете висит нашивка: [ ФСБ | %department% | %rank% | %alias% ].{Enter}
@@ -193,18 +276,14 @@ Return
 
 Нашивка:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/do На груди висит нашивка: [ ФСБ | %department% | %rank% | %alias% ].{Enter}
 Return
 
 УдостоверениеФСБ:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-SendInput, {F6}/do Удостовирение в нагрудном кармане.{Enter}
+SendInput, {F6}/do Удостоверение в нагрудном кармане.{Enter}
 Sleep 1000 
-SendInput, {F6}/me вынул удостовирение из кармана{Enter}
+SendInput, {F6}/me вынул удостоверение из кармана{Enter}
 Sleep 1000 
 SendInput, {F6}/do Удостоверение в руке.{Enter}
 Sleep 1000 
@@ -212,7 +291,7 @@ SendInput, {F6}/me легким движением открыл нужную с�
 Sleep 1000 
 SendInput, {F6}/do Удостоверение перед глазами человека.{Enter}
 Sleep 200
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/doc{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -227,8 +306,6 @@ Return
 
 ПросьбаОстановится:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 Sendinput, {F6}Гражданин, полажуйста оставитесь{!}{Enter}
 Sleep 1000
 Sendinput, {F6}Иначе сочту ваши действия как 8.4 УК{Enter}
@@ -238,8 +315,6 @@ return
 
 РаботаФСБ:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 Sendinput, {F6}/s Всем стоять. {Enter}
 Sleep 1000
 Sendinput, {F6}/s Всем лечь на пол.{Enter}
@@ -249,8 +324,6 @@ return
 
 ПросьбаДокументов:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6} Предъявите, пожалуйста, Ваши документы, удостоверяющие Вашу личность.{Enter}
 Sleep 1000
 SendInput, {F6} За отказ от предоставления документов вы будете задержаны по статье 8.4.1 УК.{Enter}
@@ -262,93 +335,91 @@ return
 
 НачатьПогоню:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-Sendinput, {F6}/do Рация на поясе.{Enter}
-sleep 700
-Sendinput, {F6}/me достал рацию{Enter}
-sleep 700
-Sendinput, {F6}/todo Зажав кнопку*Прием, это %alias%, преследую преступника.{Enter}
-sleep 500
-if (playerId = "-1") {
-    SendInput, {F6}/pg{Space}
-    Input, tempId, V I M, {Enter}
-} else {
-    Sleep 800
-    SendInput, {F6}/pg %playerId%{Enter}
+if(full_rp){
+    Sendinput, {F6}/do Рация на поясе.{Enter}
+    sleep 700
+    Sendinput, {F6}/me достал рацию{Enter}
+    sleep 700
+    Sendinput, {F6}/todo Зажав кнопку*Прием, это %alias%, преследую преступника.{Enter}
+    sleep 500
+    if (playerId = "null") {
+        SendInput, {F6}/pg{Space}
+        Input, tempId, V I M, {Enter}
+    } else {
+        Sleep 800
+        SendInput, {F6}/pg %playerId%{Enter}
+    }
 }
 Return
 
 Арест:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-SendInput {F6}/do Наручники свисают с пояса. {Enter}
-Sleep 900
-SendInput {F6}/me снял наручники с пояса{Enter}
-Sleep 800
-SendInput {F6}/do В руке наручники.{Enter}
-Sleep 800
-SendInput {F6}/me схватил человека за руку, затем заломил руку{Enter}
-Sleep 700
-SendInput {F6}/me заковал человека в наручники{Enter}
-Sleep 700
-SendInput, {F6}/do Процесс...{Enter}
-Sleep 650
-SendInput, {F6}/me начинает вести задержанного{Enter}
-Sleep 200
-if (playerId = "-1") {
+if(full_rp){
+    SendInput, {F6}/do Наручники свисают с пояса. {Enter}
+    Sleep 900
+    SendInput, {F6}/me снял наручники с пояса{Enter}
+    Sleep 800
+    SendInput, {F6}/do В руке наручники.{Enter}
+    Sleep 800
+    SendInput, {F6}/me схватил человека за руку, затем заломил руку{Enter}
+    Sleep 700
+    SendInput, {F6}/me заковал человека в наручники{Enter}
+    Sleep 700
+    SendInput, {F6}/do Процесс...{Enter}
+    Sleep 650
+    SendInput, {F6}/me начинает вести задержанного{Enter}
+    Sleep 200
+}
+if (playerId = "null") {
     SendInput, {F6}/cuff{Space}
     Input, playerId, V I M, {Enter}
     Sleep 1000
-    SendInput {F6}/escort %playerId%{Enter}
-    playerId := "-1"
+    SendInput, {F6}/escort %playerId%{Enter}
+    playerId := "null"
 } else {
-    SendInput {F6}/cuff %playerId%{Enter}
+    SendInput, {F6}/cuff %playerId%{Enter}
     Sleep 1000
-    SendInput {F6}/escort %playerId%{Enter}
+    SendInput, {F6}/escort %playerId%{Enter}
 }
 Return
 
 ОтменаАреста:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-SendInput, {F6}/do Наручники на руках у человека.{Enter}
-Sleep 500
-SendInput, {F6}/me снял наручники с рук{Enter}
-Sleep 500
-SendInput, {F6}/do Наручники сняты.{Enter}
-Sleep 800
-SendInput, {F6}/me повесил наручники на пояс{Enter}
-Sleep 800
-SendInput, {F6}/do Наручники на поясе.{Enter}
-Sleep 800
-SendInput, {F6}/me взял человека за руку{Enter}
-Sleep 800
-SendInput, {F6}/me отпустил руки человеку{Enter}
-Sleep 900
-SendInput, {F6}/do Руки в свободном положение.{Enter}
-Sleep 900
-SendInput, {F6}/me перестал вести задержанного{Enter}
+if(full_rp){
+    SendInput, {F6}/do Наручники на руках у человека.{Enter}
+    Sleep 500
+    SendInput, {F6}/me снял наручники с рук{Enter}
+    Sleep 500
+    SendInput, {F6}/do Наручники сняты.{Enter}
+    Sleep 800
+    SendInput, {F6}/me повесил наручники на пояс{Enter}
+    Sleep 800
+    SendInput, {F6}/do Наручники на поясе.{Enter}
+    Sleep 800
+    SendInput, {F6}/me взял человека за руку{Enter}
+    Sleep 800
+    SendInput, {F6}/me отпустил руки человеку{Enter}
+    Sleep 900
+    SendInput, {F6}/do Руки в свободном положение.{Enter}
+    Sleep 900
+    SendInput, {F6}/me перестал вести задержанного{Enter}
+}
 Sleep 200
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/escort{Space}
     Input, playerId, V I M, {Enter}
     Sleep 1000
-    SendInput {F6}/uncuff %playerId%{Enter}
-    playerId := "-1"
+    SendInput, {F6}/uncuff %playerId%{Enter}
+    playerId := "null"
 } else {
-    SendInput {F6}/escort %playerId%{Enter}
+    SendInput, {F6}/escort %playerId%{Enter}
     Sleep 1000
-    SendInput {F6}/uncuff %playerId%{Enter}
+    SendInput, {F6}/uncuff %playerId%{Enter}
 }
 Return
 
 СнятьАксессуары:
 SendMessage, 0x50, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/do Маска на лице человека.{Enter}
 sleep 800
 SendInput, {F6}/me снял маску и другие аксессуары с лица человека{Enter}
@@ -366,29 +437,29 @@ Return
 
 Обыск:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-Sendinput, {F6}Сейчас я проведу обыск, просьба не двигаться. {Enter}
-Sleep 700
-Sendinput, {F6}/me протянул руку в карман, затем взял Ордер {Enter}
-Sleep 900
-Sendinput, {F6}/do "Орден на обыск признан №2025г., Губернатором Нижегородской области".{Enter}
-Sleep 900
-SendInput, {F6}/me показал документ человеку напротив{Enter}
-Sleep 700
-SendInput, {F6}/do Перчатки с надписью "ФСБ" на руках.{Enter}
+if(full_rp){
+    Sendinput, {F6}Сейчас я проведу обыск, просьба не двигаться. {Enter}
+    Sleep 700
+    Sendinput, {F6}/me протянул руку в карман, затем взял Ордер {Enter}
+    Sleep 900
+    Sendinput, {F6}/do "Орден на обыск признан №2025г., Губернатором Нижегородской области".{Enter}
+    Sleep 900
+    SendInput, {F6}/me показал документ человеку напротив{Enter}
+    Sleep 700
+    SendInput, {F6}/do Перчатки с надписью "ФСБ" на руках.{Enter}
+    sleep 800
+    SendInput, {F6}/me начал ощупывать человека напротив{Enter}
+    sleep 800
+    SendInput, {F6}/do Верхняя часть осмотрена.{Enter}
+    sleep 800
+    SendInput, {F6}/me начал щупать в области ног{Enter}
+    sleep 800
+    SendInput, {F6}/do Нижняя часть осмотрена.{Enter}
+    sleep 800
+    SendInput, {F6}/me усмехнулся{Enter}
+}
 sleep 800
-SendInput, {F6}/me начал ощупывать человека напротив{Enter}
-sleep 800
-SendInput, {F6}/do Верхняя часть осмотрена.{Enter}
-sleep 800
-SendInput, {F6}/me начал щупать в области ног{Enter}
-sleep 800
-SendInput, {F6}/do Нижняя часть осмотрена.{Enter}
-sleep 800
-SendInput, {F6}/me усмехнулся{Enter}
-sleep 800
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/search{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -399,8 +470,6 @@ Return
 
 НайденаЗапрещенка:
 SendMessage, 0x50, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}Так так так... Что тут у нас?{Enter}
 sleep 800
 SendInput, {F6}/me нашупал подозрительный предмет{Enter}
@@ -418,8 +487,6 @@ Return
 
 ВзятьДокументы:
 SendMessage, 0x50, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/me внимательно изучил документы человека глазами{Enter}
 sleep 800
 SendInput, {F6}/me достал КПК из кармана и включил его.{Enter}
@@ -435,9 +502,7 @@ Return
 
 ОбыскДоков:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-Sendinput, {F6}Такс... Где тут твои документы?{Enter}
+Sendinput, {F6}Такс... Где тут Ваши документы?{Enter}
 Sleep 700
 Sendinput, {F6}/me начал ощупывать карманы человека {Enter}
 Sleep 900
@@ -452,7 +517,7 @@ sleep 800
 SendInput, {F6}/me начал изучать документы и заполнять информацию в КПК{Enter}
 sleep 800
 SendInput, {F6}/do Информация получена.{Enter}
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/checkdocs{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -463,8 +528,6 @@ Return
 
 Фоторобот:
 SendMessage, 0x50, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/me движением рук достал из кармана Apple iPad Pro и стилус{Enter}
 Sleep 850
 SendInput, {F6}/do Apple iPad Pro и стилус в руках.{Enter}
@@ -493,8 +556,6 @@ Return
 
 ЧеловекДокументы:
 SendMessage, 0x50, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/me достал КПК из заднего кармана{Enter}
 Sleep 850
 SendInput, {F6}/do КПК в руках.{Enter}
@@ -529,10 +590,23 @@ Sleep 700
 SendInput, {F6}/do Человек найден в базе данных. {Enter}
 Return
 
+ЧеловекНЗ:
+SendMessage, 0x50, 0x4190419,, A
+SendInput, {F6}/me движением рук достал КПК и включил его{Enter}
+Sleep 750
+SendInput, {F6}/do КПК включен.{Enter}
+Sleep 750
+SendInput, {F6}/me движением пальцев нажал на пункт "База данных МВД"{Enter}
+Sleep 750
+SendInput, {F6}/me ловким движением пальцев ввел номер автомобиля{Enter}
+Sleep 750
+SendInput, {F6}/do Через какой то промежуток времени КПК показал досье водителя.{Enter}
+Sleep 750
+SendInput, {F6}/do Личность водителя установлена.{Enter}
+Return
+
 Розыск:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/me перешел в вкладку "Розыск" в своем КПК{Enter}
 Sleep 700
 SendInput, {F6}/do Вкладка загружена.{Enter}
@@ -543,7 +617,7 @@ SendInput, {F6}/me ввел всю информацию про подозрев�
 Sleep 700
 SendInput, {F6}/do Человек объявлен в розыск.{Enter}
 Sleep 700
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/su{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -554,15 +628,13 @@ Return
 
 Штраф:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/do КПК в руках.{enter}
 Sleep 700
 SendInput, {F6}/me нажал на пункт "выписать штраф в электронном виде"{enter}
 Sleep 800
 SendInput, {F6}/do Гражданину пришел штраф в приложении телефона.{enter}
 Sleep 700
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/ticket{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -573,8 +645,6 @@ Return
 
 СнятьРозыск:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/me взял рацию в руки, затем зажал кнопку{Enter}
 Sleep 900
 SendInput, {F6}/do Кнопка зажата.{Enter}
@@ -585,7 +655,7 @@ SendInput, {F6}/do Данные сообщены диспетчеру.{Enter}
 Sleep 900
 SendInput, {F6}/do Диспетчер: С подозреваемого снят розыск.{Enter}
 Sleep 900
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/clear{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -596,17 +666,17 @@ Return
 
 ВыкинутьИзАвто:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-SendInput, {F6}/me разбил окно прикладом {Enter}
-Sleep 700
-SendInput, {F6}/do Окно разбито. {Enter}
-Sleep 700
-SendInput, {F6}/me открывает дверь{Enter}
-Sleep 700
-SendInput, {F6}/me вытащил подозреваемого из машины{Enter}
-Sleep 700
-if (playerId = "-1") {
+if(full_rp){
+    SendInput, {F6}/me разбил окно прикладом {Enter}
+    Sleep 700
+    SendInput, {F6}/do Окно разбито. {Enter}
+    Sleep 700
+    SendInput, {F6}/me открывает дверь{Enter}
+    Sleep 700
+    SendInput, {F6}/me вытащил подозреваемого из машины{Enter}
+    Sleep 700
+}
+if (playerId = "null") {
     SendInput, {F6}/ejectout{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -617,20 +687,20 @@ Return
 
 ПосадитьВАвто:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-SendInput, {F6}/me открыл дверь автомобиля{enter}
-sleep 1000
-SendInput, {F6}/do Дверь открыта.{enter}
-sleep 1000
-SendInput, {F6}/me пригнув голову преступника посадил его в автомобиль{enter}
-sleep 1000
-SendInput, {F6}/do Процесс...{enter}
-Sleep 1000
-SendInput, {F6}/me закрыл дверь{enter}
-sleep 1000
-SendInput, {F6}/do Дверь закрыта.{enter}
-if (playerId = "-1") {
+if(full_rp){
+    SendInput, {F6}/me открыл дверь автомобиля{enter}
+    sleep 1000
+    SendInput, {F6}/do Дверь открыта.{enter}
+    sleep 1000
+    SendInput, {F6}/me пригнув голову преступника посадил его в автомобиль{enter}
+    sleep 1000
+    SendInput, {F6}/do Процесс...{enter}
+    Sleep 1000
+    SendInput, {F6}/me закрыл дверь{enter}
+    sleep 1000
+    SendInput, {F6}/do Дверь закрыта.{enter}
+}
+if (playerId = "null") {
     SendInput, {F6}/putpl{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -641,8 +711,6 @@ return
 
 ВыломатьДверь:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/me начал выбивать дверь{Enter}
 Sleep 700
 SendInput, {F6}/do Процесс...{Enter}
@@ -654,37 +722,36 @@ Return
 
 ЗачитатьПрава:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-SendInput {F6}Вы имеете право хранить молчание.{enter}
+SendInput, {F6}Вы имеете право хранить молчание.{enter}
 sleep 1000
-SendInput {F6}Всё, сказанное Вами, может и будет использовано против Вас в суде.{enter}
+SendInput, {F6}Всё, сказанное Вами, может и будет использовано против Вас в суде.{enter}
 sleep 1000
-SendInput {F6}Вы имеете право обжаловать мои действия в суде...{enter}
+SendInput, {F6}Вы имеете право обжаловать мои действия в суде...{enter}
 sleep 1000
-SendInput {F6}или иных инстанциях если не согласны с нарушением.{enter}
+SendInput, {F6}или иных инстанциях если не согласны с нарушением.{enter}
 sleep 1000
-SendInput {F6}Так-же Вы имеете право на адвоката. Вам нужен адвокат?{enter}
+SendInput, {F6}Так-же Вы имеете право на адвоката. Вам нужен адвокат?{enter}
 Return
-
 ВызватьАдвоката:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-SendInput, {F6}/do Рация на поясе.{Enter}
-Sleep 700
-SendInput, {F6}/me достал рацию{Enter}
-Sleep 700
-SendInput, {F6}/me зажал кнопку разговора{Enter}
-Sleep 700
-SendInput, {F6}/do Передал информацию в нужное место.{Enter}
-Sleep 700
-SendInput, {F6}/d [ФСБ] - [Пра-во] Нужен адвокат в  . Время на ответ: 5 минут.{Left 27}
+if(full_rp){
+    SendInput, {F6}/do Рация на поясе.{Enter}
+    Sleep 700
+    SendInput, {F6}/me достал рацию{Enter}
+    Sleep 700
+    SendInput, {F6}/me зажал кнопку разговора{Enter}
+    Sleep 700
+    SendInput, {F6}/do Передал информацию в нужное место.{Enter}
+    Sleep 700
+}
+SendInput, {F6}/d [ФСБ] - [Пра-во] Нужен адвокат в . Время на ответ: 5 минут.{Left 26}
 Sleep 700
 Input, tempId, V I M, {Enter}
 Sleep 700
-SendInput, {F6}/me отпустил кнопку и убрал рацию{Enter}
-Sleep 700
+if(full_rp){
+    SendInput, {F6}/me отпустил кнопку и убрал рацию{Enter}
+    Sleep 700
+}
 SendInput, {F6}Ожидаем ответ в течении 5 минут, время пошло{Enter}
 Sleep 700
 SendInput, {F6}/me взглянул на часы и запомнил время{Enter}
@@ -694,8 +761,6 @@ Return
 
 ПосадитьЗаРешетку:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/me открыл двери{Enter}
 Sleep 1000
 SendInput, {F6}/do Двери открыты.{Enter}
@@ -706,7 +771,7 @@ SendInput, {F6}/me передал преступника коллегам{Enter}
 Sleep 1000
 SendInput, {F6}/do Преступника увели.{Enter}
 Sleep 200
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/arrest{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -717,17 +782,17 @@ Return
 
 ОтследитьМестоположение:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-Sendinput, {F6}/do Рация на поясе.{Enter}
-sleep 700
-Sendinput, {F6}/me достал рацию{Enter}
-sleep 700
-Sendinput, {F6}/todo Зажав кнопку*Диспетчер, прием, это %alias%.{Enter}
-sleep 500
-SendInput, {F6}/todo Держа кнопку*Доложите пожалуйста информацию о преступнике.{Enter}
-sleep 500
-if (playerId = "-1") {
+if(full_rp){
+    Sendinput, {F6}/do Рация на поясе.{Enter}
+    sleep 700
+    Sendinput, {F6}/me достал рацию{Enter}
+    sleep 700
+    Sendinput, {F6}/todo Зажав кнопку*Диспетчер, прием, это %alias%.{Enter}
+    sleep 500
+    SendInput, {F6}/todo Держа кнопку*Доложите пожалуйста информацию о преступнике.{Enter}
+    sleep 500
+}
+if (playerId = "null") {
     SendInput, {F6}/setmark{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -738,8 +803,6 @@ Return
 
 Выговор:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/me достал КПК из кармана{Enter}
 Sleep 1000
 SendInput, {F6}/do КПК в руках.{Enter}
@@ -754,7 +817,7 @@ SendInput, {F6}/me нажал кнопку "выговоры" и ввел нуж
 Sleep 1000
 SendInput, {F6}/do Выговор выписан.{Enter}
 Sleep 200
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/fwarn{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -765,8 +828,6 @@ Return
 
 Уволить:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/me достал КПК из кармана{Enter}
 Sleep 1000
 SendInput, {F6}/do КПК в руках.{Enter}
@@ -781,7 +842,7 @@ SendInput, {F6}/me нажал кнопку "Уволить" и ввел нужн
 Sleep 1000
 SendInput, {F6}/do Сотрудник уволен.{Enter}
 Sleep 200
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/uninvite {Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -793,44 +854,42 @@ Return
 
 ПолицейскийПланшет:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-SendInput, {F6}/do Полицейский планшет в кармане.{Enter}
-Sleep 1000
-SendInput, {F6}/me достал полицейский планшет из кармана и включил его{Enter}
-Sleep 1000
-SendInput, {F6}/me начал нажимать различные кнопки{Enter}
-Sleep 1000
-SendInput, {F6}/police_tablet{Enter}
+if(full_rp){
+    SendInput, {F6}/do Полицейский планшет в кармане.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me достал полицейский планшет из кармана и включил его{Enter}
+    Sleep 1000
+    SendInput, {F6}/me начал нажимать различные кнопки{Enter}
+    Sleep 1000
+    SendInput, {F6}/police_tablet{Enter}
+}
 Return
 
 СписокРозыска:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-SendInput, {F6}/do КПК в кармане.{Enter}
-Sleep 1000
-SendInput, {F6}/me достал КПК из кармана{Enter}
-Sleep 1000
-SendInput, {F6}/do КПК в руке.{Enter}
-Sleep 1000
-SendInput, {F6}/do КПК выключен.{Enter}
-Sleep 1000
-SendInput, {F6}/me включил КПК{Enter}
-Sleep 1000
-SendInput, {F6}/do КПК включен.{Enter}
-sleep 1000
-SendInput, {F6}/me открыл список разыскиваемых{Enter}
-Sleep 1000
-SendInput, {F6}/do Смотрит в него.{Enter}
-sleep 1000
-SendInput, {F6}/wanted{Enter}
+if(full_rp){
+    SendInput, {F6}/do КПК в кармане.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me достал КПК из кармана{Enter}
+    Sleep 1000
+    SendInput, {F6}/do КПК в руке.{Enter}
+    Sleep 1000
+    SendInput, {F6}/do КПК выключен.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me включил КПК{Enter}
+    Sleep 1000
+    SendInput, {F6}/do КПК включен.{Enter}
+    sleep 1000
+    SendInput, {F6}/me открыл список разыскиваемых{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Смотрит в него.{Enter}
+    sleep 1000
+    SendInput, {F6}/wanted{Enter}
+}
 Return
 
 НачатьПрослушку:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/do Наушники лежат на панели.{Enter}
 Sleep 1000
 SendInput, {F6}/me надел их на голову{Enter}
@@ -846,31 +905,50 @@ sleep 1000
 SendInput, {F6}/me %name% начал слушать разговор {Enter}
 Return
 
+ПоставитьБарикаду:
+SendMessage, 0x50,, 0x4190419,, A
+SendInput, {F6}/do Объект в руках.{Enter}
+Sleep 700
+SendInput, {F6}/me поставил его на землю{Enter}
+Sleep 700
+SendInput, {F6}/do Объект установлен.{Enter}
+Sleep 700
+SendInput, {F6}/brea{k}{Space}
+Return
+
+УбратьБарикаду:
+SendMessage, 0x50,, 0x4190419,, A
+SendInput, {F6}/do Объект на земле.{Enter}
+Sleep 700
+SendInput, {F6}/me взял объект в руки{Enter}
+Sleep 700
+SendInput, {F6}/do Объект в руках.{Enter}
+Sleep 700
+SendInput, {F6}/me убрал его в багажник автомобиля{Enter}
+Sleep 700
+SendInput, {F6}/dbreak{Space}
+Return
 
 
 ; Допрос
 
 ДопросМиранда:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
-SendInput {F6}Перед началом сообщаю Вам о ваших правах:{enter}
+SendInput, {F6}Перед началом допроса сообщаю Вам о ваших правах:{enter}
 sleep 1000
-SendInput {F6}Вы имеете право хранить молчание.{enter}
+SendInput, {F6}Вы имеете право хранить молчание.{enter}
 sleep 1000
-SendInput {F6}Всё, сказанное Вами, может и будет использовано против Вас в суде.{enter}
+SendInput, {F6}Всё, сказанное Вами, может и будет использовано против Вас в суде.{enter}
 sleep 1000
-SendInput {F6}Вы имеете право обжаловать мои действия в суде...{enter}
+SendInput, {F6}Вы имеете право обжаловать мои действия в суде...{enter}
 sleep 1000
-SendInput {F6}или иных инстанциях если не согласны с нарушением.{enter}
+SendInput, {F6}или иных инстанциях если не согласны с нарушением.{enter}
 sleep 1000
-SendInput {F6}Так-же Вы имеете право на адвоката. Вам нужен адвокат?{enter}
+SendInput, {F6}Так-же Вы имеете право на адвоката. Вам нужен адвокат?{enter}
 Return
 
 ДопросНачало:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}Думаю можем приступать к допросу.{Enter}
 Sleep 700
 SendInput, {F6}Перед началом хочу Вас предупредить о том, что:{Enter}
@@ -890,8 +968,6 @@ Return
 
 ДопросПродолжение:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput,{Enter}
-Sleep 500
 SendInput, {F6}/do Чистый бланк допроса, находится на столе.{Enter}
 Sleep 700
 SendInput, {F6}/me ловким движением руки, подтягивает к себе бланк допроса, так-же ручку{Enter}
@@ -908,8 +984,6 @@ SendInput, {F6}/todo Записав всю информацию*Отлично, 
 Return
 
 ДопросКонец:
-Sendinput,{Enter}
-Sleep 500
 SendMessage, 0x50,, 0x4190419,, A
 SendInput, {F6}/me записал всю информацию о деле{Enter}
 Sleep 700
@@ -932,7 +1006,7 @@ Return
 
 ПриветствиеМО:
 SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}Здравия желаю, я - Сержант Армии %fakeName%{!} {Enter}
+SendInput, {F6}Здравия желаю, я - %fakeRank% Армии %fakeName%{!} {Enter}
 Sleep 500
 SendInput, {F6}/do Удостоверение в кармане.{Enter}
 Sleep 500
@@ -948,28 +1022,26 @@ SendInput, {F6}/do Удостоверение открыто.{Enter}
 Sleep 800
 SendInput, {F6}/me показал удостоверение человеку напротив{Enter}
 Sleep 800
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/doc{Space}
     Input, tempId, V I M, {Enter}
 } else {
     Sleep 800
     SendInput, {F6}/doc %playerId%{Enter}
 }
-Sleep 500
-SendInput, {F6}Цель прибытия на охраняемую территорию?{Enter}
 Return
 
 ; Функции для МВД
 
 ПриветствиеМВД:
 SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}Здравия желаю, вас беспокоит сотрудник МВД, Сержант %fakeName%.{enter}
+SendInput, {F6}Здравия желаю, вас беспокоит сотрудник МВД, %fakeRank% %fakeName%.{enter}
 Sleep 150
 SendInput, {F6}/do Удостоверение в кармане.{enter}
 Sleep 150
 SendInput, {F6}/me достал удостоверение из кармана и показал человеку напротив{enter}
 Sleep 150
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/doc{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -977,18 +1049,18 @@ if (playerId = "-1") {
     SendInput, {F6}/doc %playerId%{Enter}
 }
 Sleep 400
-SendInput, {F6}/me убрал удостоверение в корман{enter}
+SendInput, {F6}/me убрал удостоверение в карман{enter}
 Sleep 150
-SendInput, {F6}/do Удостоверение в кормане.{enter}
+SendInput, {F6}/do Удостоверение в кармане.{enter}
 Sleep 150
-SendInput, {F6}/do На бронижелете висит нашивка: [ МВД | Сержант | %fakeName% ].{enter}
+SendInput, {F6}/do На бронижелете висит нашивка: [ МВД | %fakeRank% | %fakeName% ].{enter}
 Return
 
 ; Функции для ФСИН
 
 ПриветствиеФСИН:
 SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}Здравия желаю, Инспектор ФСИН - %fakeName%. {Enter}
+SendInput, {F6}Здравия желаю, %fakeRank% ФСИН - %fakeName%. {Enter}
 Sleep, 800
 SendInput, {F6}/me отдал воинское приветствие{Enter}
 Sleep 900
@@ -1002,7 +1074,7 @@ SendInput, {F6}/do Нагрудный карман расстегнут.{Enter}
 Sleep 900
 SendInput, {F6}/me достал из нагрудного кармана удостоверение личности и предъявил его гражданину{Enter}
 Sleep 900
-if (playerId = "-1") {
+if (playerId = "null") {
     SendInput, {F6}/doc{Space}
     Input, tempId, V I M, {Enter}
 } else {
@@ -1010,7 +1082,7 @@ if (playerId = "-1") {
     SendInput, {F6}/doc %playerId%{Enter}
 }
 Sleep 900
-SendInput, {F6}/do В удостоверение личности написано: Инспектор{Enter}
+SendInput, {F6}/do В удостоверение личности написано: %fakeRank%{Enter}
 Sleep 900
 Return
 
@@ -1019,34 +1091,51 @@ Return
 ПереключитьАхк:
 if (organization=0){
     organization := 1
-    OrgInfo("AHK для МО","8F471E")
+    StateInfo("AHK для МО","8F471E")
 }
 else if (organization=1){
     organization := 2
-    OrgInfo("AHK для МВД","2E4EF0")
+    StateInfo("AHK для МВД","2E4EF0")
 }
 else if (organization=2){
     organization := 3
-    OrgInfo("AHK для ФСИН","BABABA")
+    StateInfo("AHK для ФСИН","BABABA")
 }
 else if (organization=3){
     organization := 0
-    OrgInfo("AHK для гос. отключено","FFFFFF")
+    StateInfo("AHK для гос. отключено","FFFFFF")
 }
 Return
 
+NumpadMult::
+    full_rp := !full_rp
+    StateInfo("Фулл РП:"+full_rp,"FFFFFF")
+return
+NumpadDiv::
+    hotkeys := !hotkeys
+    StateInfo("Клавиши:"+hotkeys,"FFFFFF")
+return
+Alt & NumpadDiv::
+    StateInfo("Команды:"+commands,"FFFFFF")
+return
 
-Alt & n::
+
+!n::
 SendMessage, 0x50,, 0x4190419,, A
 Sendinput,{F6}/n Откат.{Enter}
 Return
 
-Alt & f::
+^n::
+SendMessage, 0x50,, 0x4190419,, A
+Sendinput,{F6}/n Намеренные действия не откатываются.{Enter}
+Return
+
+!f::
 SendMessage, 0x50,, 0x4190419,, A
 Sendinput,{F6}/c 60{Enter}
 Return
 
-Ctrl & f::
+^f::
 SendMessage, 0x50,, 0x4190419,, A
 Sendinput,{F6}/c 60{Enter}
 Sleep 2500
@@ -1057,61 +1146,82 @@ Return
 
 ; Интерфейсы с подсказками
 
-OrgInfo(text, textColor:="White") {
-    Gui +LastFound +AlwaysOnTop -Caption +ToolWindow 
+SavedInfo(playerId, fakeName) {
+    Gui 3:+LastFound +AlwaysOnTop -Caption +ToolWindow 
 
     SysGet, MonitorWorkArea, MonitorWorkArea
 
-    Gui, Color, 000000
-    Gui, Font, MS sans serif
-    Gui, Font, cBlue
-    Gui, Font, s25
-    Gui, Add, Text, c%textColor%, %text%
+    Gui, 3:Color, 000000
+    Gui, 3:Font, MS sans serif
+    Gui, 3:Font, cBlue
+    Gui, 3:Font, s8
+    Gui, 3:Add, Text, cWhite, Сохранено ID: %playerId%
+    Gui, 3:Add, Text, cWhite, Маскировочное имя: %fakeName%
     WinSet, TransColor, %CustomColor3% 250 
 
-    Gui, Show, Hide
+    Gui, 3:Show, Hide
+    WinGetPos,,, width, height
+    yPos := MonitorWorkAreaBottom - height
+    xPos := MonitorWorkAreaRight - width - 10
+    
+    Gui, 3:Show, x%xPos% y%yPos% NoActivate, window.
+}
+
+StateInfo(text, textColor:="White") {
+    Gui 1:+LastFound +AlwaysOnTop -Caption +ToolWindow 
+
+    SysGet, MonitorWorkArea, MonitorWorkArea
+
+    Gui, 1:Color, 000000
+    Gui, 1:Font, MS sans serif
+    Gui, 1:Font, cBlue
+    Gui, 1:Font, s25
+    Gui, 1:Add, Text, c%textColor%, %text%
+    WinSet, TransColor, %CustomColor3% 250 
+
+    Gui, 1:Show, Hide
     WinGetPos,,, width, height
     yPos := MonitorWorkAreaBottom - height - 20
     xPos := MonitorWorkAreaRight - width - 20
     
-    Gui, Show, x%xPos% y%yPos% NoActivate, window.
+    Gui, 1:Show, x%xPos% y%yPos% NoActivate, window.
     Sleep 2000
-    Gui, Destroy
+    Gui, 1:Destroy
 }
 
-ShowInfo(title, lines*) {
+ExtendedInfo(title, lines*) {
     global infoState
     if (infoState)
         return
 
     CustomColor3 := "202020"
-    Gui, +LastFound +AlwaysOnTop -Caption +ToolWindow
-    Gui, Color, %CustomColor3%
+    Gui, 2:+LastFound +AlwaysOnTop -Caption +ToolWindow
+    Gui, 2:Color, %CustomColor3%
     WinSet, Transparent, 150
 
     SysGet, MonitorWorkArea, MonitorWorkArea
     MonitorWorkAreaRight -= 5
 
-    Gui, Font, cWhite w25, MS Sans Serif
+    Gui, 2:Font, cWhite w25, MS Sans Serif
 
-    Gui, Add, Text, cWhite,
-    Gui, Add, Text, cWhite, %title%
-    Gui, Add, Text, cWhite,
+    Gui, 2:Add, Text, cWhite,
+    Gui, 2:Add, Text, cWhite, %title%
+    Gui, 2:Add, Text, cWhite,
     for _, line in lines
-        Gui, Add, Text, cWhite, %line%
-    Gui, Add, Text, cWhite,
+        Gui, 2:Add, Text, cWhite, %line%
+    Gui, 2:Add, Text, cWhite,
 
-    Gui, Show, Hide
+    Gui, 2:Show, Hide
     WinGetPos,,, width, height
     yPos := (MonitorWorkAreaBottom - MonitorWorkAreaTop - height) // 2 + MonitorWorkAreaTop
     xPos := MonitorWorkAreaRight - width
-    Gui, Show, x%xPos% y%yPos% NoActivate, window.
+    Gui, 2:Show, x%xPos% y%yPos% NoActivate, window.
 
     infoState := true
 }
 
 DestroyInfo:
-Gui, Destroy
+Gui, 2:Destroy
 infoState := false
 return
 
@@ -1120,7 +1230,7 @@ return
 ; Горячие клавиши для показа информации
 
 f10::
-    ShowInfo("AHK для ФСБ"
+    ExtendedInfo("AHK для ФСБ"
         , "Данное АХК предназначено для удобства работы как отделу ОБК, так и ОБТ"
         , ""
         , "Скрипт включает в себя не только стандартные функции ФСБ, но и АХК других организаций."
@@ -1132,83 +1242,91 @@ f10::
 return
 
 f9 & Numpad0::
-    ShowInfo("Что делает Numpad0:"
+    ExtendedInfo("Что делает Numpad0:"
         , "| N0: Ввод id игрока для дальнейших действий"
-        , "| N0 + Alt: Очистить последнее введенное id (если хотите вводить вручную)"
-        , "| N0 + Ctrl: Ввести ник маскировки (для использования ахк других орг.)")
+        , "| N0 + LAlt: Очистить последнее введенное id (если хотите вводить вручную)"
+        , "| N0 + Ctrl: Ввести ник маскировки (для использования ахк других орг.)"
+        , "| N0 + RAlt: Очистить маскировочный ник")
 return
 
 f9 & Numpad1::
-    ShowInfo("Что делает Numpad1:"
+    ExtendedInfo("Что делает Numpad1:"
         , "| N1: Представится и показать нашивку ФСБ"
-        , "| N1 + Alt: Показать удостоверение ФСБ"
+        , "| N1 + LAlt: Показать удостоверение ФСБ"
         , "| N1 + Ctrl: Показать только нашивку")
 return
 
 f9 & Numpad2::
-    ShowInfo("Что делает Numpad2:"
+    ExtendedInfo("Что делает Numpad2:"
         , "| N2: Попросить остановится гражданина"
-        , "| N2 + Alt: Оповестить о работе ФСБ"
-        , "| N2 + Ctrl: Попросить документы у гражданина")
+        , "| N2 + LAlt: Оповестить о работе ФСБ"
+        , "| N2 + Ctrl: Попросить документы у гражданина"
+        , "| N2 + RAlt: Взять документы")
 return
 
 f9 & Numpad3::
-    ShowInfo("Что делает Numpad3:"
-        , "| N3: Начать погоню за нарушителем"
-        , "| N3 + Alt: Надеть наручники + сопровождение"
-        , "| N3 + Ctrl: снять наручники + сопровождение")
+    ExtendedInfo("Что делает Numpad3:"
+        , "| N3: Отследить местопложение игрока"
+        , "| N3 + LAlt: Начать погоню за нарушителем"
+        , "| N3 + Ctrl: Надеть наручники + сопровождение"
+        , "| N3 + RAlt: снять наручники + сопровождение")
 return
 
 f9 & Numpad4::
-    ShowInfo("Что делает Numpad4:"
+    ExtendedInfo("Что делает Numpad4:"
         , "| N4: Снять маску и другие аксессуары"
-        , "| N4 + Alt: Обыскать человека на котиков (в случае находки - введите «найдено» в чат)"
-        , "| N4 + Ctrl: Найти документы в карманах человека")
+        , "| N4 + LAlt: Обыскать человека на котиков (в случае находки - введите «найдено» в чат)"
+        , "| N4 + Ctrl: Забрать запрещенку"
+        , "| N4 + RAlt: Найти документы в карманах человека")
 return
 
 f9 & Numpad5::
-    ShowInfo("Что делает Numpad5:"
+    ExtendedInfo("Что делает Numpad5:"
         , "| N5: Опознать человека по лицу"
-        , "| N5 + Alt: Опознать человека по документам"
-        , "| N5 + Ctrl: Опознать человека по отпечаткам пальцев")
+        , "| N5 + LAlt: Опознать человека по документам"
+        , "| N5 + Ctrl: Опознать человека по отпечаткам"
+        , "| N5 + RAlt: Найти владельца авто по НЗ")
 return
 
 f9 & Numpad6::
-    ShowInfo("Что делает Numpad6:"
+    ExtendedInfo("Что делает Numpad6:"
         , "| N6: Выдать розыск"
-        , "| N6 + Alt: Выписать штраф"
+        , "| N6 + LAlt: Выписать штраф"
         , "| N6 + Ctrl: Снять розыск")
 return
 
 f9 & Numpad7::
-    ShowInfo("Что делает Numpad7:"
+    ExtendedInfo("Что делает Numpad7:"
         , "| N7: Выкинуть из автомобиля"
-        , "| N7 + Alt: Посадить в автомобиль"
-        , "| N7 + Ctrl: Выломать дверь в дом")
+        , "| N7 + LAlt: Посадить в автомобиль"
+        , "| N7 + Ctrl: Выломать дверь в дом"
+        , "| N7 + RAlt: Список розыска")
 return
 
 f9 & Numpad8::
-    ShowInfo("Что делает Numpad8:"
+    ExtendedInfo("Что делает Numpad8:"
         , "| N8: Зачитать права"
-        , "| N8 + Alt: Вызвать адвоката"
-        , "| N8 + Ctrl: Посадить человека за решетку")
+        , "| N8 + LAlt: Вызвать адвоката"
+        , "| N8 + Ctrl: Посадить человека за решетку"
+        , "| N8 + RAlt: Полицейский планшет")
 return
 
 f9 & Numpad9::
-    ShowInfo("Что делает Numpad9:"
-        , "| N9: Отследить местоположение"
-        , "| N9 + Alt: Выдать выговор"
-        , "| N9 + Ctrl: Уволить человека")
+    ExtendedInfo("Что делает Numpad9:"
+        , "| N9: Поставить барикаду"
+        , "| N9 + LAlt: Убрать барикаду"
+        , "| N9 + Ctrl: Выдать выговор"
+        , "| N9 + RAlt: Уволить из организации")
 return
 
 f9 & x::
-    ShowInfo("Что делает X:"
-        , "| X + Alt: Открыть полицейский планшет"
+    ExtendedInfo("Что делает X:"
+        , "| X + LAlt: Открыть полицейский планшет"
         , "| X + Ctrl: Просмотреть список нарушителей в розыске")
 return
 
 f9 & 1::
-    ShowInfo("Уголовный Кодекс. Страница 1/2:"
+    ExtendedInfo("Уголовный Кодекс. Страница 1/2:"
         , "| 1.1 Огнестрельное нападение на гражданское лицо - три звезды с изъятием лицензии на оружие."
         , "| 1.1.1 Нападение на гражданское лицо - две звезды"
         , "| 1.2 Огнестрельное нападение на государственного служащего - четыре звезды с изъятием лицензии на оружие."
@@ -1237,7 +1355,7 @@ f9 & 1::
 return
 
 f9 & 2::
-    ShowInfo("Уголовный Кодекс. Страница 2/2:"
+    ExtendedInfo("Уголовный Кодекс. Страница 2/2:"
         , "| 4.6 Незаконные действия с оружием/боеприпасами/контрабандой - три звезды с изъятием лицензии на оружие."
         , "| 4.6.1 Ношение или использование оружия в людном месте - одна звезда"
         , "| 4.7 Побег из под стражи в тюрьме ФСИН - три звезды"
@@ -1268,7 +1386,7 @@ f9 & 2::
 return
 
 f9 & 3::
-    ShowInfo("КоАП (Основные статьи):"
+    ExtendedInfo("КоАП (Основные статьи):"
         , "| 2.1. Езда по встречной полосе: 5000 рублей, а так же лишение лицензии на управление ТС."
         , "| 2.2. Езда по встречной полосе, в следствии чего ДТП: 10.000 рублей, компенсация, а так же лишение лицензии на управление ТС."
         , "| 2.3. Пересечение двойной сплошной: 8000 рублей, Если ДТП, то лишение лицензии на управление ТС."
@@ -1280,7 +1398,7 @@ f9 & 3::
 return
 
 f9 & 4::
-    ShowInfo("Устав МО (сокращённо):"
+    ExtendedInfo("Устав МО (сокращённо):"
         , "| 3.8 Обращение к старшим только на 'Вы'. [Выговор]"
         , "| 3.10 Запрещено перечить старшему. [Выговор]"
         , "| 3.11 Сержант+ обязан быть на конвоях. [Выговор]"
@@ -1315,7 +1433,7 @@ f9 & 4::
 return
 
 f9 & 5::
-    ShowInfo("ФзОП (сокращённо). Страница 1/2:"
+    ExtendedInfo("ФзОП (сокращённо). Страница 1/2:"
         , "| 3.1 Знать УК, КоАП, ФЗоП, ПДД. [Выговор/Увал]"
         , "| 3.2 Защита граждан, порядок, поимка преступников. [Выговор/Увал]"
         , "| 3.3 Пресекать нарушения. [Выговор]"
@@ -1346,7 +1464,7 @@ f9 & 5::
 return
 
 f9 & 6::
-    ShowInfo("ФзОП (сокращённо). Страница 2/2:"
+    ExtendedInfo("ФзОП (сокращённо). Страница 2/2:"
         , "| 4.16 Огонь только при серьёзных основаниях. [Увал]"
         , "| 4.17 Стрельба: 1 предупреждение, 1 в воздух, далее в колёса. [Увал]"
         , "| 4.18 Запр. гражданская форма на службе. [Выговор/Увал]"
@@ -1382,7 +1500,7 @@ f9 & 6::
 return
 
 f9 & 7::
-    ShowInfo("Устав ФСИН (сокращённо):"
+    ExtendedInfo("Устав ФСИН (сокращённо):"
         , "| 4.0 Запр. открывать двери кнопкой в раздевалке. [Выговор/Увал]"
         , "| 4.1 Запр. игнорировать приказы старших. [Выговор/Увал]"
         , "| 4.2 Запр. использовать оружие не по назначению. [Выговор/Увал]"
