@@ -1,4 +1,4 @@
-# 🚨 AHK Скрипт для ФСБ | Radmir RP
+# 🚨 AHK Скрипт для ФСБ | Radmir RP, by Ilyuxadwa (Ilyas_Foster)
 
 [![AutoHotkey](https://img.shields.io/badge/AutoHotkey-v1.1-blue)](https://www.autohotkey.com/)
 [![Скачать](https://img.shields.io/badge/Скачать-Script-green)](https://github.com/Ilyuxadwa/AHKScripts/blob/main/Radmir/%D0%A4%D0%A1%D0%91/%D0%A4%D0%A1%D0%91.ahk)
