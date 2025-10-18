@@ -10,8 +10,9 @@ alias := "Позывной"
 ; Настройка скрипта (True - Включено, False - Выключено)
 
 full_rp := true ; Отыгровки даже там, где не нужны (Иначе будут только обязательные отыгровки)
-hotkeys := true ; Горячие клавиши (Если отключено, можно только командами)
-commands := true ; Команды (Если отключены, можно только горячими клавишами)
+hotkeys := true ; Включение и отключение горячих клавиш (Нужны ли они вообще?)
+commands := true ; Включение и отключение команд (Нужны ли они вообще?)
+#Hotstring EndChars `n
 
 
 
@@ -23,6 +24,8 @@ playerId := "null"
 fakeName := ""
 fakeRank := ""
 SavedInfo(playerId, fakeName)
+
+
 
 ; Назначение клавиш и команд
 
@@ -47,12 +50,12 @@ LAlt & Numpad4::Goto Обыск
 Ctrl & Numpad4::Goto НайденаЗапрещенка
 RAlt & Numpad4::Goto ОбыскДоков
 Numpad5::Goto Фоторобот
-LAlt & Numpad5::Goto ЧеловекДокументы
-Ctrl & Numpad5::Goto ЧеловекОтпечатки
-RAlt & Numpad5::Goto ЧеловекНЗ
+LALt & Numpad5::Goto ЧеловекОтпечатки
+Ctrl & Numpad5::Goto ЧеловекНЗ
 Numpad6::Goto Розыск
 LAlt & Numpad6::Goto Штраф
-Ctrl & Numpad6::Goto СнятьРозыск
+Ctrl & Numpad6::Goto ЗабратьЛицензию
+RAlt & Numpad6::Goto СнятьРозыск
 Numpad7::Goto ВыкинутьИзАвто
 LAlt & Numpad7::Goto ПосадитьВАвто
 Ctrl & Numpad7::Goto ВыломатьДверь
@@ -73,142 +76,276 @@ Ctrl & 4::Goto ДопросКонец
 #If
 
 #If commands
-::/ticket::
-::.ешслуе::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto Штраф
+::/iid::
+::.шшв::
+::.ид::
+CommandHelper()
+Goto ВводId
 
-::/su::
-::.ыг::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto Розыск
+::/clearid::
+::.сдуфкшв::
+::.сид::
+CommandHelper()
+Goto ОчиститьId
 
-::/cuff::
-::.сгаа::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto Арест
+::/nick::
+::.тшсл::
+::.ник::
+CommandHelper()
+Goto ВводНика
 
-::/stop::
-::.ыещз::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ПросьбаОстановится
+::/clearnick::
+::.сдуфктшсл::
+::.сник::
+CommandHelper()
+Goto ОчиститьНик
 
-::/uncuff::
-::.гтсгаа::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ОтменаАреста
+::/hello::
+::.руддщ::
+::.прив::
+CommandHelper()
+Goto Приветствие
 
-::снять-акс::
-::/acc_off::
-::.фсс_щаа::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto СнятьАксессуары
-
-::/wanted::
-::.цфтеув::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto СписокРозыска
+::/badge::
+::.ифвпу::
+::.бейдж::
+CommandHelper()
+Goto Нашивка
 
 ::/doc::
 ::.вщс::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto УдостоверениеФСБ
+::.док::
+CommandHelper()
+Goto УдостоверениеФСБ
+
+::/stop::
+::.ыещз::
+::.стоп::
+CommandHelper()
+Goto ПросьбаОстановится
+
+::/fsb::
+::.аыи::
+::.фсб::
+CommandHelper()
+Goto РаботаФСБ
+
+::/askdoc::
+::.фылвщс::
+::.дайдок::
+CommandHelper()
+Goto ПросьбаДокументов
 
 ::/pg::
 ::.зп::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto НачатьПогоню
+::.пг::
+CommandHelper()
+Goto НачатьПогоню
 
-::/ejectout::
-::.уоусещге::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ВыкинутьИзАвто
+::/cuff::
+::.сгаа::
+::.каф::
+CommandHelper()
+Goto Арест
 
-::/putpl::
-::.згезд::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ПосадитьВАвто
+::/uncuff::
+::.гтсгаа::
+::.анкаф::
+CommandHelper()
+Goto ОтменаАреста
 
-::/checkdocs::
-::.сруслвщсы::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ОбыскДоков
-
-::/takedoc::
-::.ефлувщс::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ВзятьДокументы
+::/acc_off::
+::.фсс_щаа::
+::.аксы::
+CommandHelper()
+Goto СнятьАксессуары
 
 ::/search::
 ::.ыуфкср::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto Обыск
+::.обыск::
+CommandHelper()
+Goto Обыск
+
+::/zapretka::
+::.яфзкуелф::
+::.запрещенка::
+CommandHelper()
+Goto НайденаЗапрещенка
+
+::/takedocs::
+::.ефлувщсы::
+::.взять_доки::
+CommandHelper()
+Goto ВзятьДокументы
+
+::/checkdocs::
+::.сруслевщсы::
+::.чекдокс::
+CommandHelper()
+Goto ОбыскДоков
+
+::/photorobot::
+::.зрщещкщище::
+::.фоторобот::
+CommandHelper()
+Goto Фоторобот
+
+::/by_finger::
+::.ин_аштпук::
+::.пальчики::
+CommandHelper()
+Goto ЧеловекОтпечатки
+
+::/by_plate::
+::.ин_здфеу::
+::.номера::
+CommandHelper()
+Goto ЧеловекНЗ
+
+::/su::
+::.ыг::
+::.розыск::
+CommandHelper()
+Goto Розыск
+
+::/ticket::
+::.ешслуе::
+::.штраф::
+CommandHelper()
+Goto Штраф
+
+::/takelic::
+::.ефлудшс::
+::.лицензия::
+CommandHelper()
+Goto ЗабратьЛицензию
+
+::/clear::
+::.сдуфк::
+::.клиар::
+CommandHelper()
+Goto СнятьРозыск
+
+::/ejectout::
+::.уощсещге::
+::.еджект::
+CommandHelper()
+Goto ВыкинутьИзАвто
+
+::/putpl::
+::.згезд::
+::.путпл::
+CommandHelper()
+Goto ПосадитьВАвто
+
+::/break_door::
+::.икуфл_вщщк::
+::.дверь::
+CommandHelper()
+Goto ВыломатьДверь
+
+::/miranda::
+::.ьшкфтвф::
+::.миранда::
+CommandHelper()
+Goto ЗачитатьПрава
+
+::/advokat::
+::.фвмщлфе::
+::.адвокат::
+CommandHelper()
+Goto ВызватьАдвоката
+
+::/arrest::
+::.фккуые::
+::.арест::
+CommandHelper()
+Goto ПосадитьЗаРешетку
 
 ::/setmark::
 ::.ыуеьфкл::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ОтследитьМестоположение
+::.метка::
+CommandHelper()
+Goto ОтследитьМестоположение
+
+::/fwarn::
+::.ацфкт::
+::.выг::
+CommandHelper()
+Goto Выговор
+
+::/uninvite::
+::.гтштмшеу::
+::.увал::
+CommandHelper()
+Goto Уволить
 
 ::/police_tablet::
 ::.зщдшсу_ефидуе::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ПолицейскийПланшет
+::.планшет::
+CommandHelper()
+Goto ПолицейскийПланшет
 
-::миранда::
-::/miranda::
-::.ьшкфтвф::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ЗачитатьПрава
+::/wanted::
+::.цфтеув::
+::.вантед::
+CommandHelper()
+Goto СписокРозыска
 
-::адвокатааа::
-::/advokat::
-::.фвмщлфе::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ВызватьАдвоката
+::/listen::
+::.дшыеут::
+::.прослушка::
+CommandHelper()
+Goto НачатьПрослушку
+
+::/break::
+::.икуфл::
+::.бреак::
+CommandHelper()
+Goto ПоставитьБарикаду
+
+::/dbreak::
+::.викуфл::
+::.дбреак::
+CommandHelper()
+Goto УбратьБарикаду
 
 ::допрос-миранда::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ДопросМиранда
+CommandHelper()
+Goto ДопросМиранда
 
 ::допрос-начало::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ДопросНачало
+CommandHelper()
+Goto ДопросНачало
 
 ::допрос-прод::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ДопросПродолжение
+CommandHelper()
+Goto ДопросПродолжение
 
 ::допрос-конец::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto ДопросКонец
-
-::запрещенка::
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-    Goto НайденаЗапрещенка
+CommandHelper()
+Goto ДопросКонец
 #If
+
+
+
+; Сокращенный ввод
+
+:?*:связь-мо::/d [ФСБ] - [МО] На связь...
+:?*:связь-мз::/d [ФСБ] - [МЗ] На связь...
+:?*:связь-мвд::/d [ФСБ] - [МВД] На связь...
+:?*:насвязи-мо::/d [ФСБ] - [МО] На связи{!}
+:?*:насвязи-мз::/d [ФСБ] - [МЗ] На связи{!}
+:?*:насвязи-мвд::/d [ФСБ] - [МВД] На связи{!}
+:?*:пон-мо::/d [ФСБ] - [МО] Приняли. Выезжаем{!}
+:?*:пон-мз::/d [ФСБ] - [МЗ] Приняли. Выезжаем{!}
+:?*:напад-мо::/d [ФСБ] - [МО] Готовится нападение на ВЧ. Будьте готовы{!}
+:?*:запрос-мо::/d [ФСБ] - [МО] Разрешите въезд для автомобиля с Н/З "" с целью доп. защиты?{Left 22}
+:?*:заезд-мо::/d [ФСБ] - [МО] На ВЧ въезжает автомобиль с Н/З "" с целью доп. защиты{!}{Left 22}
+
+
+
+; Зависимость от организации
 
 !1::
 if (organization=1) {
@@ -224,6 +361,11 @@ else {
     StateInfo("Вы не выбрали организацию!", "Red")
 }
 Return
+
+CommandHelper() {
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+}
 
 
 
@@ -331,7 +473,26 @@ Sleep 1000
 SendInput, {F6} Такой-же случай произойдет если вы не предъявите документы в течении 30 секунд.{Enter}
 Sleep 1000
 SendInput, {F6} Если Вы убежите или попробуете это сделать я сочту это за 8.4 УК.{Enter}
+Sleep 1000
+SendInput, {F6}/n /doc id - если вы в гос. структуре, /pass id - для остальных{Enter}
 return
+
+ВзятьДокументы:
+SendMessage, 0x50, 0x4190419,, A
+SendInput, {F6}/yes{Enter}
+sleep 800
+SendInput, {F6}/me внимательно изучил документы человека глазами{Enter}
+sleep 800
+SendInput, {F6}/me достал КПК из кармана и включил его.{Enter}
+sleep 800
+SendInput, {F6}/do КПК в руках.{Enter}
+sleep 800
+SendInput, {F6}/me записал Имя Человека в КПК{Enter}
+sleep 800
+SendInput, {F6}/me убрал КПК в карман{Enter}
+sleep 800
+SendInput, {F6}/do КПК в кармане.{Enter}
+Return
 
 НачатьПогоню:
 SendMessage, 0x50,, 0x4190419,, A
@@ -485,21 +646,6 @@ sleep 800
 SendInput, {F6}/do ZIP пакет в рюкзаке.{Enter}
 Return
 
-ВзятьДокументы:
-SendMessage, 0x50, 0x4190419,, A
-SendInput, {F6}/me внимательно изучил документы человека глазами{Enter}
-sleep 800
-SendInput, {F6}/me достал КПК из кармана и включил его.{Enter}
-sleep 800
-SendInput, {F6}/do КПК в руках.{Enter}
-sleep 800
-SendInput, {F6}/me записал Имя Человека в КПК{Enter}
-sleep 800
-SendInput, {F6}/me убрал КПК в карман{Enter}
-sleep 800
-SendInput, {F6}/do КПК в кармане.{Enter}
-Return
-
 ОбыскДоков:
 SendMessage, 0x50,, 0x4190419,, A
 Sendinput, {F6}Такс... Где тут Ваши документы?{Enter}
@@ -552,19 +698,6 @@ SendInput, {F6}/me нажал кнопку поиск{Enter}
 Sleep 850
 SendInput, {F6}/do Через несколько секунд личность человека была установлена.{Enter}
 Sleep 850
-Return
-
-ЧеловекДокументы:
-SendMessage, 0x50, 0x4190419,, A
-SendInput, {F6}/me достал КПК из заднего кармана{Enter}
-Sleep 850
-SendInput, {F6}/do КПК в руках.{Enter}
-Sleep 850
-SendInput, {F6}/me движением пальц перешел в базу данных{Enter}
-Sleep 850
-SendInput, {F6}/me начал вводить паспортные данные из документа{Enter}
-Sleep 850
-SendInput, {F6}/do Через несколько секунд нашел человека в базе данных.{Enter}
 Return
 
 ЧеловекОтпечатки:
@@ -630,7 +763,7 @@ Return
 SendMessage, 0x50,, 0x4190419,, A
 SendInput, {F6}/do КПК в руках.{enter}
 Sleep 700
-SendInput, {F6}/me нажал на пункт "выписать штраф в электронном виде"{enter}
+SendInput, {F6}/me нажал на пункт "Выписать штраф в электронном виде"{enter}
 Sleep 800
 SendInput, {F6}/do Гражданину пришел штраф в приложении телефона.{enter}
 Sleep 700
@@ -640,6 +773,27 @@ if (playerId = "null") {
 } else {
     Sleep 800
     SendInput, {F6}/ticket %playerId%{Space}
+}
+Return
+
+ЗабратьЛицензию:
+SendMessage, 0x50,, 0x4190419,, A
+SendInput, {F6}/me перешел в вкладку "Аннулировать лицензию" в своем КПК{Enter}
+Sleep 700
+SendInput, {F6}/do Вкладка загружена.{Enter}
+Sleep 700
+SendInput, {F6}/me ввел номер лицензии и данные человека{Enter}
+Sleep 700
+SendInput, {F6}/me забрал лицензию у человека{Enter}
+Sleep 700
+SendInput, {F6}/do Лицезия аннулирована.{Enter}
+Sleep 700
+if (playerId = "null") {
+    SendInput, {F6}/takelic{Space}
+    Input, tempId, V I M, {Enter}
+} else {
+    Sleep 800
+    SendInput, {F6}/takelic %playerId%{Enter}
 }
 Return
 
@@ -1230,15 +1384,14 @@ return
 ; Горячие клавиши для показа информации
 
 f10::
-    ExtendedInfo("AHK для ФСБ"
-        , "Данное АХК предназначено для удобства работы как отделу ОБК, так и ОБТ"
+    ExtendedInfo("AHK для ФСБ by Foster"
         , ""
         , "Скрипт включает в себя не только стандартные функции ФСБ, но и АХК других организаций."
         , "Поддерживается как ручной ввод id игрока, так и автоматический, который вы введете заранее. (Numpad0)"
-        , "Можно нажимать как на Numpad, так и вводить текстовые команды в чат."
+        , "Можно нажимать как на клавиши, так и вводить текстовые команды в чат."
         , "Для доп. информации: https://github.com/Ilyuxadwa/AHKScripts/blob/main/Radmir/ФСБ/Info.md"
         , ""
-        , "Благодарность за помощь в создании: German_Mackelly, Maximus_Petrov")
+        , "P.S. Данный скрипт сделан на базе ахк от German_Mackelly и Maximus_Petrov")
 return
 
 f9 & Numpad0::
@@ -1275,7 +1428,7 @@ return
 f9 & Numpad4::
     ExtendedInfo("Что делает Numpad4:"
         , "| N4: Снять маску и другие аксессуары"
-        , "| N4 + LAlt: Обыскать человека на котиков (в случае находки - введите «найдено» в чат)"
+        , "| N4 + LAlt: Обыскать человека на котиков"
         , "| N4 + Ctrl: Забрать запрещенку"
         , "| N4 + RAlt: Найти документы в карманах человека")
 return
@@ -1283,16 +1436,16 @@ return
 f9 & Numpad5::
     ExtendedInfo("Что делает Numpad5:"
         , "| N5: Опознать человека по лицу"
-        , "| N5 + LAlt: Опознать человека по документам"
-        , "| N5 + Ctrl: Опознать человека по отпечаткам"
-        , "| N5 + RAlt: Найти владельца авто по НЗ")
+        , "| N5 + LAlt: Опознать человека по отпечаткам"
+        , "| N5 + Ctrl: Найти владельца авто по НЗ")
 return
 
 f9 & Numpad6::
     ExtendedInfo("Что делает Numpad6:"
         , "| N6: Выдать розыск"
         , "| N6 + LAlt: Выписать штраф"
-        , "| N6 + Ctrl: Снять розыск")
+        , "| N6 + Ctrl: Забрать лицензию"
+        , "| N6 + RAlt: Снять розыск")
 return
 
 f9 & Numpad7::
@@ -1317,12 +1470,6 @@ f9 & Numpad9::
         , "| N9 + LAlt: Убрать барикаду"
         , "| N9 + Ctrl: Выдать выговор"
         , "| N9 + RAlt: Уволить из организации")
-return
-
-f9 & x::
-    ExtendedInfo("Что делает X:"
-        , "| X + LAlt: Открыть полицейский планшет"
-        , "| X + Ctrl: Просмотреть список нарушителей в розыске")
 return
 
 f9 & 1::
