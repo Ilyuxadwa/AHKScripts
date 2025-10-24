@@ -7,11 +7,22 @@ rank := "Звание"
 alias := "Позывной"
 
 
-; Настройка скрипта (True - Включено, False - Выключено)
+; Пользовательская настройка скрипта (True - Включено, False - Выключено)
 
 full_rp := true ; Отыгровки даже там, где не нужны (Иначе будут только обязательные отыгровки)
 hotkeys := true ; Включение и отключение горячих клавиш (Нужны ли они вообще?)
 commands := true ; Включение и отключение команд (Нужны ли они вообще?)
+
+
+
+; Системные настройки скрипта
+
+#NoEnv
+SetWorkingDir %A_ScriptDir%
+SetKeyDelay, -1, -1
+SetBatchLines, -1
+#MaxHotkeysPerInterval 500
+#HotkeyInterval 500
 #Hotstring EndChars `n
 
 
@@ -45,13 +56,14 @@ Numpad3::Goto ОтследитьМестоположение
 LAlt & Numpad3::Goto НачатьПогоню
 Ctrl & Numpad3::Goto Арест
 RAlt & Numpad3::Goto ОтменаАреста
-Numpad4::Goto СнятьАксессуары
-LAlt & Numpad4::Goto Обыск
-Ctrl & Numpad4::Goto НайденаЗапрещенка
-RAlt & Numpad4::Goto ОбыскДоков
-Numpad5::Goto Фоторобот
-LALt & Numpad5::Goto ЧеловекОтпечатки
-Ctrl & Numpad5::Goto ЧеловекНЗ
+Numpad4::Goto Обыск
+LAlt & Numpad4::Goto НайденаЗапрещенка
+Ctrl & Numpad4::Goto ОбыскДоков
+RAlt & Numpad4::Goto ОбыскБагажника
+Numpad5::Goto СнятьАксессуары
+LALt & Numpad5::Goto Фоторобот
+Ctrl & Numpad5::Goto ЧеловекОтпечатки
+RAlt & Numpad5::Goto ЧеловекНЗ
 Numpad6::Goto Розыск
 LAlt & Numpad6::Goto Штраф
 Ctrl & Numpad6::Goto ЗабратьЛицензию
@@ -154,12 +166,6 @@ Goto Арест
 CommandHelper()
 Goto ОтменаАреста
 
-::/acc_off::
-::.фсс_щаа::
-::.аксы::
-CommandHelper()
-Goto СнятьАксессуары
-
 ::/search::
 ::.ыуфкср::
 ::.обыск::
@@ -183,6 +189,18 @@ Goto ВзятьДокументы
 ::.чекдокс::
 CommandHelper()
 Goto ОбыскДоков
+
+::/check_trunk::
+::.срусл_екгтл::
+::.чектранк::
+CommandHelper()
+Goto ОбыскБагажника
+
+::/acc_off::
+::.фсс_щаа::
+::.аксы::
+CommandHelper()
+Goto СнятьАксессуары
 
 ::/photorobot::
 ::.зрщещкщище::
@@ -327,6 +345,11 @@ CommandHelper()
 Goto ДопросКонец
 #If
 
+CommandHelper() {
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+}
+
 
 
 ; Сокращенный ввод
@@ -361,11 +384,6 @@ else {
     StateInfo("Вы не выбрали организацию!", "Red")
 }
 Return
-
-CommandHelper() {
-    SendInput, {end}+{home}{del}{esc}
-    Sleep 500
-}
 
 
 
@@ -579,23 +597,6 @@ if (playerId = "null") {
 }
 Return
 
-СнятьАксессуары:
-SendMessage, 0x50, 0x4190419,, A
-SendInput, {F6}/do Маска на лице человека.{Enter}
-sleep 800
-SendInput, {F6}/me снял маску и другие аксессуары с лица человека{Enter}
-sleep 800
-SendInput, {F6}/anim 6 7{Enter}
-sleep 800
-SendInput, {F6}/do Маска снята.{Enter}
-sleep 800
-SendInput, {F6}/me положил маску в рюкзак с шевроном "ФСБ" {Enter}
-sleep 800
-SendInput, {F6}/do Лицо человека полностью видно.{Enter}
-sleep 800
-SendInput, {F6}/n /maskoff и /reset, не пропишешь - твои проблемы, я отыграл.{Enter}
-Return
-
 Обыск:
 SendMessage, 0x50,, 0x4190419,, A
 if(full_rp){
@@ -670,6 +671,38 @@ if (playerId = "null") {
     Sleep 800
     SendInput, {F6}/checkdocs %playerId%{Enter}
 }
+Return
+
+ОбыскБагажника:
+SendMessage, 0x50, 0x4190419,, A
+SendInput, {F6}/do Багажник закрыт.{Enter}
+sleep 800
+SendInput, {F6}/me дергнул багажник и открыл его{Enter}
+sleep 800
+SendInput, {F6}/do Багажник открыт.{Enter}
+sleep 800
+SendInput, {F6}/me начал аккуратно рассматривать содержимое багажника {Enter}
+sleep 800
+SendInput, {F6}/do Процесс...{Enter}
+sleep 800
+SendInput, {F6}/do Багажник осмотрен.{Enter}
+Return
+
+СнятьАксессуары:
+SendMessage, 0x50, 0x4190419,, A
+SendInput, {F6}/do Маска на лице человека.{Enter}
+sleep 800
+SendInput, {F6}/me снял маску и другие аксессуары с лица человека{Enter}
+sleep 800
+SendInput, {F6}/anim 6 7{Enter}
+sleep 800
+SendInput, {F6}/do Маска снята.{Enter}
+sleep 800
+SendInput, {F6}/me положил маску в рюкзак с шевроном "ФСБ" {Enter}
+sleep 800
+SendInput, {F6}/do Лицо человека полностью видно.{Enter}
+sleep 800
+SendInput, {F6}/n /maskoff и /reset, не пропишешь - твои проблемы, я отыграл.{Enter}
 Return
 
 Фоторобот:
@@ -1427,17 +1460,18 @@ return
 
 f9 & Numpad4::
     ExtendedInfo("Что делает Numpad4:"
-        , "| N4: Снять маску и другие аксессуары"
-        , "| N4 + LAlt: Обыскать человека на котиков"
-        , "| N4 + Ctrl: Забрать запрещенку"
-        , "| N4 + RAlt: Найти документы в карманах человека")
+        , "| N4: Обыскать человека на котиков"
+        , "| N4 + LAlt: Забрать запрещенку"
+        , "| N4 + Ctrl: Найти документы в карманах человека"
+        , "| N4 + RAlt: Обыск багажника")
 return
 
 f9 & Numpad5::
     ExtendedInfo("Что делает Numpad5:"
-        , "| N5: Опознать человека по лицу"
-        , "| N5 + LAlt: Опознать человека по отпечаткам"
-        , "| N5 + Ctrl: Найти владельца авто по НЗ")
+        , "| N5: Снять маску и другие аксессуары"
+        , "| N5 + LAlt: Опознать человека по лицу"
+        , "| N5 + Ctrl: Опознать человека по отпечаткам"
+        , "| N5 + RAlt: Найти владельца авто по НЗ")
 return
 
 f9 & Numpad6::
