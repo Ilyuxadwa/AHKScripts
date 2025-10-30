@@ -5,6 +5,7 @@ surname := "Фамилия"
 department := "Отдел"
 rank := "Звание"
 alias := "Позывной"
+tag := "ТЕГ" ; Тег в рацию
 
 
 ; Пользовательская настройка скрипта (True - Включено, False - Выключено)
@@ -17,13 +18,20 @@ commands := true ; Включение и отключение команд (Ну
 
 ; Системные настройки скрипта
 
+#UseHook
 #NoEnv
 SetWorkingDir %A_ScriptDir%
-SetKeyDelay, -1, -1
+SetKeyDelay, -1, 10
 SetBatchLines, -1
 #MaxHotkeysPerInterval 500
 #HotkeyInterval 500
 #Hotstring EndChars `n
+#Hotstring ? *0
+#Hotstring NoMouse
+
+#InstallKeybdHook
+#InstallMouseHook
+#Persistent
 
 
 
@@ -35,6 +43,7 @@ playerId := "null"
 fakeName := ""
 fakeRank := ""
 SavedInfo(playerId, fakeName)
+Return
 
 
 
@@ -185,7 +194,7 @@ CommandHelper()
 Goto ВзятьДокументы
 
 ::/checkdocs::
-::.сруслевщсы::
+::.сруслвщсы::
 ::.чекдокс::
 CommandHelper()
 Goto ОбыскДоков
@@ -343,13 +352,108 @@ Goto ДопросПродолжение
 ::допрос-конец::
 CommandHelper()
 Goto ДопросКонец
+
+::/stroy5::
+::.строй5::
+CommandHelper()
+Goto Строй5
+
+::/stroy3::
+::.строй3::
+CommandHelper()
+Goto Строй3
+
+::/stroy_obk5::
+::.строй-обк5::
+CommandHelper()
+Goto СтройОБК5
+
+::/stroy_obk3::
+::.строй-обк3::
+CommandHelper()
+Goto СтройОБК3
+
+::/stroy_obt5::
+::.строй-обт5::
+CommandHelper()
+Goto СтройОБТ5
+
+::/stroy_obt3::
+::.строй-обт3::
+CommandHelper()
+Goto СтройОБТ3
+
+::/stroy_oro5::
+::.строй-оро5::
+CommandHelper()
+Goto СтройОРО5
+
+::/stroy_oro3::
+::.строй-оро3::
+CommandHelper()
+Goto СтройОРО3
+
+::/stroy_info::
+::.строй-инф::
+CommandHelper()
+Goto СтройИнфо
+
+::/lec1::
+::.лекция1::
+CommandHelper()
+Goto Лекция1
+
+::/lec2::
+::.лекция2::
+CommandHelper()
+Goto Лекция2
+
+::/lec3::
+::.лекция3::
+CommandHelper()
+Goto Лекция3
+
+::/lec4::
+::.лекция4::
+CommandHelper()
+Goto Лекция4
+
+::/training::
+::.треня::
+CommandHelper()
+Goto Тренировка
+
+::/verbovka1::
+::.мукищмлф1::
+CommandHelper()
+Goto Лекция1
+
+::/giverank::
+::.пшмукфтл::
+CommandHelper()
+Goto Повышение
+
+::/invite::
+::.штмшеу::
+CommandHelper()
+Goto Принятие
+
+::/blist::
+::.идшые::
+CommandHelper()
+Goto ЧёрныйСписок
+
+::/verbovka2::
+::.мукищмлф2::
+CommandHelper()
+Goto ВербовкаКонец
 #If
 
 CommandHelper() {
-    SendInput, {end}+{home}{del}{esc}
+    SendInput, {end}+{home}{del}
+    SendInput, {esc}
     Sleep 500
 }
-
 
 
 ; Сокращенный ввод
@@ -357,11 +461,24 @@ CommandHelper() {
 :?*:связь-мо::/d [ФСБ] - [МО] На связь...
 :?*:связь-мз::/d [ФСБ] - [МЗ] На связь...
 :?*:связь-мвд::/d [ФСБ] - [МВД] На связь...
+:?*:связь-фсин::/d [ФСБ] - [ФСИН] На связь...
+:?*:связь-пр::/d [ФСБ] - [Пра-во] На связь...
+:?*:связь-мчс::/d [ФСБ] - [МЧС] На связь...
+:?*:связь-трк::/d [ФСБ] - [ТРК] На связь...
 :?*:насвязи-мо::/d [ФСБ] - [МО] На связи{!}
 :?*:насвязи-мз::/d [ФСБ] - [МЗ] На связи{!}
 :?*:насвязи-мвд::/d [ФСБ] - [МВД] На связи{!}
+:?*:насвязи-фсин::/d [ФСБ] - [ФСИН] На связи{!}
+:?*:насвязи-пр::/d [ФСБ] - [Пра-во] На связи{!}
+:?*:насвязи-мчс::/d [ФСБ] - [МЧС] На связи{!}
+:?*:насвязи-трк::/d [ФСБ] - [ТРК] На связи{!}
 :?*:пон-мо::/d [ФСБ] - [МО] Приняли. Выезжаем{!}
 :?*:пон-мз::/d [ФСБ] - [МЗ] Приняли. Выезжаем{!}
+:?*:пон-мвд::/d [ФСБ] - [МВД] Приняли. Выезжаем{!}
+:?*:пон-фсин::/d [ФСБ] - [ФСИН] Приняли. Выезжаем{!}
+:?*:пон-пр::/d [ФСБ] - [Пра-во] Приняли. Выезжаем{!}
+:?*:пон-мчс::/d [ФСБ] - [МЧС] Приняли. Выезжаем{!}
+:?*:пон-трк::/d [ФСБ] - [ТРК] Приняли. Выезжаем{!}
 :?*:напад-мо::/d [ФСБ] - [МО] Готовится нападение на ВЧ. Будьте готовы{!}
 :?*:запрос-мо::/d [ФСБ] - [МО] Разрешите въезд для автомобиля с Н/З "" с целью доп. защиты?{Left 22}
 :?*:заезд-мо::/d [ФСБ] - [МО] На ВЧ въезжает автомобиль с Н/З "" с целью доп. защиты{!}{Left 22}
@@ -431,12 +548,12 @@ Return
 SendMessage, 0x50,, 0x4190419,, A
 SendInput, {F6}Здравия желаю, вас беспокоит сотрудник Федеральной Службы Безопасности.{Enter}
 Sleep 500
-SendInput, {F6}/do На бронижелете висит нашивка: [ ФСБ | %department% | %rank% | %alias% ].{Enter}
+SendInput, {F6}/do На бронежилете висит нашивка: [ ФСБ | %department% | %rank% | %alias% ].{Enter}
 Return
 
 Нашивка:
 SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/do На груди висит нашивка: [ ФСБ | %department% | %rank% | %alias% ].{Enter}
+SendInput, {F6}/do На бронежилете висит нашивка: [ ФСБ | %department% | %rank% | %alias% ].{Enter}
 Return
 
 УдостоверениеФСБ:
@@ -466,11 +583,11 @@ Return
 
 ПросьбаОстановится:
 SendMessage, 0x50,, 0x4190419,, A
-Sendinput, {F6}Гражданин, полажуйста оставитесь{!}{Enter}
+Sendinput, {F6}Гражданин, пожалуйста оставитесь{!}{Enter}
 Sleep 1000
 Sendinput, {F6}Иначе сочту ваши действия как 8.4 УК{Enter}
 Sleep 1000
-SendInput, {F6}/do На груди висит нашивка: [ ФСБ | %department% | %rank% | %alias% ].{Enter}
+SendInput, {F6}/do На бронежилете висит нашивка: [ ФСБ | %department% | %rank% | %alias% ].{Enter}
 return
 
 РаботаФСБ:
@@ -521,13 +638,13 @@ if(full_rp){
     sleep 700
     Sendinput, {F6}/todo Зажав кнопку*Прием, это %alias%, преследую преступника.{Enter}
     sleep 500
-    if (playerId = "null") {
-        SendInput, {F6}/pg{Space}
-        Input, tempId, V I M, {Enter}
-    } else {
-        Sleep 800
-        SendInput, {F6}/pg %playerId%{Enter}
-    }
+}
+if (playerId = "null") {
+    SendInput, {F6}/pg{Space}
+    Input, tempId, V I M, {Enter}
+} else {
+    Sleep 800
+    SendInput, {F6}/pg %playerId%{Enter}
 }
 Return
 
@@ -701,8 +818,6 @@ sleep 800
 SendInput, {F6}/me положил маску в рюкзак с шевроном "ФСБ" {Enter}
 sleep 800
 SendInput, {F6}/do Лицо человека полностью видно.{Enter}
-sleep 800
-SendInput, {F6}/n /maskoff и /reset, не пропишешь - твои проблемы, я отыграл.{Enter}
 Return
 
 Фоторобот:
@@ -1048,8 +1163,8 @@ if(full_rp){
     Sleep 1000
     SendInput, {F6}/me начал нажимать различные кнопки{Enter}
     Sleep 1000
-    SendInput, {F6}/police_tablet{Enter}
 }
+SendInput, {F6}/police_tablet{Enter}
 Return
 
 СписокРозыска:
@@ -1071,8 +1186,8 @@ if(full_rp){
     Sleep 1000
     SendInput, {F6}/do Смотрит в него.{Enter}
     sleep 1000
-    SendInput, {F6}/wanted{Enter}
 }
+SendInput, {F6}/wanted{Enter}
 Return
 
 НачатьПрослушку:
@@ -1115,6 +1230,7 @@ SendInput, {F6}/me убрал его в багажник автомобиля{En
 Sleep 700
 SendInput, {F6}/dbreak{Space}
 Return
+
 
 
 ; Допрос
@@ -1185,6 +1301,425 @@ Sleep 700
 SendInput, {F6}Мы выяснили все, что нам было необходимо.{Enter}
 Sleep 700
 SendInput, {F6}Наше решение:{Space}
+Return
+
+; Для строя
+
+Строй5:
+SendMessage, 0x50,, 0x4190419,, A
+Sendinput,{F6}/r [%tag%] Строй на плацу, готовность 5 минут{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Строй на плацу, готовность 4 минуты{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Строй на плацу, готовность 3 минуты{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Строй на плацу, готовность 2 минуты{!} {Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Строй на плацу, готовность 1 минута{!}{Enter}
+Return
+
+Строй3:
+SendMessage, 0x50,, 0x4190419,, A
+Sendinput,{F6}/r [%tag%] Строй на плацу, готовность 3 минуты{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Строй на плацу, готовность 2 минуты{!} {Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Строй на плацу, готовность 1 минута{!}{Enter}
+Return
+
+СтройОБК5:
+SendMessage, 0x50,, 0x4190419,, A
+Sendinput,{F6}/r [%tag%] Отдел ОБК, строй на плацу, готовность 5 минут{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОБК, строй на плацу, готовность 4 минуты{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОБК, строй на плацу, готовность 3 минуты{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОБК, Строй на плацу, готовность 2 минуты{!} {Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОБК, Строй на плацу, готовность 1 минута{!}{Enter}
+Return
+
+СтройОБК3:
+SendMessage, 0x50,, 0x4190419,, A
+Sendinput,{F6}/r [%tag%] Отдел ОБК, строй на плацу, готовность 3 минуты{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОБК, Строй на плацу, готовность 2 минуты{!} {Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОБК, Строй на плацу, готовность 1 минута{!}{Enter}
+Return
+
+СтройОРО5:
+SendMessage, 0x50,, 0x4190419,, A
+Sendinput,{F6}/r [%tag%] Отдел ОРО, строй на плацу, готовность 5 минут{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОРО, строй на плацу, готовность 4 минуты{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОРО, строй на плацу, готовность 3 минуты{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОРО, Строй на плацу, готовность 2 минуты{!} {Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОРО, Строй на плацу, готовность 1 минута{!}{Enter}
+Return
+
+СтройОРО3:
+SendMessage, 0x50,, 0x4190419,, A
+Sendinput,{F6}/r [%tag%] Отдел ОРО, строй на плацу, готовность 3 минуты{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОРО, Строй на плацу, готовность 2 минуты{!} {Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОРО, Строй на плацу, готовность 1 минута{!}{Enter}
+Return
+
+СтройОБТ5:
+SendMessage, 0x50,, 0x4190419,, A
+Sendinput,{F6}/r [%tag%] Отдел ОБТ, строй на плацу, готовность 5 минут{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОБТ, строй на плацу, готовность 4 минуты{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОБТ, строй на плацу, готовность 3 минуты{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОБТ, Строй на плацу, готовность 2 минуты{!} {Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОБТ, Строй на плацу, готовность 1 минута{!}{Enter}
+Return
+
+СтройОБТ3:
+SendMessage, 0x50,, 0x4190419,, A
+Sendinput,{F6}/r [%tag%] Отдел ОБТ, строй на плацу, готовность 3 минуты{!}{Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОБТ, Строй на плацу, готовность 2 минуты{!} {Enter}
+Sleep 60000
+Sendinput,{F6}/r [%tag%] Отдел ОБТ, Строй на плацу, готовность 1 минута{!}{Enter}
+Return
+
+СтройИнфо:
+SendMessage, 0x50,, 0x4190419,, A
+Sendinput,{F6}/n Перед началом хочу вам напомнить что нужно для того, что бы вам засчитали отчет:{Enter}
+Sleep 1000
+Sendinput,{F6}/n 1. С Спец. Операции (РП) требуется не менее 5 скринов{Enter}
+Sleep 1000
+Sendinput,{F6}/n Начало | Середина (должно быть видно 5 отыгровок от вас) | Конец.{Enter}
+Sleep 1000
+Sendinput,{F6}/n 2. С тренировки нужно 3+ скринов.{Enter}
+Sleep 1000
+Sendinput,{F6}/n Начало | середина (несколько упражнений) | Конец.{Enter}
+Sleep 1000
+Sendinput,{F6}/n 3. С лекции требуется всего 1 скрин. (Желательно конец){Enter}
+Sleep 1000
+Sendinput,{F6}/n Концом РП и тренировки являются слова от проводящего строй...{Enter}
+Sleep 1000
+Sendinput,{F6}/n Что тренировка окончена / Спец. задание все выполнили.{Enter}
+Sleep 1000
+Sendinput,{F6}/n 4. Все скрины должны быть сделаны с /c 060{Enter}
+Sleep 1000
+Sendinput,{F6}/n Спасибо за внимание, переходим к строю...{Enter}
+Return
+
+Тренировка:
+SendMessage, 0x50,, 0x4190419,, A
+Random, exercise1, 10000, 100000
+Random, exercise2, 10000, 100000
+SendInput, {F6}/s Перейдем к тренировке{!}{ENTER}
+Sleep 1000
+SendInput, {F6}/s Начнём её с %exercise1% отжиманий.{enter}
+Sleep 1000
+SendInput, {F6}/n /anim 6 23 | Примечание: Хасл не делают{enter}
+sleep 120000
+SendInput, {F6}/s Отставить{!}{enter}
+sleep 1000
+SendInput, {F6}/s Дальше делаем %exercise2% приседаний{!}{enter}
+Sleep 1000
+SendInput, {F6}/n Нажимайте клавишу "C" или же /anim 3 2{enter}
+sleep 60000
+SendInput, {F6}/s Отставить{!}{enter}
+sleep 1000
+SendInput, {F6}/s Закончим тренировку легкой медитацией{!}{enter}
+sleep 1000
+SendInput, {F6}/n /anim 8 2{enter}
+sleep 120000
+SendInput, {F6}/s Отставить{!}{enter}
+sleep 1000
+SendInput, {F6}/s Тренировка окончена. Не расходимся{!}{enter}
+Return
+
+Лекция1:
+SendMessage, 0x50,, 0x4190419,, A
+SendInput, {f6}/s Уважаемые сотрудники ФСБ{!}{Enter}
+Sleep 1000
+SendInput, {f6}/s Сейчас я проведу лекцию на тему "Отделы ФСБ".{Enter}
+sleep 1000
+SendInput, {f6}/s  Отдел по Борьбе с Терроризмом или ОБТ, главная задача:{Enter}
+sleep 1000
+SendInput, {f6}/s Основная боевая ячейка ФСБ, деятельностью которой является поимка преступников{Enter}
+Sleep 1000
+SendInput, {f6}/s и содействие МВД в этом, а также;преимущественно поимка особо опасных преступников{Enter}
+Sleep 1000
+SendInput, {f6}/n (4 - 6 звезд){enter}
+Sleep 1000
+SendInput, {f6}/s Среди первостепенных задач - освобождение заложников и ликвидация террористов{Enter}
+Sleep 1000
+SendInput, {f6}/s Отдел по Борьбе с Коррупцией или ОБК, главная задача: контроль за превышением{Enter}
+sleep 1000
+SendInput, {F6}/s должностных полномочий, а так же пресечение получения взяток сотрудниками.{Enter}
+sleep 1000
+SendInput, {F6}/s Помимо вышесказанного - отдел занимается пресечением{Enter}
+sleep 1000
+SendInput, {F6}/s нарушения Устава и иного законодательства государственными служащими.{Enter}
+sleep 1000
+SendInput, {F6}/s Оперативно-Розыскной Отдел или ОРО - Основным родом деятельности данного отдела,{Enter}
+sleep 1000
+SendInput, {F6}/s является разведка и вербовка. Разведка ведётся за гражданами, криминалом, а также{Enter}
+sleep 1000
+SendInput, {F6}/s за государственными служащими. Методы: Слежка, включая наружное наблюдение,{Enter}
+sleep 1000
+SendInput, {F6}/s прослушка раций и телефонов, установка GPS-трекеров на транспорт и{Enter}
+sleep 1000
+SendInput, {F6}/s  отслеживание передвижения целей на транспортных средствах.{Enter}
+sleep 1000
+SendInput, {F6}/s Для вербовок используется маскировка криминала и государственных ведомств.{Enter}
+sleep 1000
+SendInput, {F6}/s Прежде всего собирается характеристика на кандидатов в ряды ФСБ, подаётся{Enter}
+sleep 1000
+SendInput, {F6}/s на официальный портал, где Командир и Заместитель отдела ОРО пишет заключение.{Enter}
+sleep 1000
+SendInput, {F6}/s Генерал ФСБ одобряет/подтверждает или отказывает заключения руководства ОРО. {Enter}
+sleep 1000
+SendInput, {F6}/s Маскировка отдела ОБТ: Гражданская.{Enter}
+sleep 1000
+SendInput, {F6}/s Маскировка отдела ОБК: Государственные ведомства.{Enter}
+sleep 1000
+SendInput, {F6}/s Маскировка отдела ОРО: Криминальная и государственные ведомства.{Enter}
+Sleep 1000
+SendInput, {F6}/s Помните - маскировку, фургон прослушки и иные спец. средства...{Enter}
+sleep 1000
+SendInput, {F6}/s нельзя использовать в личных целях. Фургон прослушки только для отдела ОРО.{Enter}
+Sleep 1000
+SendInput, {F6}/s Пункт Устава ФСБ:{Enter}
+Sleep 1000
+SendInput, {F6}/s 2.15 Использовать специальные средства, маскировку, специальные{Enter}
+Sleep 1000
+SendInput, {F6}/s электронные средства наблюдения в личных целях - [Выговор]{Enter}
+Sleep 1000
+SendInput, {F6}/s ФСБ тесно сотрудничает с иными государственными ведомствами и в частности{Enter}
+Sleep 1000
+SendInput, {F6}/s силовыми структурами. ФСБ вправе задействовать иные гос. ведомства{Enter}
+Sleep 1000
+SendInput, {F6}/s Сотрудники всех отделов обязаны соблюдать кодекс профессиональной этики,{Enter}
+Sleep 1000
+SendInput, {F6}/s честь, совесть, Устав ФСБ, УК, КоАП, ПДД и иное законодательство. {Enter}
+Sleep 1000
+SendInput, {F6}/s Сотрудники ФСБ обязаны помогать гражданам и не оставлять в опасности.{Enter}
+Sleep 1000
+SendInput, {F6}/s Лекция на тему "Отделы ФСБ" окончена. Спасибо за внимание.{Enter}
+Sleep 1000
+Return
+
+Лекция2:
+SendMessage, 0x50,, 0x4190419,, A
+SendInput, {F6}/s Сейчас я расскажу вам как вести себя сотруднику ФСБ с гражданскими.{Enter}
+sleep 1000
+SendInput, {F6}/s Общение исключительно на "Вы", без мата и оскорблений.{Enter}
+sleep 1000
+SendInput, {F6}/s При этом вы должны убрать оружие, не нужно пугать или проявлять агрессию.{Enter}
+sleep 1000
+SendInput, {F6}/s Внимательно выслушайте гражданина и попытайтесь решить его проблему.{Enter}
+sleep 1000
+SendInput, {F6}/s Старайтесь избежать конфликтов, если таковые могут возникнуть.{Enter}
+sleep 1000
+SendInput, {F6}/s Но если все-таки гражданин начал хамить, кричать и драться, то:{Enter}
+sleep 1000
+SendInput, {F6}/s Просите прекратить противоправное поведение{Enter}
+sleep 1000
+SendInput, {F6}/s В случае неподчинения разрешено применить силу, спецсредства{Enter}
+sleep 1000
+SendInput, {F6}/s Не нужно начинать диалог с гражданами, пытаясь себя возвысить{Enter}
+sleep 1000
+SendInput, {F6}/s Не будьте равнодушными к бедам граждан и сохраняйте честь офицера.{Enter}
+sleep 1000
+SendInput, {F6}/s Запрещено стрелять, кричать и бить людей без причины, нарушать законы.{Enter}
+sleep 1000
+SendInput, {F6}/s За это вы будете уволены и занесены в ЧС ФСБ.{Enter}
+sleep 1000
+SendInput, {F6}/s Надеюсь все поняли главные принципы общения с гражданскими.{Enter}
+sleep 1000
+SendInput, {F6}/s Лекция на тему "Поведение с гражданскими" окончена. Спасибо за внимание.{Enter}
+Return
+
+Лекция3:
+SendMessage, 0x50,, 0x4190419,, A
+SendInput,,{F6}/s Здравия желаю, коллеги сейчас я проведу вам лекцию.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Лекция на тему "Правила поведения на тренировке".{Enter}
+Sleep 1000
+SendInput,,{F6}/s С самого начала я хочу сказать что такое тренировка...{Enter}
+Sleep 1000
+SendInput,,{F6}/s Тренировка-это осмысленная физическая деятельность, направленная на развитие силы...{Enter}
+Sleep 1000
+SendInput,,{F6}/s выносливости, ловкости, скорости и других физических и психологических навыков.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Правила поведения на тренировке:{Enter}
+Sleep 1000
+SendInput,,{F6}/s 1. Подчиняться проводящему строй и старшим по званию{Enter}
+Sleep 1000
+SendInput,,{F6}/s 2. Доставать оружие только по приказу.{Enter}
+Sleep 1000
+SendInput,,{F6}/s 3. Не покидать строй, только по приказу.{Enter}
+Sleep 1000
+SendInput,,{F6}/s 4. В строю молчать, слушать что говорит проводящий строй.{Enter}
+Sleep 1000
+SendInput,,{F6}/s 5. Подчиняться только проводящему строй и ст.составу.{Enter}
+Sleep 1000
+SendInput,,{F6}/s 6. Тренировку можно начать со звания Майор.{Enter}
+Sleep 1000
+SendInput,,{F6}/s 7. Вы должны четко и внимательно слушать ст.состав.{Enter}
+Sleep 1000
+SendInput,,{F6}/s 8.Если вы будете спать в строю вам будут давать выговор.{Enter}
+Sleep 1000
+SendInput,,{F6}/n Афк более 1 минуты в строю - выговор.{Enter}
+Sleep 1000
+SendInput,,{F6}/s 9.Если вы устали, вы можете подойти к тому кто организовал тренировку...{Enter}
+Sleep 1000
+SendInput,,{F6}/s И попросить отдохнуть.{Enter}
+Sleep 1000
+SendInput,,{F6}/s 10. В строю запрещено использовать телефон и рацию.{Enter}
+Sleep 1000
+SendInput,,{F6}/s 11. С разрешения проводящего строй и выше, вы можете не являться на тренировку.{Enter}
+Sleep 1000
+SendInput,,{F6}/s А на этом наша лекция подошла к концу.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Лекция на тему "Правила поведения на тренировке" - Закончена{!} Спасибо за внимание.{Enter}
+Return
+
+Лекция4:
+SendMessage, 0x50,, 0x4190419,, A
+SendInput,,{F6}/s Здравия желаю, сейчас я проведу лекцию, что запрещено сотрудникам ФСБ{Enter}
+Sleep 1000
+SendInput,,{F6}/s Сотрудникам ФСБ запрещено:{Enter}
+Sleep 1000
+SendInput,,{F6}/s Допускать утрату оружия, транспорта и любого иного ведомственного имущества.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Допускать распространение служебной, военной, государственной тайны.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Обсуждать вопросы, связанные с присвоением званий и должностей.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Самовольно покидать территорию ведомства, не в целях несения службы.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Доставать и применять оружие без законных оснований.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Допускать проникновение неучтенных лиц на закрытую территорию ведомства.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Хранить и употреблять наркотики.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Сотрудничать с криминалом{Enter}
+Sleep 1000
+SendInput,,{F6}/s Стрелять по другим сотрудникам ФСБ. Если это не пейнтбол.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Спорить со старшими по званию, не выполнять приказы, нарушать данный Устав.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Многократно выпрашивать о повышении.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Самовольно оставлять пост или прекращать выполнять приказ{Enter}
+Sleep 1000
+SendInput,,{F6}/s Передавать патроны кому-либо, кроме сослуживцев.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Портить государственные транспортные средства.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Отдыхать или спать в неположенном месте. Разрешено отдыхать только в раздевалке.{Enter}
+Sleep 1000
+SendInput,,{F6}/s Если вы спите на посту, плацу{!} Вам будет выдан выговор{!}{Enter}
+Sleep 1000
+SendInput,,{F6}/s Лекция на тему "Что запрещено сотрудникам ФСБ" - Закончена{!} Спасибо за внимание.{Enter}
+Return
+
+
+
+; Для ст. состава
+
+Повышение:
+SendMessage, 0x50,, 0x4190419,, A
+SendInput, {F6}/me сорвал погоны у человека напротив.{Enter}
+Sleep 600
+SendInput, {F6}/do Погоны сорваны.{Enter}
+Sleep 600
+SendInput, {F6}/do Новые погоны в кармане.{Enter}
+Sleep 600
+SendInput, {F6}/me достал новые погоны{Enter}
+Sleep 600
+SendInput, {F6}/do Новые погоны в руке.{Enter}
+Sleep 600
+SendInput, {F6}/me передал погоны человеку напротив.{Enter}
+Sleep 800
+SendInput, {F6}/do Процесс...{Enter}
+Sleep 800
+SendInput, {F6}/do Погоны переданы.{Enter}
+Sleep 900
+SendInput, {F6}/rang{Space}
+Return
+
+Принятие:
+SendMessage, 0x50,, 0x4190419,, A
+SendInput, {F6}/do Рюкзак весит на спине.{Enter}
+Sleep 800
+SendInput, {F6}/do Новая форма в рюкзаке.{Enter}
+Sleep 800
+SendInput, {F6}/me начал снимать рюкзак{Enter}
+Sleep 800
+SendInput, {F6}/do Рюкзак в левой руке.{Enter}
+Sleep 800
+SendInput, {F6}/me раскрыл рюкзак, после чего взял новую форму{Enter}
+Sleep 900
+SendInput, {F6}/do Процесс ...{Enter}
+Sleep 800
+SendInput, {F6}/do Форма в правой руке.{Enter}
+Sleep 800
+SendInput, {F6}/me передал пакет с формой и рацией гражданину{Enter} 
+Sleep 1000 
+SendInput, {F6}Удачи на работе.{Enter} 
+Sleep 1000 
+SendInput, {F6}/me потянул за застежку и закрыл рюкзак{Enter}
+Sleep 800
+SendInput, {F6}/do Рюкзак в левой руке.{Enter}
+Sleep 800
+SendInput, {F6}/me одевает рюкзак за спину{Enter}
+Sleep 800
+SendInput, {F6}/do Процесс ...{Enter}
+Sleep 800
+SendInput, {F6}/do Рюкзак весит на спине.{Enter}
+Sleep 800
+SendInput, {F6}/invite{Space}
+Return
+
+ЧёрныйСписок:
+SendMessage, 0x50,, 0x4190419,, A 
+SendInput, {F6}/me взял КПК из кармана в руки{enter} 
+Sleep 1000 
+SendInput, {f6}/do КПК в руке.{enter} 
+Sleep 1000 
+SendInput, {f6}/me зашёл в папку "Сотрудники"{enter} 
+Sleep 1000
+SendInput, {f6}/do Процесс..{enter} 
+Sleep 1000
+SendInput, {f6}/me выбрал папку "Черный Список"{enter} 
+Sleep 1000
+SendInput, {f6}/do Процесс..{enter} 
+Sleep 1000 
+SendInput, {f6}/me ввёл информацию о сотруднике{enter} 
+Sleep 1000
+SendInput, {f6}/do Информация введена.{enter} 
+Sleep 1000 
+SendInput, {f6}/me закрыл КПК обратно и положил в карман{enter} 
+Sleep 1000 
+SendInput, {f6}/do КПК в кармане.{enter} 
+Sleep 1000 
+SendInput, {f6}/blist{Space} 
+Return
+
+ВербовкаКонец:
+SendMessage, 0x50,, 0x4190419,, A
+SendInput, {f6}/s По личному мнению т.Генерала, никто не подходит нам{!}{Enter}
+Sleep 1000
+SendInput, {F6}/s Помните, следим за каждым и служите по чести{!}{Enter}
 Return
 
 
@@ -1303,6 +1838,7 @@ NumpadDiv::
     StateInfo("Клавиши:"+hotkeys,"FFFFFF")
 return
 Alt & NumpadDiv::
+    commands := !commands
     StateInfo("Команды:"+commands,"FFFFFF")
 return
 
@@ -1424,7 +1960,7 @@ f10::
         , "Можно нажимать как на клавиши, так и вводить текстовые команды в чат."
         , "Для доп. информации: https://github.com/Ilyuxadwa/AHKScripts/blob/main/Radmir/ФСБ/Info.md"
         , ""
-        , "P.S. Данный скрипт сделан на базе ахк от German_Mackelly и Maximus_Petrov")
+        , "P.S. Данный скрипт сделан на базе ахк от German_Mackelly")
 return
 
 f9 & Numpad0::
