@@ -1064,7 +1064,7 @@ Return
 
 СобесПроМедку:
 SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}Отлично, теперь мне требуются Ваша мед. карта.{Enter}
+SendInput, {F6}Отлично, теперь мне требуется Ваша мед. карта.{Enter}
 Sleep 1000
 SendInput, {F6}/n /showmc id - после 3-х отыгровок.{Enter}
 Return
