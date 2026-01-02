@@ -10,6 +10,7 @@ tag := "ТЕГ" ; Тег в рацию
 
 ; Пользовательская настройка скрипта (True - Включено, False - Выключено)
 
+keyModifier := "" ; Специальная клавиша для замены Numpad'a (Нажимаете эту клавишу + цифру на основной клавиатуре)
 hotkeys := true ; Включение и отключение горячих клавиш (Нужны ли они вообще?)
 commands := true ; Включение и отключение команд (Нужны ли они вообще?)
 
@@ -19,6 +20,7 @@ commands := true ; Включение и отключение команд (Ну
 
 #UseHook
 #NoEnv
+#SingleInstance Force
 SetWorkingDir %A_ScriptDir%
 SetKeyDelay, -1, 10
 SetBatchLines, -1
@@ -38,6 +40,7 @@ SetBatchLines, -1
 
 infoState := false
 scriptMode := 0 ; 0 - Обычный (конвой), 1 - Строй, 2 - Собес
+uiShown := false
 ExtendedInfo("AHK для МО by Foster"
         , ""
         , "Скрипт больше предназначен для старших рангов МО (5+),"
@@ -51,10 +54,11 @@ Return
 
 ; Назначение клавиш
 
-#If (scriptMode = 0) && hotkeys
+#If (scriptMode = 0) && hotkeys && (keyModifier = "")
 Numpad0::Goto Приветствие
 LAlt & Numpad0::Goto Удостоверение
 Ctrl & Numpad0::Goto Бегунок
+
 Numpad1::Goto КонвойСбор
 Numpad2::Goto КонвойИнфо
 Numpad3::Goto КонвойВыезд
@@ -62,28 +66,31 @@ Numpad4::Goto КонвойЗагрузка
 Numpad5::Goto КонвойЕдемВч
 LAlt & Numpad5::Goto КонвойЕдемГос
 Numpad6::Goto КонвойКонец
+
 Numpad7::Goto МегафонКонвой
+LAlt & Numpad7::Goto НачалоСобеса
+Ctrl & Numpad7::Goto ЧСРежимВкл
+RAlt & Numpad7::Goto ЧСРежимВыкл
+
 Numpad8::Goto Принять
 LAlt & Numpad8::Goto Повысить
 Ctrl & Numpad8::Goto ВыдатьВзвод
 RALt & Numpad8::Goto ЗанестиЧС
+
 Numpad9::Goto Выговор
 LAlt & Numpad9::Goto СнятьВыговор
 Ctrl & Numpad9::Goto Уволить
 RAlt & Numpad9::Goto УволитьОфф
 #If
-#If (scriptMode = 0) && hotkeys && (rank = "Генерал")
-LAlt & Numpad7::Goto НачалоСобеса
-Ctrl & Numpad7::Goto ЧСРежимВкл
-RAlt & Numpad7::Goto ЧСРежимВыкл
-#If
-#If (scriptMode = 1) && hotkeys
+#If (scriptMode = 1) && hotkeys && (keyModifier = "")
 Numpad0::Goto Строй3МинПовседневный
 LAlt & Numpad0::Goto Строй5МинПовседневный
 Ctrl & Numpad0::Goto Строй3МинБоевка
 RAlt & Numpad0::Goto Строй5МинБоевка
+
 Numpad1::Goto СтройИнфо
 LAlt & Numpad1::Goto РандомЛекция
+
 Numpad2::Goto Лекция1
 Numpad3::Goto Лекция2
 Numpad4::Goto Лекция3
@@ -91,12 +98,14 @@ Numpad5::Goto Лекция4
 Numpad6::Goto Лекция5
 Numpad7::Goto Лекция6
 Numpad8::Goto Лекция7
+
 Numpad9::Goto Тренировка
 #If
-#If (scriptMode = 2) && hotkeys
+#If (scriptMode = 2) && hotkeys && (keyModifier = "")
 Numpad0::Goto СобесВопрос
 LAlt & Numpad0::Goto СобесНачало
 Ctrl & Numpad0::Goto Годен
+
 Numpad1::Goto СобесПаспорт
 Numpad2::Goto СобесПроМедку
 Numpad3::Goto СобесМедка
@@ -105,10 +114,77 @@ Numpad5::Goto СобесЛицензии
 Numpad6::Goto СобесПсих1
 Numpad7::Goto СобесПсих2
 Numpad8::Goto СобесРП
+
 Numpad9::Goto ОтказРП
 LAlt & Numpad9::Goto ОтказПаспорт
 Ctrl & Numpad9::Goto ОтказМедка
 RAlt & Numpad9::Goto ОтказЛиц
+#If
+#If (scriptMode = 0) && hotkeys && (keyModifier != "") && GetKeyState(keyModifier, "P")
+1::Goto Приветствие
+<!1::Goto Удостоверение
+^1::Goto Бегунок
+
+2::Goto КонвойСбор
+3::Goto КонвойИнфо
+4::Goto КонвойВыезд
+5::Goto КонвойЗагрузка
+6::Goto КонвойЕдемВч
+<!6::Goto КонвойЕдемГос
+7::Goto КонвойКонец
+
+8::Goto МегафонКонвой
+<!8::Goto НачалоСобеса
+^8::Goto ЧСРежимВкл
+>!8::Goto ЧСРежимВыкл
+
+9::Goto Принять
+<!9::Goto Повысить
+^9::Goto ВыдатьВзвод
+>!9::Goto ЗанестиЧС
+
+0::Goto Выговор
+<!0::Goto СнятьВыговор
+^0::Goto Уволить
+>!0::Goto УволитьОфф
+#If
+#If (scriptMode = 1) && hotkeys && (keyModifier != "") && GetKeyState(keyModifier, "P")
+1::Goto Строй3МинПовседневный
+<!1::Goto Строй5МинПовседневный
+^1::Goto Строй3МинБоевка
+>!1::Goto Строй5МинБоевка
+
+2::Goto СтройИнфо
+<!2::Goto РандомЛекция
+
+3::Goto Лекция1
+4::Goto Лекция2
+5::Goto Лекция3
+6::Goto Лекция4
+7::Goto Лекция5
+8::Goto Лекция6
+9::Goto Лекция7
+
+0::Goto Тренировка
+#If
+#If (scriptMode = 2) && hotkeys && (keyModifier != "") && GetKeyState(keyModifier, "P")
+1::Goto СобесВопрос
+<!1::Goto СобесНачало
+^1::Goto Годен
+
+2::Goto СобесПаспорт
+3::Goto СобесПроМедку
+4::Goto СобесМедка
+5::Goto СобесПроЛицензии
+6::Goto СобесЛицензии
+7::Goto СобесПсих1
+8::Goto СобесПсих2
+9::Goto СобесРП
+
+0::Goto ОтказРП
+<!0::Goto ОтказПаспорт
+^0::Goto ОтказМедка
+>!0::Goto ОтказЛиц
 #If
 Ctrl & LAlt::Goto ПереключитьАхк
 
@@ -481,6 +557,12 @@ CommandHelper() {
 :?*:хелп-конвой-фсб2::/d [МО] - [ФСБ] Требуется доп. сопровождение для конвоя{!} Мы ожидаем на секретной базе.
 :?*:хелп-конвой-мвд1::/d [МО] - [МВД] Требуется доп. сопровождение для конвоя{!}
 :?*:хелп-конвой-мвд2::/d [МО] - [МВД] Требуется доп. сопровождение для конвоя{!} Мы ожидаем на секретной базе.
+:?*:спс-конвой::/d [МО] - [ГО] МВД, ФСБ, благодарим за сопровождение конвоя{!}
+:?*:спс-напад::/d [МО] - [ГО] МВД, ФСБ, благодарим за помощь в защите ВЧ{!}
+:?*:спс-фсб-конвой::/d [МО] - [ФСБ] Благодарим за сопровождение конвоя{!}
+:?*:спс-фсб-напад::/d [МО] - [ФСБ] Благодарим за помощь в защите ВЧ{!}
+:?*:спс-мвд-конвой::/d [МО] - [МВД] Благодарим за сопровождение конвоя{!}
+:?*:спс-мвд-напад::/d [МО] - [МВД] Благодарим за помощь в защите ВЧ{!}
 :?*:связь-фсб::/d [МО] - [ФСБ] На связь...
 :?*:связь-мвд::/d [МО] - [МВД] На связь...
 :?*:связь-фсин::/d [МО] - [ФСИН] На связь...
@@ -530,6 +612,9 @@ SendInput, /r [%tag%] Докладывает: %surname%. Продолжаю по
 Return
 :?*:пост-кон::
 SendInput, /r [%tag%] Докладывает: %surname%. Покинул пост: . Состояние: Стабильное.{Left 24}
+Return
+:?*:нестрой::
+SendInput, /r [%tag%] Не явлюсь в строй по причине:{Space}
 Return
 
 
@@ -1249,155 +1334,190 @@ Return
 ; Старший Состав
 
 Принять:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/do Рюкзак на спине.{Enter}
-Sleep 1000
-SendInput, {F6}/me снял рюкзак и открыл его{Enter}
-Sleep 1000
-SendInput, {F6}/me достал новую форму, рацию и нашивку{Enter}
-Sleep 1000
-SendInput, {F6}/do Все необходимое в руках.{Enter}
-Sleep 1000
-SendInput, {F6}/me передал комплект человеку напротив{Enter}
-Sleep 1000
-SendInput, {F6}/me достал IPad и перешел в вкладку "Добавить сотрудника"{Enter}
-Sleep 1000
-SendInput, {F6}/me ввел данные нового сотрудника и внес в базу данных{Enter}
-Sleep 1000
-SendInput, {F6}/do Новый сотрудник зарегистрирован.{Enter}
-Sleep 1000
-SendInput, {F6}Удачи на службе{!}{Enter}
-Sleep 500
-SendInput, {F6}/invite{Space}
-Input, temp, V I M, {Enter}
-Sleep 1000
-SendInput, {F6}/n Не забудьте поставить /setspawn - Мин. Обороны (на базе организации){Enter}
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}/do Рюкзак на спине.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me снял рюкзак и открыл его{Enter}
+    Sleep 1000
+    SendInput, {F6}/me достал новую форму, рацию и нашивку{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Все необходимое в руках.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me передал комплект человеку напротив{Enter}
+    Sleep 1000
+    SendInput, {F6}/me достал IPad и перешел в вкладку "Добавить сотрудника"{Enter}
+    Sleep 1000
+    SendInput, {F6}/me ввел данные нового сотрудника и внес в базу данных{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Новый сотрудник зарегистрирован.{Enter}
+    Sleep 1000
+    SendInput, {F6}Удачи на службе{!}{Enter}
+    Sleep 500
+    SendInput, {F6}/invite{Space}
+    Input, temp, V I M, {Enter}
+    Sleep 1000
+    SendInput, {F6}/n Не забудьте поставить /setspawn - Мин. Обороны (на базе организации){Enter}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 Выговор:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/me достал IPad и перешел в вкладку "Сотрудники"{Enter}
-Sleep 1000
-SendInput, {F6}/do Показался список сотрудников.{Enter}
-Sleep 1000
-SendInput, {F6}/me ввел фамилию необходимого сотрудника{Enter}
-Sleep 1000
-SendInput, {F6}/me нашел из списка нужного и выбрал его{Enter}
-Sleep 1000
-SendInput, {F6}/do В планшете высветелась карта сотрудника.{Enter}
-Sleep 1000
-SendInput, {F6}/me нажал кнопку "Выдать выговор" и ввел причину{Enter}
-Sleep 1000
-SendInput, {F6}/do Выговор выдан.{Enter}
-Sleep 1000
-SendInput, {F6}/todo Убирая IPad*Готово...{Enter}
-Sleep 500
-SendInput, {F6}/fwarn{Space}
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}/me достал IPad и перешел в вкладку "Сотрудники"{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Показался список сотрудников.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me ввел фамилию необходимого сотрудника{Enter}
+    Sleep 1000
+    SendInput, {F6}/me нашел из списка нужного и выбрал его{Enter}
+    Sleep 1000
+    SendInput, {F6}/do В планшете высветелась карта сотрудника.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me нажал кнопку "Выдать выговор" и ввел причину{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Выговор выдан.{Enter}
+    Sleep 1000
+    SendInput, {F6}/todo Убирая IPad*Готово...{Enter}
+    Sleep 500
+    SendInput, {F6}/fwarn{Space}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 СнятьВыговор:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/me достал IPad и перешел в вкладку "Сотрудники"{Enter}
-Sleep 1000
-SendInput, {F6}/do Показался список сотрудников.{Enter}
-Sleep 1000
-SendInput, {F6}/me ввел фамилию необходимого сотрудника{Enter}
-Sleep 1000
-SendInput, {F6}/me нашел из списка нужного и выбрал его{Enter}
-Sleep 1000
-SendInput, {F6}/do В планшете высветелась карта сотрудника.{Enter}
-Sleep 1000
-SendInput, {F6}/me нажал кнопку "Снять выговор"{Enter}
-Sleep 1000
-SendInput, {F6}/do Выговор снят.{Enter}
-Sleep 1000
-SendInput, {F6}/todo Убирая IPad*Готово...{Enter}
-Sleep 500
-SendInput, {F6}/unfwarn{Space}
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}/me достал IPad и перешел в вкладку "Сотрудники"{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Показался список сотрудников.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me ввел фамилию необходимого сотрудника{Enter}
+    Sleep 1000
+    SendInput, {F6}/me нашел из списка нужного и выбрал его{Enter}
+    Sleep 1000
+    SendInput, {F6}/do В планшете высветелась карта сотрудника.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me нажал кнопку "Снять выговор"{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Выговор снят.{Enter}
+    Sleep 1000
+    SendInput, {F6}/todo Убирая IPad*Готово...{Enter}
+    Sleep 500
+    SendInput, {F6}/unfwarn{Space}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 Уволить:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/me достал IPad и перешел в вкладку "Сотрудники"{Enter}
-Sleep 1000
-SendInput, {F6}/do Показался список сотрудников.{Enter}
-Sleep 1000
-SendInput, {F6}/me ввел фамилию необходимого сотрудника{Enter}
-Sleep 1000
-SendInput, {F6}/me нашел из списка нужного и выбрал его{Enter}
-Sleep 1000
-SendInput, {F6}/do В планшете высветелась карта сотрудника.{Enter}
-Sleep 1000
-SendInput, {F6}/me нажал кнопку "Уволить" и ввел причину{Enter}
-Sleep 1000
-SendInput, {F6}/do Сотрудник уволен.{Enter}
-Sleep 1000
-SendInput, {F6}/todo Убирая IPad*Прощай.{Enter}
-Sleep 500
-SendInput, {F6}/uninvite{Space}
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}/me достал IPad и перешел в вкладку "Сотрудники"{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Показался список сотрудников.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me ввел фамилию необходимого сотрудника{Enter}
+    Sleep 1000
+    SendInput, {F6}/me нашел из списка нужного и выбрал его{Enter}
+    Sleep 1000
+    SendInput, {F6}/do В планшете высветелась карта сотрудника.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me нажал кнопку "Уволить" и ввел причину{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Сотрудник уволен.{Enter}
+    Sleep 1000
+    SendInput, {F6}/todo Убирая IPad*Прощай.{Enter}
+    Sleep 500
+    SendInput, {F6}/uninvite{Space}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 УволитьОфф:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/me достал IPad и перешел в вкладку "Сотрудники"{Enter}
-Sleep 1000
-SendInput, {F6}/do Показался список сотрудников.{Enter}
-Sleep 1000
-SendInput, {F6}/me ввел фамилию необходимого сотрудника{Enter}
-Sleep 1000
-SendInput, {F6}/me нашел из списка нужного и выбрал его{Enter}
-Sleep 1000
-SendInput, {F6}/do В планшете высветелась карта сотрудника.{Enter}
-Sleep 1000
-SendInput, {F6}/me нажал кнопку "Уволить" и ввел причину{Enter}
-Sleep 1000
-SendInput, {F6}/do Сотрудник уволен.{Enter}
-Sleep 1000
-SendInput, {F6}/todo Убирая IPad*Прощай.{Enter}
-Sleep 500
-SendInput, {F6}/uninviteoff{Space}
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}/me достал IPad и перешел в вкладку "Сотрудники"{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Показался список сотрудников.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me ввел фамилию необходимого сотрудника{Enter}
+    Sleep 1000
+    SendInput, {F6}/me нашел из списка нужного и выбрал его{Enter}
+    Sleep 1000
+    SendInput, {F6}/do В планшете высветелась карта сотрудника.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me нажал кнопку "Уволить" и ввел причину{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Сотрудник уволен.{Enter}
+    Sleep 1000
+    SendInput, {F6}/todo Убирая IPad*Прощай.{Enter}
+    Sleep 500
+    SendInput, {F6}/uninviteoff{Space}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 ЗанестиЧС:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/me достал IPad и перешел в вкладку "Сотрудники"{Enter}
-Sleep 1000
-SendInput, {F6}/do Показался список сотрудников.{Enter}
-Sleep 1000
-SendInput, {F6}/me ввел фамилию необходимого сотрудника{Enter}
-Sleep 1000
-SendInput, {F6}/me нашел из списка нужного и выбрал его{Enter}
-Sleep 1000
-SendInput, {F6}/do В планшете высветелась карта сотрудника.{Enter}
-Sleep 1000
-SendInput, {F6}/me нажал кнопку "Занести в ЧС организации" и ввел причину{Enter}
-Sleep 1000
-SendInput, {F6}/do Сотрудник занесен в ЧС.{Enter}
-Sleep 1000
-SendInput, {F6}/todo Убирая IPad*Он заслужил это...{Enter}
-Sleep 1000
-SendInput, {F6}/blist{Space}
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}/me достал IPad и перешел в вкладку "Сотрудники"{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Показался список сотрудников.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me ввел фамилию необходимого сотрудника{Enter}
+    Sleep 1000
+    SendInput, {F6}/me нашел из списка нужного и выбрал его{Enter}
+    Sleep 1000
+    SendInput, {F6}/do В планшете высветелась карта сотрудника.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me нажал кнопку "Занести в ЧС организации" и ввел причину{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Сотрудник занесен в ЧС.{Enter}
+    Sleep 1000
+    SendInput, {F6}/todo Убирая IPad*Он заслужил это...{Enter}
+    Sleep 1000
+    SendInput, {F6}/blist{Space}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 Повысить:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/me достал IPad и перешел в вкладку "Сотрудники"{Enter}
-Sleep 1000
-SendInput, {F6}/do Показался список сотрудников.{Enter}
-Sleep 1000
-SendInput, {F6}/me ввел фамилию необходимого сотрудника{Enter}
-Sleep 1000
-SendInput, {F6}/me нашел из списка нужного и выбрал его{Enter}
-Sleep 1000
-SendInput, {F6}/do В планшете высветелась карта сотрудника.{Enter}
-Sleep 1000
-SendInput, {F6}/me нажал кнопку "Повысить" и ввел номер рапорта{Enter}
-Sleep 1000
-SendInput, {F6}/do Сотрудник был повышен.{Enter}
-Sleep 1000
-SendInput, {F6}/todo Убирая IPad*Поздравляю{!}{Enter}
-Sleep 500
-SendInput, {F6}/rang{Space}
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}/me достал IPad и перешел в вкладку "Сотрудники"{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Показался список сотрудников.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me ввел фамилию необходимого сотрудника{Enter}
+    Sleep 1000
+    SendInput, {F6}/me нашел из списка нужного и выбрал его{Enter}
+    Sleep 1000
+    SendInput, {F6}/do В планшете высветелась карта сотрудника.{Enter}
+    Sleep 1000
+    SendInput, {F6}/me нажал кнопку "Повысить" и ввел номер рапорта{Enter}
+    Sleep 1000
+    SendInput, {F6}/do Сотрудник был повышен.{Enter}
+    Sleep 1000
+    SendInput, {F6}/todo Убирая IPad*Поздравляю{!}{Enter}
+    Sleep 500
+    SendInput, {F6}/rang{Space}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 ВыдатьВзвод:
@@ -1430,78 +1550,93 @@ SendInput, {F6}/invite{Space}
 Return
 
 НачалоСобеса:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}Во сколько призыв:{Space}
-Input, time, V I M, {Enter}
-SendInput, {end}+{home}{del}{esc}
-Sleep 500
-SendInput, {F6}/d [МО] - [ГО] Свободна ли гос. волна на %time%?{Enter}
-Sleep 60000
-SendInput, {F6}/d [МО] - [ГО] Не услышав ответа, занимаю гос. волну на %time%{!}{Enter}
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}Во сколько призыв:{Space}
+    Input, time, V I M, {Enter}
+    SendInput, {end}+{home}{del}{esc}
+    Sleep 500
+    SendInput, {F6}/d [МО] - [ГО] Свободна ли гос. волна на %time%?{Enter}
+    Sleep 60000
+    SendInput, {F6}/d [МО] - [ГО] Не услышав ответа, занимаю гос. волну на %time%{!}{Enter}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 ЧСРежимВкл:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/do КПК в кармане.{Enter}
-Sleep 750
-SendInput, {F6}/me достал КПК{Enter}
-Sleep 750
-SendInput, {F6}/me зашел во вкладку «Режим ЧС»{Enter}
-Sleep 750
-SendInput, {F6}/me начал вводить секретный пароль{Enter}
-Sleep 750
-SendInput, {F6}/do Процесс…{Enter}
-Sleep 750
-SendInput, {F6}/do Высветилась надпись «Пароль введен успешно».{Enter}
-Sleep 750
-SendInput, {F6}/me включил режим ЧС{Enter}
-Sleep 750
-SendInput, {F6}/r [%tag%] ВНИМАНИЕ{!} ВАЖНОЕ ОПОВЕЩЕНИЕ{!}{Enter}
-Sleep 1000
-SendInput, {F6}/r [%tag%] Уважаемые сотрудники Министерства Обороны{!}{Enter}
-Sleep 1000
-SendInput, {F6}/r [%tag%] В военной части объявлен режим ЧС{!}{Enter}
-Sleep 1000
-SendInput, {F6}/r [%tag%] Каждый сотрудник обязан быть в боевой форме и иметь боекомплект{!}{Enter}
-Sleep 1000
-SendInput, {F6}/r [%tag%] Часть переведена в боевой режим{!}{Enter}
-Sleep 1000
-SendInput, {F6}/r [%tag%] Всем быть бдительным, заступить на посты, патрули и перейти в оборону{!}{Enter}
-Sleep 1000
-SendInput, {F6}/r [%tag%] Надеюсь на вас{!}{Enter}
-Sleep 1000
-SendInput, {F6}/d [МО]-[ГО] Посещение Министерства Обороны строго по разрешению{!}{Enter}
-Sleep 2000
-SendInput, {F6}/d [МО]-[ГО] Часть находится в боевом режиме, в связи с режимом ЧС{!}{Enter}
-Sleep 2000
-SendInput, {F6}/d [МО]-[ГО] Просим соблюдать установленные правила и не проявлять враждебные действия{!}{Enter}
+if (rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}/do КПК в кармане.{Enter}
+    Sleep 750
+    SendInput, {F6}/me достал КПК{Enter}
+    Sleep 750
+    SendInput, {F6}/me зашел во вкладку «Режим ЧС»{Enter}
+    Sleep 750
+    SendInput, {F6}/me начал вводить секретный пароль{Enter}
+    Sleep 750
+    SendInput, {F6}/do Процесс...{Enter}
+    Sleep 750
+    SendInput, {F6}/do Высветилась надпись «Пароль введен успешно».{Enter}
+    Sleep 750
+    SendInput, {F6}/me включил режим ЧС{Enter}
+    Sleep 750
+    SendInput, {F6}/r [%tag%] ВНИМАНИЕ{!} ВАЖНОЕ ОПОВЕЩЕНИЕ{!}{Enter}
+    Sleep 1000
+    SendInput, {F6}/r [%tag%] Уважаемые сотрудники Министерства Обороны{!}{Enter}
+    Sleep 1000
+    SendInput, {F6}/r [%tag%] В военной части объявлен режим ЧС{!}{Enter}
+    Sleep 1000
+    SendInput, {F6}/r [%tag%] Каждый сотрудник обязан быть в боевой форме и иметь боекомплект{!}{Enter}
+    Sleep 1000
+    SendInput, {F6}/r [%tag%] Часть переведена в боевой режим{!}{Enter}
+    Sleep 1000
+    SendInput, {F6}/r [%tag%] Всем быть бдительным, заступить на посты, патрули и перейти в оборону{!}{Enter}
+    Sleep 1000
+    SendInput, {F6}/r [%tag%] Надеюсь на вас{!}{Enter}
+    Sleep 1000
+    SendInput, {F6}/d [МО] - [ГО] Посещение Министерства Обороны строго по разрешению{!}{Enter}
+    Sleep 2000
+    SendInput, {F6}/d [МО] - [ГО] Часть находится в боевом режиме, в связи с режимом ЧС{!}{Enter}
+    Sleep 2000
+    SendInput, {F6}/d [МО] - [ГО] Просим соблюдать установленные правила и не проявлять враждебные действия{!}{Enter}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 ЧСРежимВыкл:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/do КПК в кармане.{Enter}
-Sleep 750
-SendInput, {F6}/me достал КПК{Enter}
-Sleep 750
-SendInput, {F6}/me зашел во вкладку «Режим ЧС»{Enter}
-Sleep 750
-SendInput, {F6}/me начал вводить секретный пароль{Enter}
-Sleep 750
-SendInput, {F6}/do Процесс…{Enter}
-Sleep 750
-SendInput, {F6}/do Высветилась надпись «Пароль введен успешно».{Enter}
-Sleep 750
-SendInput, {F6}/me выключил режим ЧС{Enter}
-Sleep 750
-SendInput, {F6}/r [%tag%] Уважаемые сотрудники Министерства Обороны{!}{Enter}
-Sleep 1000
-SendInput, {F6}/r [%tag%] Режим "ЧС" отключен{!}{Enter}
-Sleep 1000
-SendInput, {F6}/r [%tag%] Часть переведена в обычный режим.{Enter}
-Sleep 1000
-SendInput, {F6}/r [%tag%] Спасибо за бдительность{!}{Enter}
-Sleep 1000
-SendInput, {F6}/d [МО] - [ГО] Посещение Министерства Обороны в прежнем режиме{!}{Enter}
+if (rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}/do КПК в кармане.{Enter}
+    Sleep 750
+    SendInput, {F6}/me достал КПК{Enter}
+    Sleep 750
+    SendInput, {F6}/me зашел во вкладку «Режим ЧС»{Enter}
+    Sleep 750
+    SendInput, {F6}/me начал вводить секретный пароль{Enter}
+    Sleep 750
+    SendInput, {F6}/do Процесс...{Enter}
+    Sleep 750
+    SendInput, {F6}/do Высветилась надпись «Пароль введен успешно».{Enter}
+    Sleep 750
+    SendInput, {F6}/me выключил режим ЧС{Enter}
+    Sleep 750
+    SendInput, {F6}/r [%tag%] Уважаемые сотрудники Министерства Обороны{!}{Enter}
+    Sleep 1000
+    SendInput, {F6}/r [%tag%] Режим "ЧС" отключен{!}{Enter}
+    Sleep 1000
+    SendInput, {F6}/r [%tag%] Часть переведена в обычный режим.{Enter}
+    Sleep 1000
+    SendInput, {F6}/r [%tag%] Спасибо за бдительность{!}{Enter}
+    Sleep 1000
+    SendInput, {F6}/d [МО] - [ГО] Посещение Министерства Обороны в прежнем режиме{!}{Enter}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 ; Доп. функции
@@ -1567,6 +1702,15 @@ LShift & RAlt::
 SendMessage, 0x50,, 0x4190419,, A
 SendInput,{F6}/rc{Enter}
 Return
+
+~*CapsLock::
+    if (guiShown) {
+        if GetKeyState(interactKey, "P")
+            WinSet, ExStyle, -0x20, Мой Оверлей  ; Убираем прозрачность — можно кликать
+        else
+            WinSet, ExStyle, +0x20, Мой Оверлей  ; Включаем обратно — мышь проходит сквозь
+    }
+return
 
 
 
@@ -1642,6 +1786,7 @@ F11::
         , "Полная инструкция: https://github.com/Ilyuxadwa/AHKScripts/blob/main/Radmir/МО/Info.md")
 Return
 
+#If (keyModifier = "")
 F9 & Numpad0::
     ExtendedInfo("Что делает Numpad0:"
         , "Режим: Обычный"
@@ -1762,6 +1907,114 @@ F9 & Numpad9::
         , "| N9 + Ctrl: Отказ - мед. карта"
         , "| N9 + RAlt: Отказ - лицензии")
 Return
+#If
+
+#If (keyModifier != "")
+F9 & 1::
+    ExtendedInfo("Что делает 1:"
+        , "Режим: Обычный"
+        , "| 1: Приветсвие"
+        , "| 1 + LAlt: Только Удостоверение"
+        , "| 1 + Ctrl: Посторонний на ВЧ"
+        , "Режим: Строй"
+        , "| 1: Сбор строя 3 мин, повседневная форма"
+        , "| 1 + LAlt: Сбор строя 5 мин, повседневная форма"
+        , "| 1 + Ctrl: Сбор строя 3 мин, боевая форма"
+        , "| 1 + RAlt: Сбор строя 5 мин, боевая форма"
+        , "Режим: Призыв"
+        , "| 1: Вопрос"
+        , "| 1 + LAlt: Начать собес"
+        , "| 1 + Ctrl: Годен")
+Return
+
+F9 & 2::
+    ExtendedInfo("Что делает 2:"
+        , "Режим: Обычный"
+        , "| 2: Сбор конвоя"
+        , "Режим: Строй"
+        , "| 2: Информация про строй"
+        , "| 2 + LAlt: Рандомная лекция"
+        , "Режим: Призыв"
+        , "| 2: Взять паспорт")
+Return
+
+F9 & 3::
+    ExtendedInfo("Что делает 3:"
+        , "Режим: Обычный"
+        , "| 3: Информация про конвой"
+        , "Режим: Строй"
+        , "| 3: Лекция 1"
+        , "Режим: Призыв"
+        , "| 3: Попросить мед. карту")
+Return
+
+F9 & 4::
+    ExtendedInfo("Что делает 4:"
+        , "Режим: Обычный"
+        , "| 4: Выезд конвоя"
+        , "Режим: Строй"
+        , "| 4: Лекция 2"
+        , "Режим: Призыв"
+        , "| 4: Взять мед. карту")
+Return
+
+F9 & 5::
+    ExtendedInfo("Что делает 5:"
+        , "Режим: Обычный"
+        , "| 5: Конвой секретка"
+        , "Режим: Строй"
+        , "| 5: Лекция 3"
+        , "Режим: Призыв"
+        , "| 5: Попросить лицензии")
+Return
+
+F9 & 6::
+    ExtendedInfo("Что делает 6:"
+        , "Режим: Обычный"
+        , "| 6: Конвой на базу"
+        , "| 6 + LAlt: Конвой в другую организацию"
+        , "Режим: Строй"
+        , "| 6: Лекция 4"
+        , "Режим: Призыв"
+        , "| 6: Взять лицензии")
+Return
+
+F9 & 7::
+    ExtendedInfo("Что делает 7:"
+        , "Режим: Обычный"
+        , "| 7: Конвой конец"
+        , "Режим: Строй"
+        , "| 7: Лекция 5"
+        , "Режим: Призыв"
+        , "| 7: Вопрос 1")
+Return
+
+F9 & 8::
+    ExtendedInfo("Что делает 8:"
+        , "Режим: Обычный"
+        , "| 8: Мегафон"
+        , "| 8 + LAlt: Занять гос. волну (Только для Генерала)"
+        , "| 8 + Ctrl: Ввести режим ЧС (Только для Генерала)"
+        , "| 8 + RAlt: Отменить режим ЧС (Только для Генерала)"
+        , "Режим: Строй"
+        , "| 8: Лекция 6"
+        , "Режим: Призыв"
+        , "| 8: Вопрос 2")
+Return
+
+F9 & 9::
+    ExtendedInfo("Что делает 9:"
+        , "Режим: Обычный"
+        , "| 9: Принять"
+        , "| 9 + LAlt: Повысить"
+        , "| 9 + Ctrl: Выдать взвод"
+        , "| 9 + RAlt: Занести в ЧС"
+        , "Режим: Строй"
+        , "| 9: Лекция 7"
+        , "Режим: Призыв"
+        , "| 9: РП термины")
+Return
+#If
 
 F10 & 1::
     ExtendedInfo("Устав МО. Страница 1/5: (Глава 1 - Глава 3.4)"
@@ -1870,6 +2123,16 @@ F10 & 2 up::
 F10 & 3 up::
 F10 & 4 up::
 F10 & 5 up::
+F9 & 0 up::
+F9 & 1 up::
+F9 & 2 up::
+F9 & 3 up::
+F9 & 4 up::
+F9 & 5 up::
+F9 & 6 up::
+F9 & 7 up::
+F9 & 8 up::
+F9 & 9 up::
 F9 & Numpad0 up::
 F9 & Numpad1 up::
 F9 & Numpad2 up::

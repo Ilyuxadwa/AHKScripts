@@ -11,6 +11,7 @@ tag := "ТЕГ" ; Тег в рацию
 
 ; Пользовательская настройка скрипта (True - Включено, False - Выключено)
 
+keyModifier := "" ; Специальная клавиша для замены Numpad'a (Нажимаете эту клавишу + цифру на основной клавиатуре)
 full_rp := true ; Отыгровки даже там, где не нужны (Иначе будут только обязательные отыгровки)
 hotkeys := true ; Включение и отключение горячих клавиш (Нужны ли они вообще?)
 commands := true ; Включение и отключение команд (Нужны ли они вообще?)
@@ -21,6 +22,7 @@ commands := true ; Включение и отключение команд (Ну
 
 #UseHook
 #NoEnv
+#SingleInstance Force
 SetWorkingDir %A_ScriptDir%
 SetKeyDelay, -1, 10
 SetBatchLines, -1
@@ -60,93 +62,229 @@ Return
 
 ; Назначение клавиш
 
-#If (scriptMode = 0) && hotkeys
+#If (scriptMode = 0) && hotkeys && (keyModifier = "")
 Numpad0::Goto ВводId
 LAlt & Numpad0::Goto ОчиститьId
 Ctrl & Numpad0::Goto ВводНика
 RAlt & Numpad0::Goto ОчиститьНик
+
 Numpad1::Goto Приветствие
 LAlt & Numpad1::Goto УдостоверениеФСБ
 Ctrl & Numpad1::Goto Нашивка
+
 Numpad2::Goto ПросьбаОстановится
 LAlt & Numpad2::Goto РаботаФСБ
 Ctrl & Numpad2::Goto ПросьбаДокументов
 RAlt & Numpad2::Goto ВзятьДокументы
+
 Numpad3::Goto ОтследитьМестоположение
 LAlt & Numpad3::Goto НачатьПогоню
 Ctrl & Numpad3::Goto Арест
 RAlt & Numpad3::Goto ОтменаАреста
+
 Numpad4::Goto Обыск
 LAlt & Numpad4::Goto НайденаЗапрещенка
 Ctrl & Numpad4::Goto ОбыскДоков
 RAlt & Numpad4::Goto ОбыскБагажника
+
 Numpad5::Goto СнятьАксессуары
 LALt & Numpad5::Goto Фоторобот
 Ctrl & Numpad5::Goto ЧеловекОтпечатки
 RAlt & Numpad5::Goto ЧеловекНЗ
+
 Numpad6::Goto Розыск
 LAlt & Numpad6::Goto Штраф
 Ctrl & Numpad6::Goto ЗабратьЛицензию
 RAlt & Numpad6::Goto СнятьРозыск
+
 Numpad7::Goto ВыкинутьИзАвто
 LAlt & Numpad7::Goto ПосадитьВАвто
 Ctrl & Numpad7::Goto ВыломатьДверь
 RAlt & Numpad7::Goto СписокРозыска
+
 Numpad8::Goto ЗачитатьПрава
 LAlt & Numpad8::Goto ВызватьАдвоката
 Ctrl & Numpad8::Goto ПосадитьЗаРешетку
 RAlt & Numpad8::Goto ПолицейскийПланшет
+
 Numpad9::Goto ПоставитьБарикаду
 LAlt & Numpad9::Goto УбратьБарикаду
 Ctrl & Numpad9::Goto Выговор
 RAlt & Numpad9::Goto Уволить
 #If
-#If (scriptMode = 1) && hotkeys
+#If (scriptMode = 1) && hotkeys && (keyModifier = "")
 Numpad0::Goto Строй3
 LAlt & Numpad0::Goto Строй5
+
 Numpad1::Goto СтройОБК3
 LAlt & Numpad1::Goto СтройОБК5
+
 Numpad2::Goto СтройОБТ3
 LAlt & Numpad2::Goto СтройОБТ5
+
 Numpad3::Goto СтройОРО3
 LAlt & Numpad3::Goto СтройОРО5
+
 Numpad4::Goto СтройИнфо
+
 LAlt & Numpad4::Goto РандомЛекция
 Numpad5::Goto Лекция1
 Numpad6::Goto Лекция2
 Numpad7::Goto Лекция3
 Numpad8::Goto Лекция4
+
 Numpad9::Goto Тренировка
 #If
-#If (scriptMode = 2) && hotkeys
+#If (scriptMode = 2) && hotkeys && (keyModifier = "")
 Numpad0::Goto ДопросМиранда
 Alt & Numpad0::Goto ЛекцияФСБ
 Ctrl & Numpad0::Goto Принятие
+
 Numpad1::Goto ДопросНачало
 Alt & Numpad1::Goto ВербовкаКонец
 Ctrl & Numpad1::Goto Повышение
+
 Numpad2::Goto ДопросПродолжение
 Ctrl & Numpad2::Goto ЧёрныйСписок
+
 Numpad3::Goto ДопросКонец
+
 Numpad4::Goto ВербовкаПроверка1
 LAlt & Numpad4::Goto ПроверитьДокументЧеловека
 Numpad5::Goto ВербовкаПроверка2
 Numpad6::Goto ВербовкаПроверка3
 Numpad7::Goto ВербовкаПроверка4
 Numpad8::Goto ВербовкаПроверка5
+
 LAlt & Numpad8::Goto ВербовкаОК
 Ctrl & Numpad8::Goto ВербовкаОтказ
+
 Numpad9::Goto Конфиденциальность
 LAlt & Numpad9::Goto КонфиденциальностьМаксимум
 #If
-#If (scriptMode = 3) && hotkeys
+#If (scriptMode = 3) && hotkeys && (keyModifier = "")
 Numpad0::Goto ПриветствиеМО
 LAlt & Numpad0::Goto ЛекцияМО
+
 Numpad1::Goto ПриветствиеМВД
 LAlt & Numpad1::Goto ЛекцияМВД
+
 Numpad2::Goto ПриветствиеФСИН
 LAlt & Numpad2::Goto ЛекцияФСИН
+
 Numpad3::Goto НачатьПрослушку
+#If
+#If (scriptMode = 0) && hotkeys && (keyModifier != "") && GetKeyState(keyModifier, "P")
+1::Goto ВводId
+<!1::Goto ОчиститьId
+^1::Goto ВводНика
+>!1::Goto ОчиститьНик
+
+2::Goto Приветствие
+<!2::Goto УдостоверениеФСБ
+^2::Goto Нашивка
+
+3::Goto ПросьбаОстановится
+<!3::Goto РаботаФСБ
+^3::Goto ПросьбаДокументов
+>!3::Goto ВзятьДокументы
+
+4::Goto ОтследитьМестоположение
+<!4::Goto НачатьПогоню
+^4::Goto Арест
+>!4::Goto ОтменаАреста
+
+5::Goto Обыск
+<!5::Goto НайденаЗапрещенка
+^5::Goto ОбыскДоков
+>!5::Goto ОбыскБагажника
+
+6::Goto СнятьАксессуары
+LALt & 6::Goto Фоторобот
+^6::Goto ЧеловекОтпечатки
+>!6::Goto ЧеловекНЗ
+
+7::Goto Розыск
+<!7::Goto Штраф
+^7::Goto ЗабратьЛицензию
+>!7::Goto СнятьРозыск
+
+8::Goto ВыкинутьИзАвто
+<!8::Goto ПосадитьВАвто
+^8::Goto ВыломатьДверь
+>!8::Goto СписокРозыска
+
+9::Goto ЗачитатьПрава
+<!9::Goto ВызватьАдвоката
+^9::Goto ПосадитьЗаРешетку
+>!9::Goto ПолицейскийПланшет
+
+0::Goto ПоставитьБарикаду
+<!0::Goto УбратьБарикаду
+^0::Goto Выговор
+>!0::Goto Уволить
+#If
+#If (scriptMode = 1) && hotkeys && (keyModifier != "") && GetKeyState(keyModifier, "P")
+1::Goto Строй3
+<!1::Goto Строй5
+
+2::Goto СтройОБК3
+<!2::Goto СтройОБК5
+
+3::Goto СтройОБТ3
+<!3::Goto СтройОБТ5
+
+4::Goto СтройОРО3
+<!4::Goto СтройОРО5
+
+5::Goto СтройИнфо
+
+<!5::Goto РандомЛекция
+6::Goto Лекция1
+7::Goto Лекция2
+8::Goto Лекция3
+9::Goto Лекция4
+
+0::Goto Тренировка
+#If
+#If (scriptMode = 2) && hotkeys && (keyModifier != "") && GetKeyState(keyModifier, "P")
+1::Goto ДопросМиранда
+<!1::Goto ЛекцияФСБ
+^1::Goto Принятие
+
+2::Goto ДопросНачало
+<!2::Goto ВербовкаКонец
+^2::Goto Повышение
+
+3::Goto ДопросПродолжение
+^3::Goto ЧёрныйСписок
+
+4::Goto ДопросКонец
+
+5::Goto ВербовкаПроверка1
+<!5::Goto ПроверитьДокументЧеловека
+6::Goto ВербовкаПроверка2
+7::Goto ВербовкаПроверка3
+8::Goto ВербовкаПроверка4
+9::Goto ВербовкаПроверка5
+
+<!9::Goto ВербовкаОК
+^9::Goto ВербовкаОтказ
+
+0::Goto Конфиденциальность
+<!0::Goto КонфиденциальностьМаксимум
+#If
+#If (scriptMode = 3) && hotkeys && (keyModifier != "") && GetKeyState(keyModifier, "P")
+1::Goto ПриветствиеМО
+<!1::Goto ЛекцияМО
+
+2::Goto ПриветствиеМВД
+<!2::Goto ЛекцияМВД
+
+3::Goto ПриветствиеФСИН
+<!3::Goto ЛекцияФСИН
+
+4::Goto НачатьПрослушку
 #If
 Ctrl & LAlt::Goto ПереключитьАхк
 
@@ -633,6 +771,9 @@ CommandHelper() {
 :?*:напад-мо::/d [ФСБ] - [МО] Готовится нападение на ВЧ. Будьте готовы{!}
 :?*:запрос-мо::/d [ФСБ] - [МО] Разрешите въезд для автомобиля с Н/З "" с целью доп. защиты?{Left 22}
 :?*:заезд-мо::/d [ФСБ] - [МО] На ВЧ въезжает автомобиль с Н/З "" с целью доп. защиты{!}{Left 22}
+:?*:нестрой::
+SendInput, /r [%tag%] Не явлюсь в строй по причине:{Space}
+Return
 
 
 
@@ -1889,111 +2030,135 @@ Return
 ; Старший Состав
 
 Принятие:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/do Рюкзак весит на спине.{Enter}
-Sleep 800
-SendInput, {F6}/do Новая форма в рюкзаке.{Enter}
-Sleep 800
-SendInput, {F6}/me начал снимать рюкзак{Enter}
-Sleep 800
-SendInput, {F6}/do Рюкзак в левой руке.{Enter}
-Sleep 800
-SendInput, {F6}/me раскрыл рюкзак, после чего взял новую форму{Enter}
-Sleep 900
-SendInput, {F6}/do Процесс ...{Enter}
-Sleep 800
-SendInput, {F6}/do Форма в правой руке.{Enter}
-Sleep 800
-SendInput, {F6}/me передал пакет с формой и рацией гражданину{Enter} 
-Sleep 1000 
-SendInput, {F6}Удачи на работе.{Enter} 
-Sleep 1000 
-SendInput, {F6}/me потянул за застежку и закрыл рюкзак{Enter}
-Sleep 800
-SendInput, {F6}/do Рюкзак в левой руке.{Enter}
-Sleep 800
-SendInput, {F6}/me одевает рюкзак за спину{Enter}
-Sleep 800
-SendInput, {F6}/do Процесс ...{Enter}
-Sleep 800
-SendInput, {F6}/do Рюкзак весит на спине.{Enter}
-Sleep 800
-SendInput, {F6}/invite{Space}
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}/do Рюкзак весит на спине.{Enter}
+    Sleep 800
+    SendInput, {F6}/do Новая форма в рюкзаке.{Enter}
+    Sleep 800
+    SendInput, {F6}/me начал снимать рюкзак{Enter}
+    Sleep 800
+    SendInput, {F6}/do Рюкзак в левой руке.{Enter}
+    Sleep 800
+    SendInput, {F6}/me раскрыл рюкзак, после чего взял новую форму{Enter}
+    Sleep 900
+    SendInput, {F6}/do Процесс ...{Enter}
+    Sleep 800
+    SendInput, {F6}/do Форма в правой руке.{Enter}
+    Sleep 800
+    SendInput, {F6}/me передал пакет с формой и рацией гражданину{Enter} 
+    Sleep 1000 
+    SendInput, {F6}Удачи на работе.{Enter} 
+    Sleep 1000 
+    SendInput, {F6}/me потянул за застежку и закрыл рюкзак{Enter}
+    Sleep 800
+    SendInput, {F6}/do Рюкзак в левой руке.{Enter}
+    Sleep 800
+    SendInput, {F6}/me одевает рюкзак за спину{Enter}
+    Sleep 800
+    SendInput, {F6}/do Процесс ...{Enter}
+    Sleep 800
+    SendInput, {F6}/do Рюкзак весит на спине.{Enter}
+    Sleep 800
+    SendInput, {F6}/invite{Space}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 Повышение:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/me сорвал погоны у человека напротив.{Enter}
-Sleep 600
-SendInput, {F6}/do Погоны сорваны.{Enter}
-Sleep 600
-SendInput, {F6}/do Новые погоны в кармане.{Enter}
-Sleep 600
-SendInput, {F6}/me достал новые погоны{Enter}
-Sleep 600
-SendInput, {F6}/do Новые погоны в руке.{Enter}
-Sleep 600
-SendInput, {F6}/me передал погоны человеку напротив.{Enter}
-Sleep 800
-SendInput, {F6}/do Процесс...{Enter}
-Sleep 800
-SendInput, {F6}/do Погоны переданы.{Enter}
-Sleep 900
-SendInput, {F6}/rang{Space}
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}/me сорвал погоны у человека напротив.{Enter}
+    Sleep 600
+    SendInput, {F6}/do Погоны сорваны.{Enter}
+    Sleep 600
+    SendInput, {F6}/do Новые погоны в кармане.{Enter}
+    Sleep 600
+    SendInput, {F6}/me достал новые погоны{Enter}
+    Sleep 600
+    SendInput, {F6}/do Новые погоны в руке.{Enter}
+    Sleep 600
+    SendInput, {F6}/me передал погоны человеку напротив.{Enter}
+    Sleep 800
+    SendInput, {F6}/do Процесс...{Enter}
+    Sleep 800
+    SendInput, {F6}/do Погоны переданы.{Enter}
+    Sleep 900
+    SendInput, {F6}/rang{Space}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 ЧёрныйСписок:
-SendMessage, 0x50,, 0x4190419,, A 
-SendInput, {F6}/me взял КПК из кармана в руки{Enter} 
-Sleep 1000 
-SendInput, {F6}/do КПК в руке.{Enter} 
-Sleep 1000 
-SendInput, {F6}/me зашёл в папку "Сотрудники"{Enter} 
-Sleep 1000
-SendInput, {F6}/do Процесс..{Enter} 
-Sleep 1000
-SendInput, {F6}/me выбрал папку "Черный Список"{Enter} 
-Sleep 1000
-SendInput, {F6}/do Процесс..{Enter} 
-Sleep 1000 
-SendInput, {F6}/me ввёл информацию о сотруднике{Enter} 
-Sleep 1000
-SendInput, {F6}/do Информация введена.{Enter} 
-Sleep 1000 
-SendInput, {F6}/me закрыл КПК обратно и положил в карман{Enter} 
-Sleep 1000 
-SendInput, {F6}/do КПК в кармане.{Enter} 
-Sleep 1000 
-SendInput, {F6}/blist{Space} 
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A 
+    SendInput, {F6}/me взял КПК из кармана в руки{Enter} 
+    Sleep 1000 
+    SendInput, {F6}/do КПК в руке.{Enter} 
+    Sleep 1000 
+    SendInput, {F6}/me зашёл в папку "Сотрудники"{Enter} 
+    Sleep 1000
+    SendInput, {F6}/do Процесс..{Enter} 
+    Sleep 1000
+    SendInput, {F6}/me выбрал папку "Черный Список"{Enter} 
+    Sleep 1000
+    SendInput, {F6}/do Процесс..{Enter} 
+    Sleep 1000 
+    SendInput, {F6}/me ввёл информацию о сотруднике{Enter} 
+    Sleep 1000
+    SendInput, {F6}/do Информация введена.{Enter} 
+    Sleep 1000 
+    SendInput, {F6}/me закрыл КПК обратно и положил в карман{Enter} 
+    Sleep 1000 
+    SendInput, {F6}/do КПК в кармане.{Enter} 
+    Sleep 1000 
+    SendInput, {F6}/blist{Space}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+} 
 Return
 
 ЛекцияФСБ:
-SendMessage, 0x50,, 0x4190419,, A
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
     SendInput, {F6}/s Здравия желаю, уважаемые сотрудники{!} {Enter}
     Sleep 900
-SendInput, {F6}/s Федеральная Служба Безопасности(ФСБ) - это силовая государственная организация,  {Enter}
+    SendInput, {F6}/s Федеральная Служба Безопасности(ФСБ) - это силовая государственная организация,  {Enter}
     Sleep 900
-SendInput, {F6}/s занимающаяся обеспечением безопасности и правопорядка в области.   {Enter}
+    SendInput, {F6}/s занимающаяся обеспечением безопасности и правопорядка в области.   {Enter}
     Sleep 900
-SendInput, {F6}/s Основные задачи включают борьбу с организованной преступностью,  {Enter}
+    SendInput, {F6}/s Основные задачи включают борьбу с организованной преступностью,  {Enter}
     Sleep 900
-SendInput, {F6}/s терроризмом, коррупцией и другими серьезными нарушениями закона.  {Enter}
+    SendInput, {F6}/s терроризмом, коррупцией и другими серьезными нарушениями закона.  {Enter}
     Sleep 900
-SendInput, {F6}/s ФСБ обладает широкими полномочиями и играет ключевую роль в поддержании стабильности и законности.  {Enter}
+    SendInput, {F6}/s ФСБ обладает широкими полномочиями и играет ключевую роль в поддержании стабильности и законности.  {Enter}
     Sleep 900
-SendInput, {F6}/s ФСБ уполномочено: Задерживать и арестовывать, проводить обыски, изымать имущество, осуществлять допросы и опросы,  {Enter}
+    SendInput, {F6}/s ФСБ уполномочено: Задерживать и арестовывать, проводить обыски, изымать имущество, осуществлять допросы и опросы,  {Enter}
     Sleep 900
-SendInput, {F6}/s проводить ОРМ, контролировать соблюдение законодательства и другое.{Enter}
+    SendInput, {F6}/s проводить ОРМ, контролировать соблюдение законодательства и другое.{Enter}
     Sleep 900
-SendInput, {F6}/s На этом краткое знакомство с ФСБ завершено{!}  {Enter}
-    Sleep 900
+    SendInput, {F6}/s На этом краткое знакомство с ФСБ завершено{!}  {Enter}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 ВербовкаКонец:
-SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}/s По личному мнению т.Генерала, никто не подходит нам{!}{Enter}
-Sleep 1000
-SendInput, {F6}/s Помните, следим за каждым и служите по чести{!}{Enter}
+if (rank="Полковник" or rank="Генерал")
+{
+    SendMessage, 0x50,, 0x4190419,, A
+    SendInput, {F6}/s По личному мнению т.Генерала, никто не подходит нам{!}{Enter}
+    Sleep 1000
+    SendInput, {F6}/s Помните, следим за каждым и служите по чести{!}{Enter}
+} else {
+    StateInfo("Вам не доступна данная функция!","FF0000")
+}
 Return
 
 ; Функции для МО
@@ -2178,15 +2343,15 @@ else if (scriptMode=3){
 }
 Return
 
-Shift & F::
+Ctrl & F::
     full_rp := !full_rp
     StateInfo("Фулл РП:"+full_rp,"FFFFFF")
 Return
-Shift & K::
+Alt & K::
     hotkeys := !hotkeys
     StateInfo("Клавиши:"+hotkeys,"FFFFFF")
 Return
-Shift & C::
+Alt & C::
     commands := !commands
     StateInfo("Команды:"+commands,"FFFFFF")
 Return
@@ -2321,6 +2486,7 @@ F11::
         , "P.S. Бладарность за помощь: German_Mackelly")
 Return
 
+#If (keyModifier = "")
 F9 & Numpad0::
     ExtendedInfo("Что делает Numpad0:"
         , "Режим: Обычный"
@@ -2474,6 +2640,163 @@ F9 & Numpad9::
         , "| N9: Забрать звукозапис. устройство"
         , "| N9 + LAlt: Полная секретность в авто")
 Return
+#If
+
+#If (keyModifier != "")
+F9 & 1::
+    ExtendedInfo("Что делает 1:"
+        , "Режим: Обычный"
+        , "| 1: Ввод id игрока для дальнейших действий"
+        , "| 1 + LAlt: Очистить последнее введенное id (если хотите вводить вручную)"
+        , "| 1 + Ctrl: Ввести ник маскировки (для использования ахк других орг.)"
+        , "| 1 + RAlt: Очистить маскировочный ник"
+        , "Режим: Строй"
+        , "| 1: Сбор строя 3 минуты"
+        , "| 1 + LAlt: Сбор строя 5 минут"
+        , "Режим: Допрос/вербовка"
+        , "| 1: Миранда для допроса"
+        , "| 1 + LAlt: Лекция для вербовки (5+ ранг)"
+        , "| 1 + Ctrl: Принять в ФСБ"
+        , "Режим: Маскировка"
+        , "| 1: Приветсвие МО"
+        , "| 1 + LAlt: Лекция МО")
+Return
+
+F9 & 2::
+    ExtendedInfo("Что делает 2:"
+        , "Режим: Обычный"
+        , "| 2: Представится и показать нашивку ФСБ"
+        , "| 2 + LAlt: Показать удостоверение ФСБ"
+        , "| 2 + Ctrl: Показать только нашивку"
+        , "Режим: Строй"
+        , "| 2: Сбор ОБК 3 минуты"
+        , "| 2 + LAlt: Сбор ОБК 5 минут"
+        , "Режим: Допрос/вербовка"
+        , "| 2: Начало допроса"
+        , "| 2 + LAlt: Конец вербовки (5+ ранг)"
+        , "| 2 + Ctrl: Повысить"
+        , "Режим: Маскировка"
+        , "| 2: Приветсвие МВД"
+        , "| 2 + LAlt: Лекция МВД")
+Return
+
+F9 & 3::
+    ExtendedInfo("Что делает 3:"
+        , "Режим: Обычный"
+        , "| 3: Попросить остановится гражданина"
+        , "| 3 + LAlt: Оповестить о работе ФСБ"
+        , "| 3 + Ctrl: Попросить документы у гражданина"
+        , "| 3 + RAlt: Взять документы"
+        , "Режим: Строй"
+        , "| 3: Сбор ОБТ 3 минуты"
+        , "| 3 + LAlt: Сбор ОБТ 5 минут"
+        , "Режим: Допрос/вербовка"
+        , "| 3: Продолжение допроса"
+        , "| 3 + Ctrl: Занести в ЧС"
+        , "Режим: Маскировка"
+        , "| 3: Приветсвие ФСИН"
+        , "| 3 + LAlt: Лекция ФСИН")
+Return
+
+F9 & 4::
+    ExtendedInfo("Что делает 4:"
+        , "Режим: Обычный"
+        , "| 4: Отследить местопложение игрока"
+        , "| 4 + LAlt: Начать погоню за нарушителем"
+        , "| 4 + Ctrl: Надеть наручники + сопровождение"
+        , "| | 4 + RAlt: снять наручники + сопровождение"
+        , "Режим: Строй"
+        , "| 4: Сбор ОРО 3 минуты"
+        , "| 4 + LAlt: Сбор ОРО 5 минут"
+        , "Режим: Допрос/вербовка"
+        , "| 4: Конец допроса"
+        , "Режим: Маскировка"
+        , "| 4: Начать прослушку")
+Return
+
+F9 & 5::
+    ExtendedInfo("Что делает 5:"
+        , "Режим: Обычный"
+        , "| 5: Обыскать человека на котиков"
+        , "| 5 + LAlt: Забрать запрещенку"
+        , "| 5 + Ctrl: Найти документы в карманах человека"
+        , "| 5 + RAlt: Обыск багажника"
+        , "Режим: Строй"
+        , "| 5: Информация про строй"
+        , "| 5 + LAlt: Рандомная лекция"
+        , "Режим: Допрос/вербовка"
+        , "| 5: Начало вербовки (Попросить удо)"
+        , "| 5 + LAlt: Проверить документы у вербовуемого")
+Return
+
+F9 & 6::
+    ExtendedInfo("Что делает 6:"
+        , "Режим: Обычный"
+        , "| 6: Снять маску и другие аксессуары"
+        , "| 6 + LAlt: Опознать человека по лицу"
+        , "| 6 + Ctrl: Опознать человека по отпечаткам"
+        , "| 6 + RAlt: Найти владельца авто по НЗ"
+        , "Режим: Строй"
+        , "| 6: Лекция 1"
+        , "Режим: Допрос/вербовка"
+        , "| 6: Попросить паспорт")
+Return
+
+F9 & 7::
+    ExtendedInfo("Что делает 7:"
+        , "Режим: Обычный"
+        , "| 7: Выдать розыск"
+        , "| 7 + LAlt: Выписать штраф"
+        , "| 7 + Ctrl: Забрать лицензию"
+        , "| 7 + RAlt: Снять розыск"
+        , "Режим: Строй"
+        , "| 7: Лекция 2"
+        , "Режим: Допрос/вербовка"
+        , "| 7: Попросить мед. карту")
+Return
+
+F9 & 8::
+    ExtendedInfo("Что делает 8:"
+        , "Режим: Обычный"
+        , "| 8: Выкинуть из автомобиля"
+        , "| 8 + LAlt: Посадить в автомобиль"
+        , "| 8 + Ctrl: Выломать дверь в дом"
+        , "| 8 + RAlt: Список розыска"
+        , "Режим: Строй"
+        , "| 8: Лекция 3"
+        , "Режим: Допрос/вербовка"
+        , "| 8: Попросить лицензии")
+Return
+
+F9 & 9::
+    ExtendedInfo("Что делает 9:"
+        , "Режим: Обычный"
+        , "| 9: Зачитать права"
+        , "| 9 + LAlt: Вызвать адвоката"
+        , "| 9 + Ctrl: Посадить человека за решетку"
+        , "| 9 + RAlt: Полицейский планшет"
+        , "Режим: Строй"
+        , "| 9: Лекция 4"
+        , "Режим: Допрос/вербовка"
+        , "| 9: Попросить /team_history"
+        , "| 9 + LAlt: Вербовка хорошо"
+        , "| 9 + Ctrl: Вербовка отказ")
+Return
+
+F9 & 0::
+    ExtendedInfo("Что делает 0:"
+        , "Режим: Обычный"
+        , "| 0: Поставить барикаду"
+        , "| 0 + LAlt: Убрать барикаду"
+        , "| 0 + Ctrl: Выдать выговор"
+        , "| 0 + RAlt: Уволить из организации"
+        , "Режим: Строй"
+        , "| 0: Тренировка"
+        , "Режим: Допрос/вербовка"
+        , "| 0: Забрать звукозапис. устройство"
+        , "| 0 + LAlt: Полная секретность в авто")
+Return
+#If
 
 F10 & 1::
     ExtendedInfo("Уголовный Кодекс. Страница 1/2:"
@@ -2688,6 +3011,16 @@ F10 & 4 up::
 F10 & 5 up::
 F10 & 6 up::
 F10 & 7 up::
+F9 & 0 up::
+F9 & 1 up::
+F9 & 2 up::
+F9 & 3 up::
+F9 & 4 up::
+F9 & 5 up::
+F9 & 6 up::
+F9 & 7 up::
+F9 & 8 up::
+F9 & 9 up::
 F9 & Numpad0 up::
 F9 & Numpad1 up::
 F9 & Numpad2 up::
