@@ -58,14 +58,14 @@ playerId := "null"
 fakeName := ""
 fakeRank := ""
 
-ExtendedInfo1("AHK для ФСБ by Foster"
+KeyInfo("AHK для ФСБ by Foster"
         , ""
         , "Скрипт включает в себя не только стандартные функции ФСБ, но и АХК других организаций."
         , "Поддерживается как ручной ввод id игрока, так и автоматический, который вы введете заранее. (0)"
         , "Можно нажимать как на клавиши, так и вводить текстовые команды в чат."
         , "Для доп. информации: https://github.com/Ilyuxadwa/AHKScripts/blob/main/Radmir/ФСБ/Info.md"
         , ""
-        , "P.S. Бладарность за помощь: German_Mackelly")
+        , "P.S. Бладарность за помощь: German_Mackelly, Andrew_Harada")
 
 Global UK_DATA = Parser(SheetID, UK_TAB)
 Global KOAP_DATA = Parser(SheetID, KOAP_TAB)
@@ -79,39 +79,92 @@ Global FSB_DATA = Parser(SheetID, FSB_TAB)
 
 Global UKLines := []
 for id, entry in UK_DATA {
-    UKLines.Push("| ID: " . entry.id . " > " . entry.reason)
+    if (entry.reason != "")
+    {
+        UKLines.Push(entry.id . " | " . entry.reason)
+    } else {
+        UKLines.Push(entry.id)
+    }
 }
+
 Global KOAPLines := []
 for id, entry in KOAP_DATA {
-    KOAPLines.Push("| ID: " . entry.id . " > " . entry.reason)
+    if (entry.reason != "")
+    {
+        KOAPLines.Push(entry.id . " | " . entry.reason)
+    } else {
+        KOAPLines.Push(entry.id)
+    }
 }
+
 Global PROCLines := []
 for id, entry in PROC_DATA {
-    PROCLines.Push("| ID: " . entry.id . " > " . entry.reason)
+    if (entry.reason != "")
+    {
+        PROCLines.Push(entry.id . " | " . entry.reason)
+    } else {
+        PROCLines.Push(entry.id)
+    }
 }
+
 Global MOLines := []
 for id, entry in MO_DATA {
-    MOLines.Push("| ID: " . entry.id . " > " . entry.reason)
+    if (entry.reason != "")
+    {
+        MOLines.Push(entry.id . " | " . entry.reason)
+    } else {
+        MOLines.Push(entry.id)
+    }
 }
+
 Global MVDLines := []
 for id, entry in MVD_DATA {
-    MVDLines.Push("| ID: " . entry.id . " > " . entry.reason)
+    if (entry.reason != "")
+    {
+        MVDLines.Push(entry.id . " | " . entry.reason)
+    } else {
+        MVDLines.Push(entry.id)
+    }
 }
+
 Global SOBRLines := []
 for id, entry in SOBR_DATA {
-    SOBRLines.Push("| ID: " . entry.id . " > " . entry.reason)
+    if (entry.reason != "")
+    {
+        SOBRLines.Push(entry.id . " | " . entry.reason)
+    } else {
+        SOBRLines.Push(entry.id)
+    }
 }
+
 Global FSINLines := []
 for id, entry in FSIN_DATA {
-    FSINLines.Push("| ID: " . entry.id . " > " . entry.reason)
+    if (entry.reason != "")
+    {
+        FSINLines.Push(entry.id . " | " . entry.reason)
+    } else {
+        FSINLines.Push(entry.id)
+    }
 }
+
 Global FAKELLines := []
 for id, entry in FAKEL_DATA {
-    FAKELLines.Push("| ID: " . entry.id . " > " . entry.reason)
+    if (entry.reason != "")
+    {
+        FAKELLines.Push(entry.id . " | " . entry.reason)
+    } else {
+        FAKELLines.Push(entry.id)
+    }
 }
+
 Global FSBLines := []
 for id, entry in FSB_DATA {
-    FSBLines.Push("| ID: " . entry.id . " > " . entry.reason)
+    if (entry.reason != "")
+    {
+        FSBLines.Push(entry.id . " | " . entry.reason)
+    } else {
+        FSBLines.Push(entry.id)
+    }
 }
 
 SavedInfo(playerId, fakeName)
@@ -178,12 +231,8 @@ Numpad0::Goto Строй
 
 LAlt & Numpad0::Goto СтройИнфо
 
-LAlt & Numpad1::Goto РандомЛекция
-Numpad1::Goto Лекция1
-Numpad2::Goto Лекция2
-Numpad3::Goto Лекция3
-Numpad4::Goto Лекция4
-Numpad5::Goto Тренировка
+Numpad1::Goto Лекция
+Numpad2::Goto Тренировка
 #If
 #If (scriptMode = 2) && hotkeys && (keyModifier = "")
 Numpad0::Goto ДопросМиранда
@@ -278,12 +327,8 @@ LALt & 6::Goto Фоторобот
 1::Goto Строй
 <!1::Goto СтройИнфо
 
-2::Goto Лекция1
-<!2::Goto РандомЛекция
-3::Goto Лекция2
-4::Goto Лекция3
-5::Goto Лекция4
-6::Goto Тренировка
+2::Goto Лекция
+3::Goto Тренировка
 #If
 #If (scriptMode = 2) && hotkeys && (keyModifier != "") && GetKeyState(keyModifier, "P")
 1::Goto ДопросМиранда
@@ -660,27 +705,7 @@ Goto СтройИнфо
 ::.лек::
 ::.лекция::
 CommandHelper()
-Goto РандомЛекция
-
-::/lec1::
-::.лекция1::
-CommandHelper()
-Goto Лекция1
-
-::/lec2::
-::.лекция2::
-CommandHelper()
-Goto Лекция2
-
-::/lec3::
-::.лекция3::
-CommandHelper()
-Goto Лекция3
-
-::/lec4::
-::.лекция4::
-CommandHelper()
-Goto Лекция4
+Goto Лекция
 
 ::/training::
 ::.треня::
@@ -1018,7 +1043,7 @@ if(full_rp){
     Sleep 700
     SendInput, {F6}/me протянул руку в карман, затем взял Ордер {Enter}
     Sleep 900
-    SendInput, {F6}/do "Орден на обыск признан №2025г., Губернатором Нижегородской области".{Enter}
+    SendInput, {F6}/do "Орден на обыск признан №2026г., Губернатором Нижегородской области".{Enter}
     Sleep 900
     SendInput, {F6}/me показал документ человеку напротив{Enter}
     Sleep 700
@@ -1725,19 +1750,25 @@ SendInput, {end}+{home}{del}{esc}
 Sleep 500
 if (who = "")
 {
+    index := 0
     Loop, %time%
     {
-        left_time := (%time% + 1) - A_Index
+        left_time := time - index
         min_word := GetMinuteWord(left_time)
-        SendInput,{F6}/r [%tag%] Отдел %who%, готовность %left_time% %min_word% {!}{Enter}
+        SendInput,{F6}/r [%tag%] Строй на плацу, готовность %left_time% %min_word%{!}{Enter}
+        index++
+        Sleep 5000
     }
 
 } else {
+    index := 0
     Loop, %time%
     {
-        left_time := (%time% + 1) - A_Index
+        left_time := time - index
         min_word := GetMinuteWord(left_time)
-        SendInput,{F6}/r [%tag%] Отдел %who%, готовность %left_time% %min_word% {!}{Enter}
+        SendInput,{F6}/r [%tag%] Отдел %who%, строй на плацу, готовность %left_time% %min_word%{!}{Enter}
+        index++
+        Sleep 5000
     }
 }
 
@@ -1793,6 +1824,25 @@ SendInput, {F6}/s Отставить{!}{Enter}
 Sleep 1000
 SendInput, {F6}/s Тренировка окончена. Не расходимся{!}{Enter}
 Return
+
+Лекция:
+SendMessage, 0x50,, 0x4190419,, A
+SendInput, {F6}Номер лекции (0 - рандом, 1-4, 5 - верба):{Space}
+Input, num, V I M, {Enter}
+SendInput, {end}+{home}{del}{esc}
+Sleep 500
+if (num = 0 or num = "")
+{
+    Random, num, 1, 4
+    lec := "Лекция" num
+    Goto %lec%
+} if (num = 5)
+{
+    GoTo ЛекцияФСБ
+} else {
+    lec := "Лекция" num
+    Goto %lec%
+}
 
 Лекция1:
 SendMessage, 0x50,, 0x4190419,, A
@@ -1899,88 +1949,88 @@ Return
 
 Лекция3:
 SendMessage, 0x50,, 0x4190419,, A
-SendInput,,{F6}/s Здравия желаю, коллеги сейчас я проведу вам лекцию.{Enter}
+SendInput, {F6}/s Здравия желаю, коллеги сейчас я проведу вам лекцию.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Лекция на тему "Правила поведения на тренировке".{Enter}
+SendInput, {F6}/s Лекция на тему "Правила поведения на тренировке".{Enter}
 Sleep 1000
-SendInput,,{F6}/s С самого начала я хочу сказать что такое тренировка...{Enter}
+SendInput, {F6}/s С самого начала я хочу сказать что такое тренировка...{Enter}
 Sleep 1000
-SendInput,,{F6}/s Тренировка-это осмысленная физическая деятельность, направленная на развитие силы...{Enter}
+SendInput, {F6}/s Тренировка-это осмысленная физическая деятельность, направленная на развитие силы...{Enter}
 Sleep 1000
-SendInput,,{F6}/s выносливости, ловкости, скорости и других физических и психологических навыков.{Enter}
+SendInput, {F6}/s выносливости, ловкости, скорости и других физических и психологических навыков.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Правила поведения на тренировке:{Enter}
+SendInput, {F6}/s Правила поведения на тренировке:{Enter}
 Sleep 1000
-SendInput,,{F6}/s 1. Подчиняться проводящему строй и старшим по званию{Enter}
+SendInput, {F6}/s 1. Подчиняться проводящему строй и старшим по званию{Enter}
 Sleep 1000
-SendInput,,{F6}/s 2. Доставать оружие только по приказу.{Enter}
+SendInput, {F6}/s 2. Доставать оружие только по приказу.{Enter}
 Sleep 1000
-SendInput,,{F6}/s 3. Не покидать строй, только по приказу.{Enter}
+SendInput, {F6}/s 3. Не покидать строй, только по приказу.{Enter}
 Sleep 1000
-SendInput,,{F6}/s 4. В строю молчать, слушать что говорит проводящий строй.{Enter}
+SendInput, {F6}/s 4. В строю молчать, слушать что говорит проводящий строй.{Enter}
 Sleep 1000
-SendInput,,{F6}/s 5. Подчиняться только проводящему строй и ст.составу.{Enter}
+SendInput, {F6}/s 5. Подчиняться только проводящему строй и ст.составу.{Enter}
 Sleep 1000
-SendInput,,{F6}/s 6. Тренировку можно начать со звания Майор.{Enter}
+SendInput, {F6}/s 6. Тренировку можно начать со звания Майор.{Enter}
 Sleep 1000
-SendInput,,{F6}/s 7. Вы должны четко и внимательно слушать ст.состав.{Enter}
+SendInput, {F6}/s 7. Вы должны четко и внимательно слушать ст.состав.{Enter}
 Sleep 1000
-SendInput,,{F6}/s 8.Если вы будете спать в строю вам будут давать выговор.{Enter}
+SendInput, {F6}/s 8.Если вы будете спать в строю вам будут давать выговор.{Enter}
 Sleep 1000
-SendInput,,{F6}/n Афк более 1 минуты в строю - выговор.{Enter}
+SendInput, {F6}/n Афк более 1 минуты в строю - выговор.{Enter}
 Sleep 1000
-SendInput,,{F6}/s 9.Если вы устали, вы можете подойти к тому кто организовал тренировку...{Enter}
+SendInput, {F6}/s 9.Если вы устали, вы можете подойти к тому кто организовал тренировку...{Enter}
 Sleep 1000
-SendInput,,{F6}/s И попросить отдохнуть.{Enter}
+SendInput, {F6}/s И попросить отдохнуть.{Enter}
 Sleep 1000
-SendInput,,{F6}/s 10. В строю запрещено использовать телефон и рацию.{Enter}
+SendInput, {F6}/s 10. В строю запрещено использовать телефон и рацию.{Enter}
 Sleep 1000
-SendInput,,{F6}/s 11. С разрешения проводящего строй и выше, вы можете не являться на тренировку.{Enter}
+SendInput, {F6}/s 11. С разрешения проводящего строй и выше, вы можете не являться на тренировку.{Enter}
 Sleep 1000
-SendInput,,{F6}/s А на этом наша лекция подошла к концу.{Enter}
+SendInput, {F6}/s А на этом наша лекция подошла к концу.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Лекция на тему "Правила поведения на тренировке" - Закончена{!} Спасибо за внимание.{Enter}
+SendInput, {F6}/s Лекция на тему "Правила поведения на тренировке" - Закончена{!} Спасибо за внимание.{Enter}
 Return
 
 Лекция4:
 SendMessage, 0x50,, 0x4190419,, A
-SendInput,,{F6}/s Здравия желаю, сейчас я проведу лекцию, что запрещено сотрудникам ФСБ{Enter}
+SendInput, {F6}/s Здравия желаю, сейчас я проведу лекцию, что запрещено сотрудникам ФСБ{Enter}
 Sleep 1000
-SendInput,,{F6}/s Сотрудникам ФСБ запрещено:{Enter}
+SendInput, {F6}/s Сотрудникам ФСБ запрещено:{Enter}
 Sleep 1000
-SendInput,,{F6}/s Допускать утрату оружия, транспорта и любого иного ведомственного имущества.{Enter}
+SendInput, {F6}/s Допускать утрату оружия, транспорта и любого иного ведомственного имущества.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Допускать распространение служебной, военной, государственной тайны.{Enter}
+SendInput, {F6}/s Допускать распространение служебной, военной, государственной тайны.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Обсуждать вопросы, связанные с присвоением званий и должностей.{Enter}
+SendInput, {F6}/s Обсуждать вопросы, связанные с присвоением званий и должностей.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Самовольно покидать территорию ведомства, не в целях несения службы.{Enter}
+SendInput, {F6}/s Самовольно покидать территорию ведомства, не в целях несения службы.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Доставать и применять оружие без законных оснований.{Enter}
+SendInput, {F6}/s Доставать и применять оружие без законных оснований.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Допускать проникновение неучтенных лиц на закрытую территорию ведомства.{Enter}
+SendInput, {F6}/s Допускать проникновение неучтенных лиц на закрытую территорию ведомства.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Хранить и употреблять наркотики.{Enter}
+SendInput, {F6}/s Хранить и употреблять наркотики.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Сотрудничать с криминалом{Enter}
+SendInput, {F6}/s Сотрудничать с криминалом{Enter}
 Sleep 1000
-SendInput,,{F6}/s Стрелять по другим сотрудникам ФСБ. Если это не пейнтбол.{Enter}
+SendInput, {F6}/s Стрелять по другим сотрудникам ФСБ. Если это не пейнтбол.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Спорить со старшими по званию, не выполнять приказы, нарушать данный Устав.{Enter}
+SendInput, {F6}/s Спорить со старшими по званию, не выполнять приказы, нарушать данный Устав.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Многократно выпрашивать о повышении.{Enter}
+SendInput, {F6}/s Многократно выпрашивать о повышении.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Самовольно оставлять пост или прекращать выполнять приказ{Enter}
+SendInput, {F6}/s Самовольно оставлять пост или прекращать выполнять приказ{Enter}
 Sleep 1000
-SendInput,,{F6}/s Передавать патроны кому-либо, кроме сослуживцев.{Enter}
+SendInput, {F6}/s Передавать патроны кому-либо, кроме сослуживцев.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Портить государственные транспортные средства.{Enter}
+SendInput, {F6}/s Портить государственные транспортные средства.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Отдыхать или спать в неположенном месте. Разрешено отдыхать только в раздевалке.{Enter}
+SendInput, {F6}/s Отдыхать или спать в неположенном месте. Разрешено отдыхать только в раздевалке.{Enter}
 Sleep 1000
-SendInput,,{F6}/s Если вы спите на посту, плацу{!} Вам будет выдан выговор{!}{Enter}
+SendInput, {F6}/s Если вы спите на посту, плацу{!} Вам будет выдан выговор{!}{Enter}
 Sleep 1000
-SendInput,,{F6}/s Лекция на тему "Что запрещено сотрудникам ФСБ" - Закончена{!} Спасибо за внимание.{Enter}
+SendInput, {F6}/s Лекция на тему "Что запрещено сотрудникам ФСБ" - Закончена{!} Спасибо за внимание.{Enter}
 Return
 
 ; Старший Состав
@@ -2401,13 +2451,43 @@ Parser(SheetID, TabID) {
                 CurrentReason := Trim(A_LoopField)
         }
 
-        if (CurrentID != "") {
-            ; Добавляем в конец списка новый объект-пару
-            DataDict.Push({id: CurrentID, reason: CurrentReason})
-        }
+        DataDict.Push({id: CurrentID, reason: CurrentReason})
     }
     
     return DataDict
+}
+
+WM_CTLCOLOREDIT(wParam, lParam) {
+    global hEdit
+    static Brush := 0
+    
+    if (lParam = hEdit) {
+        DllCall("SetBkColor", "UInt", wParam, "UInt", 0x202020)
+        DllCall("SetTextColor", "UInt", wParam, "UInt", 0xFFFFFF)
+        if (!Brush)
+            Brush := DllCall("CreateSolidBrush", "UInt", 0x202020)
+        return Brush
+    }
+}
+
+GetMonitorInfo() {
+    SysGet, MonitorWorkArea, MonitorWorkArea
+    screenWidth := MonitorWorkAreaRight - MonitorWorkAreaLeft
+    screenHeight := MonitorWorkAreaBottom - MonitorWorkAreaTop
+    
+    ; Определяем тип экрана
+    if (screenWidth <= 1366)
+        screenType := "Ноутбук (15.6\)"
+    else if (screenWidth <= 1920)
+        screenType := "Монитор (23.8\)"
+    else
+        screenType := "Большой монитор (27\)"
+    
+    result := "Размер экрана: " . screenWidth . "x" . screenHeight . "`n"
+    result .= "Тип: " . screenType . "`n"
+    result .= "Рекомендуемый размер шрифта: " . (screenWidth <= 1366 ? 18 : screenWidth <= 1920 ? 25 : 32)
+    
+    return result
 }
 
 ; Интерфейсы с подсказками
@@ -2455,7 +2535,7 @@ StateInfo(text, textColor:="White") {
     Gui, 1:Destroy
 }
 
-ExtendedInfo1(title, lines*) {
+KeyInfo(title, lines*) {
     global infoState
     if (infoState)
         Return
@@ -2486,35 +2566,98 @@ ExtendedInfo1(title, lines*) {
     infoState := true
 }
 
-ExtendedInfo2(title, lines*) {
-    global infoState
+
+ExtendedInfo(title, lines*) {
+    global infoState, hEdit
     if (infoState)
         Return
 
+    SysGet, MonitorWorkArea, MonitorWorkArea
+    screenWidth := MonitorWorkAreaRight - MonitorWorkAreaLeft
+    screenHeight := MonitorWorkAreaBottom - MonitorWorkAreaTop
+    
+
+    windowWidthPercent := 90
+    windowHeightPercent := 80
+    
+    marginTop := 15
+    marginBottom := 15
+    marginLeft := 15
+    marginRight := 15
+    
+    maxWindowWidth := Round(screenWidth * windowWidthPercent / 100)
+    maxWindowHeight := Round(screenHeight * windowHeightPercent / 100)
+    
+    content := "`r`n" . title . "`r`n`r`n"
+    for _, line in lines
+        content .= line . "`r`n"
+    content .= "`r`n"
+    
+    if (screenWidth <= 1366) {
+        fontSize := 7
+        lineHeight := 24
+        charWidth := 10
+    } else if (screenWidth <= 1920) {
+        fontSize := 10
+        lineHeight := 34
+        charWidth := 14
+    } else {
+        fontSize := 16
+        lineHeight := 42
+        charWidth := 18
+    }
+    
     CustomColor3 := "202020"
     Gui, 2:+LastFound +AlwaysOnTop -Caption +ToolWindow
     Gui, 2:Color, %CustomColor3%
     WinSet, Transparent, 150
-
-    SysGet, MonitorWorkArea, MonitorWorkArea
-    MonitorWorkAreaRight -= 5
-
-    Gui, 2:Font, cWhite w25, MS Sans Serif
-
-    Gui, 2:Add, Text, cWhite,
-    Gui, 2:Add, Text, cWhite, %title%
-    Gui, 2:Add, Text, cWhite,
-    for _, line in lines
-        Gui, 2:Add, Text, cWhite, %line%
-    Gui, 2:Add, Text, cWhite,
-
+    Gui, 2:Font, cWhite s%fontSize% w400, MS Sans Serif
+    
+    numLines := 0
+    Loop, Parse, content, `r`n
+        numLines++
+    
+    maxLineWidth := 0
+    Loop, Parse, content, `r`n
+    {
+        if (A_LoopField = "")
+            continue
+        thisWidth := StrLen(A_LoopField) * charWidth + 50
+        if (thisWidth > maxLineWidth)
+            maxLineWidth := thisWidth
+    }
+    
+    editPaddingX := 20
+    editPaddingY := 20
+    
+    requiredWidth := maxLineWidth + editPaddingX + 20
+    requiredHeight := (numLines * lineHeight) + editPaddingY
+    
+    finalW := (requiredWidth < maxWindowWidth) ? requiredWidth : maxWindowWidth
+    finalH := (requiredHeight < maxWindowHeight) ? requiredHeight : maxWindowHeight
+    
+    minWidth := 300
+    minHeight := 200
+    finalW := (finalW < minWidth) ? minWidth : finalW
+    finalH := (finalH < minHeight) ? minHeight : finalH
+    
+    Gui, 2:Add, Edit, w%finalW% h%finalH% +Multi +ReadOnly +VScroll -Wrap -E0x200 -Border hwndhEdit cWhite, %content%
+    
     Gui, 2:Show, Hide
-    WinGetPos,,, width, height
-    yPos := (MonitorWorkAreaBottom - MonitorWorkAreaTop - height) // 2 + MonitorWorkAreaTop
-    xPos := MonitorWorkAreaRight - width
-    Gui, 2:Show, x%xPos% y%yPos% NoActivate, window.
 
+    xPos := marginLeft
+    yPos := marginTop
+    
+    PostMessage, 0xB5, 0, 0,, ahk_id %hEdit% 
+    PostMessage, 0xB1, 0, -1,, ahk_id %hEdit%
+    PostMessage, 0xB6, 0, 0,, ahk_id %hEdit% 
+    
+    Sleep, 50
+    
+    Gui, 2:Show, x%xPos% y%yPos% NoActivate, window.
+    
     infoState := true
+    OnMessage(0x133, "WM_CTLCOLOREDIT")
 }
 
 DestroyInfo:
@@ -2524,12 +2667,12 @@ Return
 
 
 
-; Горячие клавиши для показа информации
+; Горячие клавиши для показа информации 24MP59G
 
 
 #If (keyModifier = "")
 F9 & Numpad0::
-    ExtendedInfo1("Что делает Numpad0:"
+    KeyInfo("Что делает Numpad0:"
         , "Режим: Обычный"
         , "| N0: Ввод id игрока для дальнейших действий"
         , "| N0 + LAlt: Очистить последнее введенное id (если хотите вводить вручную)"
@@ -2548,14 +2691,13 @@ F9 & Numpad0::
 Return
 
 F9 & Numpad1::
-    ExtendedInfo1("Что делает Numpad1:"
+    KeyInfo("Что делает Numpad1:"
         , "Режим: Обычный"
         , "| N1: Представится и показать нашивку ФСБ"
         , "| N1 + LAlt: Показать удостоверение ФСБ"
         , "| N1 + Ctrl: Показать только нашивку"
         , "Режим: Строй"
-        , "| N1: Лекция 1"
-        , "| N1 + LAlt: Рандомная лекция"
+        , "| N1: Лекция"
         , "Режим: Допрос/вербовка"
         , "| N1: Начало допроса"
         , "| N1 + LAlt: Конец вербовки (5+ ранг)"
@@ -2566,7 +2708,7 @@ F9 & Numpad1::
 Return
 
 F9 & Numpad2::
-    ExtendedInfo1("Что делает Numpad2:"
+    KeyInfo("Что делает Numpad2:"
         , "Режим: Обычный"
         , "| N2: Попросить остановится гражданина"
         , "| N2 + LAlt: Оповестить о работе ФСБ"
@@ -2574,7 +2716,7 @@ F9 & Numpad2::
         , "| N2 + Ctrl: Попросить документы у гражданина"
         , "| N2 + RAlt: Взять документы"
         , "Режим: Строй"
-        , "| N2: Лекция 2"
+        , "| N2: Тренировка"
         , "Режим: Допрос/вербовка"
         , "| N2: Продолжение допроса"
         , "| N2 + Ctrl: Занести в ЧС"
@@ -2584,14 +2726,12 @@ F9 & Numpad2::
 Return
 
 F9 & Numpad3::
-    ExtendedInfo1("Что делает Numpad3:"
+    KeyInfo("Что делает Numpad3:"
         , "Режим: Обычный"
         , "| N3: Отследить местопложение игрока"
         , "| N3 + LAlt: Начать погоню за нарушителем"
         , "| N3 + Ctrl: Надеть наручники + сопровождение"
         , "| N3 + RAlt: снять наручники + сопровождение"
-        , "Режим: Строй"
-        , "| N3: Лекция 3"
         , "Режим: Допрос/вербовка"
         , "| N3: Конец допроса"
         , "Режим: Маскировка"
@@ -2599,34 +2739,30 @@ F9 & Numpad3::
 Return
 
 F9 & Numpad4::
-    ExtendedInfo1("Что делает Numpad4:"
+    KeyInfo("Что делает Numpad4:"
         , "Режим: Обычный"
         , "| N4: Обыскать человека на котиков"
         , "| N4 + LAlt: Забрать запрещенку"
         , "| N4 + Ctrl: Найти документы в карманах человека"
         , "| N4 + RAlt: Обыск багажника"
-        , "Режим: Строй"
-        , "| N4: Лекция 4"
         , "Режим: Допрос/вербовка"
         , "| N4: Начало вербовки (Попросить удо)"
         , "| N4 + LAlt: Проверить документы у вербовуемого")
 Return
 
 F9 & Numpad5::
-    ExtendedInfo1("Что делает Numpad5:"
+    KeyInfo("Что делает Numpad5:"
         , "Режим: Обычный"
         , "| N5: Снять маску и другие аксессуары"
         , "| N5 + LAlt: Опознать человека по лицу"
         , "| N5 + Ctrl: Опознать человека по отпечаткам"
         , "| N5 + RAlt: Найти владельца авто по НЗ"
-        , "Режим: Строй"
-        , "| N5: Тренировка"
         , "Режим: Допрос/вербовка"
         , "| N5: Попросить паспорт")
 Return
 
 F9 & Numpad6::
-    ExtendedInfo1("Что делает Numpad6:"
+    KeyInfo("Что делает Numpad6:"
         , "Режим: Обычный"
         , "| N6: Выдать розыск"
         , "| N6 + LAlt: Выписать штраф"
@@ -2637,7 +2773,7 @@ F9 & Numpad6::
 Return
 
 F9 & Numpad7::
-    ExtendedInfo1("Что делает Numpad7:"
+    KeyInfo("Что делает Numpad7:"
         , "Режим: Обычный"
         , "| N7: Выкинуть из автомобиля"
         , "| N7 + LAlt: Посадить в автомобиль"
@@ -2648,7 +2784,7 @@ F9 & Numpad7::
 Return
 
 F9 & Numpad8::
-    ExtendedInfo1("Что делает Numpad8:"
+    KeyInfo("Что делает Numpad8:"
         , "Режим: Обычный"
         , "| N8: Зачитать права"
         , "| N8 + LAlt: Вызвать адвоката"
@@ -2661,7 +2797,7 @@ F9 & Numpad8::
 Return
 
 F9 & Numpad9::
-    ExtendedInfo1("Что делает Numpad9:"
+    KeyInfo("Что делает Numpad9:"
         , "Режим: Обычный"
         , "| N9: Поставить барикаду"
         , "| N9 + LAlt: Убрать барикаду"
@@ -2675,15 +2811,15 @@ Return
 
 #If (keyModifier != "")
 F9 & 1::
-    ExtendedInfo1("Что делает 1:"
+    KeyInfo("Что делает 1:"
         , "Режим: Обычный"
         , "| 1: Ввод id игрока для дальнейших действий"
         , "| 1 + LAlt: Очистить последнее введенное id (если хотите вводить вручную)"
         , "| 1 + Ctrl: Ввести ник маскировки (для использования ахк других орг.)"
         , "| 1 + RAlt: Очистить маскировочный ник"
         , "Режим: Строй"
-        , "| 1: Сбор строя 3 минуты"
-        , "| 1 + LAlt: Сбор строя 5 минут"
+        , "| 1: Сбор строя"
+        , "| 1 + LAlt: Информация о строе"
         , "Режим: Допрос/вербовка"
         , "| 1: Миранда для допроса"
         , "| 1 + LAlt: Лекция для вербовки (5+ ранг)"
@@ -2694,14 +2830,13 @@ F9 & 1::
 Return
 
 F9 & 2::
-    ExtendedInfo1("Что делает 2:"
+    KeyInfo("Что делает 2:"
         , "Режим: Обычный"
         , "| 2: Представится и показать нашивку ФСБ"
         , "| 2 + LAlt: Показать удостоверение ФСБ"
         , "| 2 + Ctrl: Показать только нашивку"
         , "Режим: Строй"
-        , "| 2: Сбор ОБК 3 минуты"
-        , "| 2 + LAlt: Сбор ОБК 5 минут"
+        , "| 2: Лекция"
         , "Режим: Допрос/вербовка"
         , "| 2: Начало допроса"
         , "| 2 + LAlt: Конец вербовки (5+ ранг)"
@@ -2712,7 +2847,7 @@ F9 & 2::
 Return
 
 F9 & 3::
-    ExtendedInfo1("Что делает 3:"
+    KeyInfo("Что делает 3:"
         , "Режим: Обычный"
         , "| 3: Попросить остановится гражданина"
         , "| 3 + LAlt: Оповестить о работе ФСБ"
@@ -2720,8 +2855,7 @@ F9 & 3::
         , "| 3 + Ctrl: Попросить документы у гражданина"
         , "| 3 + RAlt: Взять документы"
         , "Режим: Строй"
-        , "| 3: Сбор ОБТ 3 минуты"
-        , "| 3 + LAlt: Сбор ОБТ 5 минут"
+        , "| 3: Тренировка"
         , "Режим: Допрос/вербовка"
         , "| 3: Продолжение допроса"
         , "| 3 + Ctrl: Занести в ЧС"
@@ -2731,15 +2865,12 @@ F9 & 3::
 Return
 
 F9 & 4::
-    ExtendedInfo1("Что делает 4:"
+    KeyInfo("Что делает 4:"
         , "Режим: Обычный"
         , "| 4: Отследить местопложение игрока"
         , "| 4 + LAlt: Начать погоню за нарушителем"
         , "| 4 + Ctrl: Надеть наручники + сопровождение"
         , "| | 4 + RAlt: снять наручники + сопровождение"
-        , "Режим: Строй"
-        , "| 4: Сбор ОРО 3 минуты"
-        , "| 4 + LAlt: Сбор ОРО 5 минут"
         , "Режим: Допрос/вербовка"
         , "| 4: Конец допроса"
         , "Режим: Маскировка"
@@ -2747,68 +2878,57 @@ F9 & 4::
 Return
 
 F9 & 5::
-    ExtendedInfo1("Что делает 5:"
+    KeyInfo("Что делает 5:"
         , "Режим: Обычный"
         , "| 5: Обыскать человека на котиков"
         , "| 5 + LAlt: Забрать запрещенку"
         , "| 5 + Ctrl: Найти документы в карманах человека"
         , "| 5 + RAlt: Обыск багажника"
-        , "Режим: Строй"
-        , "| 5: Информация про строй"
-        , "| 5 + LAlt: Рандомная лекция"
         , "Режим: Допрос/вербовка"
         , "| 5: Начало вербовки (Попросить удо)"
         , "| 5 + LAlt: Проверить документы у вербовуемого")
 Return
 
 F9 & 6::
-    ExtendedInfo1("Что делает 6:"
+    KeyInfo("Что делает 6:"
         , "Режим: Обычный"
         , "| 6: Снять маску и другие аксессуары"
         , "| 6 + LAlt: Опознать человека по лицу"
         , "| 6 + Ctrl: Опознать человека по отпечаткам"
         , "| 6 + RAlt: Найти владельца авто по НЗ"
-        , "Режим: Строй"
-        , "| 6: Лекция 1"
         , "Режим: Допрос/вербовка"
         , "| 6: Попросить паспорт")
 Return
 
 F9 & 7::
-    ExtendedInfo1("Что делает 7:"
+    KeyInfo("Что делает 7:"
         , "Режим: Обычный"
         , "| 7: Выдать розыск"
         , "| 7 + LAlt: Выписать штраф"
         , "| 7 + Ctrl: Забрать лицензию"
         , "| 7 + RAlt: Снять розыск"
-        , "Режим: Строй"
-        , "| 7: Лекция 2"
         , "Режим: Допрос/вербовка"
         , "| 7: Попросить мед. карту")
 Return
 
 F9 & 8::
-    ExtendedInfo1("Что делает 8:"
+    KeyInfo("Что делает 8:"
         , "Режим: Обычный"
         , "| 8: Выкинуть из автомобиля"
         , "| 8 + LAlt: Посадить в автомобиль"
         , "| 8 + Ctrl: Выломать дверь в дом"
         , "| 8 + RAlt: Список розыска"
-        , "Режим: Строй"
-        , "| 8: Лекция 3"
         , "Режим: Допрос/вербовка"
         , "| 8: Попросить лицензии")
 Return
 
 F9 & 9::
-    ExtendedInfo1("Что делает 9:"
+    KeyInfo("Что делает 9:"
         , "Режим: Обычный"
         , "| 9: Зачитать права"
         , "| 9 + LAlt: Вызвать адвоката"
         , "| 9 + Ctrl: Адвоката нету в области"
         , "| 9 + RAlt: Полицейский планшет"
-        , "Режим: Строй"
-        , "| 9: Лекция 4"
         , "Режим: Допрос/вербовка"
         , "| 9: Попросить /team_history"
         , "| 9 + LAlt: Вербовка хорошо"
@@ -2816,63 +2936,63 @@ F9 & 9::
 Return
 
 F9 & 0::
-    ExtendedInfo1("Что делает 0:"
+    KeyInfo("Что делает 0:"
         , "Режим: Обычный"
         , "| 0: Поставить барикаду"
         , "| 0 + LAlt: Убрать барикаду"
         , "| 0 + Ctrl: Выдать выговор"
         , "| 0 + RAlt: Уволить из организации"
-        , "Режим: Строй"
-        , "| 0: Тренировка"
         , "Режим: Допрос/вербовка"
         , "| 0: Забрать звукозапис. устройство"
         , "| 0 + LAlt: Полная секретность в авто")
 Return
 #If
 
-F10 & 1::
-    ExtendedInfo2("Уголовный Кодекс", UKLines*)
+F5 & 1::
+    ExtendedInfo("Уголовный Кодекс", UKLines*)
 Return
 
-F10 & 2::
-    ExtendedInfo2("Кодекс об административных правонарушениях", KOAPLines*)
+F5 & 2::
+    ExtendedInfo("Кодекс об административных правонарушениях", KOAPLines*)
 Return
 
-F10 & 3::
-    ExtendedInfo2("Процессуальный кодекс", PROCLines*)
+F5 & 3::
+    ExtendedInfo("Процессуальный кодекс", PROCLines*)
 Return
 
-F10 & 4::
-    ExtendedInfo2("Устав МО", MOLines*)
+F5 & 4::
+    ExtendedInfo("Устав МО", MOLines*)
 Return
 
-F10 & 5::
-    ExtendedInfo2("ФЗоП", MVDLines*)
+F5 & 5::
+    ExtendedInfo("ФЗоП", MVDLines*)
 Return
 
-F10 & 6::
-    ExtendedInfo2("Устав СОБР", SOBRLines*)
+F5 & 6::
+    ExtendedInfo("Устав СОБР", SOBRLines*)
 Return
 
-F10 & 7::
-    ExtendedInfo2("Устав ФСИН", FSINLines*)
+F5 & 7::
+    ExtendedInfo("Устав ФСИН", FSINLines*)
 Return
 
-F10 & 8::
-    ExtendedInfo2("Устав ФАКЕЛ", FAKELLines*)
+F5 & 8::
+    ExtendedInfo("Устав ФАКЕЛ", FAKELLines*)
 Return
 
-F10 & 9::
-    ExtendedInfo2("Устав ФСБ", FSBLines*)
+F5 & 9::
+    ExtendedInfo("Устав ФСБ", FSBLines*)
 Return
 
-F11 up::
-F10 & 1 up::
-F10 & 2 up::
-F10 & 3 up::
-F10 & 4 up::
-F10 & 5 up::
-F10 & 6 up::
+F5 & 1 up::
+F5 & 2 up::
+F5 & 3 up::
+F5 & 4 up::
+F5 & 5 up::
+F5 & 6 up::
+F5 & 7 up::
+F5 & 8 up::
+F5 & 9 up::
 F9 & 0 up::
 F9 & 1 up::
 F9 & 2 up::
