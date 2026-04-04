@@ -1776,7 +1776,7 @@ if (who = "")
         min_word := GetMinuteWord(left_time)
         SendInput,{F6}/r [%tag%] Строй на плацу, готовность %left_time% %min_word%{!}{Enter}
         index++
-        Sleep 5000
+        Sleep 60000
     }
 
 } else {
@@ -1787,7 +1787,7 @@ if (who = "")
         min_word := GetMinuteWord(left_time)
         SendInput,{F6}/r [%tag%] Отдел %who%, строй на плацу, готовность %left_time% %min_word%{!}{Enter}
         index++
-        Sleep 5000
+        Sleep 60000
     }
 }
 
