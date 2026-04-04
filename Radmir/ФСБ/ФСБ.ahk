@@ -1045,7 +1045,7 @@ Return
 Обыск:
 SendMessage, 0x50,, 0x4190419,, A
 if(full_rp){
-    date = FormatTime, OutputVar, %A_Now%, yyyy-MM-dd
+    date = %A_DD%.%A_MM%.%A_YYYY%
     SendInput, {F6}Сейчас я проведу обыск, просьба не двигаться. {Enter}
     Sleep 700
     SendInput, {F6}/me протянул руку в карман, затем взял Ордер {Enter}
