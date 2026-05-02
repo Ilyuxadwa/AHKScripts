@@ -5,7 +5,6 @@ surname := "Фамилия"
 department := "Отдел"
 rank := "Звание"
 alias := "Позывной"
-tag := "ТЕГ" ; Тег в рацию
 
 
 
@@ -217,12 +216,10 @@ RAlt & Numpad6::Goto СнятьРозыск
 Numpad7::Goto ВыкинутьИзАвто
 LAlt & Numpad7::Goto ПосадитьВАвто
 Ctrl & Numpad7::Goto ВыломатьДверь
-RAlt & Numpad7::Goto СписокРозыска
 
 Numpad8::Goto ЗачитатьПрава
 LAlt & Numpad8::Goto ВызватьАдвоката
 Ctrl & Numpad8::Goto НеАдвокат
-RAlt & Numpad8::Goto ПолицейскийПланшет
 
 Numpad9::Goto ПоставитьБарикаду
 LAlt & Numpad9::Goto УбратьБарикаду
@@ -314,12 +311,10 @@ LALt & 6::Goto Фоторобот
 8::Goto ВыкинутьИзАвто
 <!8::Goto ПосадитьВАвто
 ^8::Goto ВыломатьДверь
->!8::Goto СписокРозыска
 
 9::Goto ЗачитатьПрава
 <!9::Goto ВызватьАдвоката
 ^9::Goto НеАдвокат
->!9::Goto ПолицейскийПланшет
 
 0::Goto ПоставитьБарикаду
 <!0::Goto УбратьБарикаду
@@ -594,18 +589,6 @@ Goto Выговор
 CommandHelper()
 Goto Уволить
 
-::/police_tablet::
-::.зщдшсу_ефидуе::
-::.планшет::
-CommandHelper()
-Goto ПолицейскийПланшет
-
-::/wanted::
-::.цфтеув::
-::.вантед::
-CommandHelper()
-Goto СписокРозыска
-
 ::/listen::
 ::.дшыеут::
 ::.прослушка::
@@ -803,7 +786,7 @@ CommandHelper() {
 :?*:запрос-мо::/d [ФСБ] - [МО] Разрешите въезд для автомобиля с Н/З "" с целью доп. защиты?{Left 22}
 :?*:заезд-мо::/d [ФСБ] - [МО] На ВЧ въезжает автомобиль с Н/З "" с целью доп. защиты{!}{Left 22}
 :?*:нестрой::
-SendInput, /r [%tag%] Не явлюсь в строй по причине:{Space}
+SendInput, /r Не явлюсь в строй по причине:{Space}
 Return
 
 
@@ -1483,42 +1466,6 @@ if (playerId = "null") {
 }
 Return
 
-ПолицейскийПланшет:
-SendMessage, 0x50,, 0x4190419,, A
-if(full_rp){
-    SendInput, {F6}/do Полицейский планшет в кармане.{Enter}
-    Sleep 1000
-    SendInput, {F6}/me достал полицейский планшет из кармана и включил его{Enter}
-    Sleep 1000
-    SendInput, {F6}/me начал нажимать различные кнопки{Enter}
-    Sleep 1000
-}
-SendInput, {F6}/police_tablet{Enter}
-Return
-
-СписокРозыска:
-SendMessage, 0x50,, 0x4190419,, A
-if(full_rp){
-    SendInput, {F6}/do КПК в кармане.{Enter}
-    Sleep 1000
-    SendInput, {F6}/me достал КПК из кармана{Enter}
-    Sleep 1000
-    SendInput, {F6}/do КПК в руке.{Enter}
-    Sleep 1000
-    SendInput, {F6}/do КПК выключен.{Enter}
-    Sleep 1000
-    SendInput, {F6}/me включил КПК{Enter}
-    Sleep 1000
-    SendInput, {F6}/do КПК включен.{Enter}
-    Sleep 1000
-    SendInput, {F6}/me открыл список разыскиваемых{Enter}
-    Sleep 1000
-    SendInput, {F6}/do Смотрит в него.{Enter}
-    Sleep 1000
-}
-SendInput, {F6}/wanted{Enter}
-Return
-
 НачатьПрослушку:
 SendMessage, 0x50,, 0x4190419,, A
 SendInput, {F6}/do Наушники лежат на панели.{Enter}
@@ -1774,7 +1721,7 @@ if (who = "")
     {
         left_time := time - index
         min_word := GetMinuteWord(left_time)
-        SendInput,{F6}/r [%tag%] Строй на плацу, готовность %left_time% %min_word%{!}{Enter}
+        SendInput,{F6}/r Строй на плацу, готовность %left_time% %min_word%{!}{Enter}
         index++
         Sleep 60000
     }
@@ -1785,7 +1732,7 @@ if (who = "")
     {
         left_time := time - index
         min_word := GetMinuteWord(left_time)
-        SendInput,{F6}/r [%tag%] Отдел %who%, строй на плацу, готовность %left_time% %min_word%{!}{Enter}
+        SendInput,{F6}/r Отдел %who%, строй на плацу, готовность %left_time% %min_word%{!}{Enter}
         index++
         Sleep 60000
     }
