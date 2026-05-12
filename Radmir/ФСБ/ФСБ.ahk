@@ -46,6 +46,8 @@ FSIN_TAB := "1338576818"
 FAKEL_TAB := "1947143567"
 FSB_TAB := "362432518"
 
+CURRENT_VERSION := "v1.0.1"
+
 
 
 
@@ -870,7 +872,7 @@ Return
 
 ПросьбаОстановится:
 SendMessage, 0x50,, 0x4190419,, A
-SendInput, {F6}Гражданин, пожалуйста оставитесь{!}{Enter}
+SendInput, {F6}Гражданин, пожалуйста остановитесь{!}{Enter}
 Sleep 1000
 SendInput, {F6}Иначе сочту ваши действия как 8.4 УК{Enter}
 Sleep 1000
